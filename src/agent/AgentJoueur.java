@@ -21,12 +21,12 @@ import behaviour.StupideBehaviour;
 public class AgentJoueur extends Agent{
 	private static final long serialVersionUID = 1L;
 	
-	private String nomJoueur;
-	private DFAgentDescription seed;
-	private DFAgentDescription monopoly;
-	private Pion pion;
-	private Case 	caseCourante;
-	private int		capitalJoueur;
+	private String 				nomJoueur;
+	private DFAgentDescription 	seed;
+	private DFAgentDescription 	monopoly;
+	private Pion 				pion;
+	private Case 				caseCourante;
+	private int					capitalJoueur;
 	
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -34,8 +34,7 @@ public class AgentJoueur extends Agent{
 		sd.setType("seed"); 
 		template.addServices(sd);
 		try {
-			DFAgentDescription[] result =
-					DFService.search(this, template);
+			DFAgentDescription[] result = DFService.search(this, template);
 			if (result.length > 0) {
 				seed = result[0];
 			}
