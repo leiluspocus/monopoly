@@ -1,0 +1,763 @@
+@prefix mnply:   <http://Monopoly#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix vs:      <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+
+mnply:Terrain
+      a owl:Class, rdfs:Class ;
+      rdfs:comment "Un Terrain" ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "Terrain" ;
+      vs:term_status "stable" .
+      
+mnply:Speciale
+	a owl:Class, rdfs:Class ;
+	rdfs:comment "Une case speciale" ;
+	rdfs:isDefinedBy mnply: ;
+	rdfs:label "Speciale" ;
+	vs:term_status "stable" .
+
+mnply:Case
+	a owl:Class, rdfs:Class ;
+	rdfs:comment "Une case simple" ;
+	rdfs:isDefinedBy mnply: ;
+	rdfs:label "Case" ;
+	vs:term_status "stable" .
+	
+mnply:CarteCommunaute
+	a owl:Class, rdfs:Class ;
+	rdfs:comment "Une carte Caisse de Communaute" ;
+	rdfs:isDefinedBy mnply: ;
+	rdfs:label "CarteCommunaute" ;
+	vs:term_status "stable" .
+	
+mnply:CarteChance
+	a owl:Class, rdfs:Class ;
+	rdfs:comment "Une carte Chance" ;
+	rdfs:isDefinedBy mnply: ;
+	rdfs:label "CarteChance" ;
+	vs:term_status "stable" .
+	
+mnply:texte
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le texte d'une carte chance ou communaute" ;
+      rdfs:domain mnply:CarteChance, mnply:CarteCommunaute ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "texte" ;
+      rdfs:range rdfs:Literal ;
+      vs:term_status "stable" .
+      
+mnply:valeur
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Gain et perte relatif a la carte" ;
+      rdfs:domain mnply:CarteChance, mnply:CarteCommunaute ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "valeur" ;
+      vs:term_status "stable" .
+
+mnply:position
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "La position de la case sur le plateau" ;
+      rdfs:domain mnply:Case, mnply:Speciale, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "position" ;
+      vs:term_status "stable" .
+
+mnply:nomCase
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le nom de la case" ;
+      rdfs:domain mnply:Case, mnply:Speciale, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "nomCase" ;
+      rdfs:range rdfs:Literal ;
+      vs:term_status "stable" .
+      
+mnply:type
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Type de la case speciale" ;
+      rdfs:domain mnply:Speciale ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "type" ;
+      rdfs:range rdfs:Literal ;
+      vs:term_status "stable" .
+      
+mnply:valeurTerrain
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "La valeur du terrain a l'achat" ;
+      rdfs:domain mnply:Case, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "valeurTerrain" ;
+      vs:term_status "stable" .
+
+mnply:loyerNu
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le loyer du terrain nu" ;
+      rdfs:domain mnply:Case, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "loyerNu" ;
+      vs:term_status "stable" .
+
+mnply:loyer1
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le loyer du terrain avec 1 maison" ;
+      rdfs:domain mnply:Case, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "loyer1" ;
+      vs:term_status "stable" .
+
+mnply:loyer2
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le loyer du terrain avec 2 maisons" ;
+      rdfs:domain mnply:Case, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "loyer2" ;
+      vs:term_status "stable" .
+
+mnply:loyer3
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le loyer du terrain avec 3 maisons" ;
+      rdfs:domain mnply:Case, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "loyer3" ;
+      vs:term_status "stable" .
+
+mnply:loyer4
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le loyer du terrain avec 4 maisons" ;
+      rdfs:domain mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "loyer4" ;
+      vs:term_status "stable" .
+
+mnply:loyerHotel
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Le loyer du terrain avec 1 Hotel" ;
+      rdfs:domain mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "loyerHotel" ;
+      vs:term_status "stable" .
+      
+mnply:couleur
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "La couleur de la case" ;
+      rdfs:domain mnply:Case, mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "couleur" ;
+      rdfs:range rdfs:Literal ;
+      vs:term_status "stable" .
+      
+mnply:valeurMaison
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "Cout d'achat des maisons pour le terrain" ;
+      rdfs:domain mnply:Terrain ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "valeurMaison" ;
+      vs:term_status "stable" .
+
+mnply:depart
+	a mnply:Speciale ;
+	mnply:position 0 ;
+	mnply:nom "Depart" ;
+	mnply:type "DEPART" .
+	
+mnply:belleville
+	a mnply:Terrain ;
+	mnply:position 1 ;
+	mnply:nom "Boulevard de Belleville" ;
+	mnply:valeur 6000 ;
+	mnply:loyerNu 200 ;
+	mnply:loyer1 1000 ;
+	mnply:loyer2 3000 ;
+	mnply:loyer3 9000 ;
+	mnply:loyer4 16000 ;
+	mnply:loyerHotel 25000 ;
+	mnply:couleur "Magenta" ;
+	mnply:valeurMaison 5000 .
+
+mnply:caisse1
+	a mnply:Speciale ;
+	mnply:position 2 ;
+	mnply:nom "Caisse de Communaute" ;
+	mnply:type "CAISSECOMMUNAUTE" .
+	
+mnply:lecourbe
+	a mnply:Terrain ;
+	mnply:position 3 ;
+	mnply:nom "Rue Lecourbe" ;
+	mnply:valeur 6000 ;
+	mnply:loyerNu 400 ;
+	mnply:loyer1 2000 ;
+	mnply:loyer2 6000 ;
+	mnply:loyer3 18000 ;
+	mnply:loyer4 32000 ;
+	mnply:loyerHotel 45000 ;
+	mnply:couleur "Magenta" ;
+	mnply:valeurMaison 5000 .
+
+mnply:impot
+	a mnply:Speciale ;
+	mnply:position 4 ;
+	mnply:nom "Impots sur le Revenu" ;
+	mnply:type "IMPOTS" .
+	
+mnply:montparnasse
+	a mnply:Case ;
+	mnply:position 5 ;
+	mnply:nom "Gare Montparnasse" ;
+	mnply:valeur 20000 ;
+	mnply:loyerNu 2500 ;
+	mnply:loyer1 5000 ;
+	mnply:loyer2 10000 ;
+	mnply:loyer3 20000 ;
+	mnply:couleur "Noir" .
+	
+mnply:vaugirad
+	a mnply:Terrain ;
+	mnply:position 6 ;
+	mnply:nom "Rue de Vaugirad" ;
+	mnply:valeur 10000 ;
+	mnply:loyerNu 600 ;
+	mnply:loyer1 3000 ;
+	mnply:loyer2 9000 ;
+	mnply:loyer3 27000 ;
+	mnply:loyer4 40000 ;
+	mnply:loyerHotel 55000 ;
+	mnply:couleur "Bleu_Ciel" ;
+	mnply:valeurMaison 5000 .
+
+mnply:chance1
+	a mnply:Speciale ;
+	mnply:position 7 ;
+	mnply:nom "Chance" ;
+	mnply:type "CHANCE" .
+	
+mnply:courcelles
+	a mnply:Terrain ;
+	mnply:position 8 ;
+	mnply:nom "Rue de Courcelles" ;
+	mnply:valeur 10000 ;
+	mnply:loyerNu 600 ;
+	mnply:loyer1 3000 ;
+	mnply:loyer2 9000 ;
+	mnply:loyer3 27000 ;
+	mnply:loyer4 40000 ;
+	mnply:loyerHotel 55000 ;
+	mnply:couleur "Bleu_Ciel" ;
+	mnply:valeurMaison 5000 .
+	
+mnply:republique
+	a mnply:Terrain ;
+	mnply:position 9 ;
+	mnply:nom "Avenue de la Republique" ;
+	mnply:valeur 10000 ;
+	mnply:loyerNu 800 ;
+	mnply:loyer1 4000 ;
+	mnply:loyer2 10000 ;
+	mnply:loyer3 30000 ;
+	mnply:loyer4 45000 ;
+	mnply:loyerHotel 60000 ;
+	mnply:couleur "Bleu_Ciel" ;
+	mnply:valeurMaison 5000 .
+	
+mnply:visite
+	a mnply:Speciale ;
+	mnply:position 10 ;
+	mnply:nom "Simple Visite" ;
+	mnply:type "PRISON" .
+	
+mnply:vilette
+	a mnply:Terrain ;
+	mnply:position 11 ;
+	mnply:nom "Boulevard de la Vilette" ;
+	mnply:valeur 14000 ;
+	mnply:loyerNu 1000 ;
+	mnply:loyer1 5000 ;
+	mnply:loyer2 15000 ;
+	mnply:loyer3 45000 ;
+	mnply:loyer4 62500 ;
+	mnply:loyerHotel 75000 ;
+	mnply:couleur "Violet" ;
+	mnply:valeurMaison 10000 .
+
+mnply:electricite
+	a mnply:Case ;
+	mnply:position 12 ;
+	mnply:nom "Compagnie de distribution d'electricite" ;
+	mnply:valeur 15000 ;
+	mnply:loyerNu 500 ;
+	mnply:loyer1 1000 ;
+	mnply:loyer2 0 ;
+	mnply:loyer3 0 ;
+	mnply:couleur "Blanc" .
+	
+mnply:neuilly
+	a mnply:Terrain ;
+	mnply:position 13 ;
+	mnply:nom "Avenue de Neuilly" ;
+	mnply:valeur 14000 ;
+	mnply:loyerNu 1000 ;
+	mnply:loyer1 5000 ;
+	mnply:loyer2 15000 ;
+	mnply:loyer3 45000 ;
+	mnply:loyer4 62500 ;
+	mnply:loyerHotel 75000 ;
+	mnply:couleur "Violet" ;
+	mnply:valeurMaison 10000 .
+	
+mnply:paradis
+	a mnply:Terrain ;
+	mnply:position 14 ;
+	mnply:nom "Rue de Paradis" ;
+	mnply:valeur 16000 ;
+	mnply:loyerNu 1200 ;
+	mnply:loyer1 6000 ;
+	mnply:loyer2 18000 ;
+	mnply:loyer3 50000 ;
+	mnply:loyer4 70000 ;
+	mnply:loyerHotel 90000 ;
+	mnply:couleur "Violet" ;
+	mnply:valeurMaison 10000 .
+
+mnply:lyon
+	a mnply:Case ;
+	mnply:position 15 ;
+	mnply:nom "Gare de Lyon" ;
+	mnply:valeur 20000 ;
+	mnply:loyerNu 2500 ;
+	mnply:loyer1 5000 ;
+	mnply:loyer2 10000 ;
+	mnply:loyer3 20000 ;
+	mnply:couleur "Noir" .
+	
+mnply:mozart
+	a mnply:Terrain ;
+	mnply:position 16 ;
+	mnply:nom "Avenue Mozart" ;
+	mnply:valeur 18000 ;
+	mnply:loyerNu 1400 ;
+	mnply:loyer1 7000 ;
+	mnply:loyer2 20000 ;
+	mnply:loyer3 55000 ;
+	mnply:loyer4 75000 ;
+	mnply:loyerHotel 95000 ;
+	mnply:couleur "Orange" ;
+	mnply:valeurMaison 10000 .
+
+mnply:caisse2
+	a mnply:Speciale ;
+	mnply:position 17 ;
+	mnply:nom "Caisse de Communaute" ;
+	mnply:type "CAISSECOMMUNAUTE" .
+
+mnply:saintmichel
+	a mnply:Terrain ;
+	mnply:position 18 ;
+	mnply:nom "Boulevard Saint-Michel" ;
+	mnply:valeur 18000 ;
+	mnply:loyerNu 1400 ;
+	mnply:loyer1 7000 ;
+	mnply:loyer2 20000 ;
+	mnply:loyer3 55000 ;
+	mnply:loyer4 75000 ;
+	mnply:loyerHotel 95000 ;
+	mnply:couleur "Orange" ;
+	mnply:valeurMaison 10000 .
+	
+mnply:pigalle
+	a mnply:Terrain ;
+	mnply:position 19 ;
+	mnply:nom "Place Pigalle" ;
+	mnply:valeur 20000 ;
+	mnply:loyerNu 1600 ;
+	mnply:loyer1 8000 ;
+	mnply:loyer2 22000 ;
+	mnply:loyer3 60000 ;
+	mnply:loyer4 80000 ;
+	mnply:loyerHotel 100000 ;
+	mnply:couleur "Orange" ;
+	mnply:valeurMaison 10000 .
+
+mnply:parc
+	a mnply:Speciale ;
+	mnply:position 20 ;
+	mnply:nom "Parc Gratuit" ;
+	mnply:type "PARCGRATUIT" .
+	
+mnply:matignon
+	a mnply:Terrain ;
+	mnply:position 21 ;
+	mnply:nom "Avenue Matignon" ;
+	mnply:valeur 22000 ;
+	mnply:loyerNu 1800 ;
+	mnply:loyer1 9000 ;
+	mnply:loyer2 25000 ;
+	mnply:loyer3 70000 ;
+	mnply:loyer4 87500 ;
+	mnply:loyerHotel 105000 ;
+	mnply:couleur "Rouge" ;
+	mnply:valeurMaison 15000 .
+	
+mnply:chance2
+	a mnply:Speciale ;
+	mnply:position 22 ;
+	mnply:nom "Chance" ;
+	mnply:type "CHANCE" .
+
+mnply:malseherbes
+	a mnply:Terrain ;
+	mnply:position 23 ;
+	mnply:nom "Boulevard Malseherbes" ;
+	mnply:valeur 22000 ;
+	mnply:loyerNu 1800 ;
+	mnply:loyer1 9000 ;
+	mnply:loyer2 25000 ;
+	mnply:loyer3 70000 ;
+	mnply:loyer4 87500 ;
+	mnply:loyerHotel 105000 ;
+	mnply:couleur "Rouge" ;
+	mnply:valeurMaison 15000 .
+
+mnply:henrimartin
+	a mnply:Terrain ;
+	mnply:position 24 ;
+	mnply:nom "Avenue Henri-Martin" ;
+	mnply:valeur 24000 ;
+	mnply:loyerNu 2000 ;
+	mnply:loyer1 10000 ;
+	mnply:loyer2 30000 ;
+	mnply:loyer3 75000 ;
+	mnply:loyer4 92500 ;
+	mnply:loyerHotel 110000 ;
+	mnply:couleur "Rouge" ;
+	mnply:valeurMaison 15000 .
+	
+mnply:nord
+	a mnply:Case ;
+	mnply:position 25 ;
+	mnply:nom "Gare du Nord" ;
+	mnply:valeur 20000 ;
+	mnply:loyerNu 2500 ;
+	mnply:loyer1 5000 ;
+	mnply:loyer2 10000 ;
+	mnply:loyer3 20000 ;
+	mnply:couleur "Noir" .
+	
+mnply:sainthonore
+	a mnply:Terrain ;
+	mnply:position 26 ;
+	mnply:nom "Faubourg Saint-Honore" ;
+	mnply:valeur 26000 ;
+	mnply:loyerNu 2200 ;
+	mnply:loyer1 11000 ;
+	mnply:loyer2 33000 ;
+	mnply:loyer3 80000 ;
+	mnply:loyer4 97500 ;
+	mnply:loyerHotel 115000 ;
+	mnply:couleur "Jaune" ;
+	mnply:valeurMaison 15000 .
+	
+mnply:bourse
+	a mnply:Terrain ;
+	mnply:position 27 ;
+	mnply:nom "Place de la Bourse" ;
+	mnply:valeur 26000 ;
+	mnply:loyerNu 2200 ;
+	mnply:loyer1 11000 ;
+	mnply:loyer2 33000 ;
+	mnply:loyer3 80000 ;
+	mnply:loyer4 97500 ;
+	mnply:loyerHotel 115000 ;
+	mnply:couleur "Jaune" ;
+	mnply:valeurMaison 15000 .
+	
+mnply:eaux
+	a mnply:Case ;
+	mnply:position 28 ;
+	mnply:nom "Compagnie de distribution des eaux" ;
+	mnply:valeur 15000 ;
+	mnply:loyerNu 500 ;
+	mnply:loyer1 1000 ;
+	mnply:loyer2 0 ;
+	mnply:loyer3 0 ;
+	mnply:couleur "Blanc" .
+	
+mnply:lafayette
+	a mnply:Terrain ;
+	mnply:position 29 ;
+	mnply:nom "Rue La Fayette" ;
+	mnply:valeur 28000 ;
+	mnply:loyerNu 2400 ;
+	mnply:loyer1 12000 ;
+	mnply:loyer2 36000 ;
+	mnply:loyer3 85000 ;
+	mnply:loyer4 102500 ;
+	mnply:loyerHotel 120000 ;
+	mnply:couleur "Jaune" ;
+	mnply:valeurMaison 15000 .
+
+mnply:prison
+	a mnply:Speciale ;
+	mnply:position 30 ;
+	mnply:nom "Allez en Prison" ;
+	mnply:type "ALLERENPRISON" .
+	
+mnply:breteuil
+	a mnply:Terrain ;
+	mnply:position 31 ;
+	mnply:nom "Avenue de Breteuil" ;
+	mnply:valeur 30000 ;
+	mnply:loyerNu 2600 ;
+	mnply:loyer1 13000 ;
+	mnply:loyer2 39000 ;
+	mnply:loyer3 90000 ;
+	mnply:loyer4 110000 ;
+	mnply:loyerHotel 127500 ;
+	mnply:couleur "Vert" ;
+	mnply:valeurMaison 20000 .
+	
+mnply:foch
+	a mnply:Terrain ;
+	mnply:position 32 ;
+	mnply:nom "Avenue Foch" ;
+	mnply:valeur 30000 ;
+	mnply:loyerNu 2600 ;
+	mnply:loyer1 13000 ;
+	mnply:loyer2 39000 ;
+	mnply:loyer3 90000 ;
+	mnply:loyer4 110000 ;
+	mnply:loyerHotel 127500 ;
+	mnply:couleur "Vert" ;
+	mnply:valeurMaison 20000 .
+	
+mnply:caisse3
+	a mnply:Speciale ;
+	mnply:position 33 ;
+	mnply:nom "Caisse de Communaute" ;
+	mnply:type "CAISSECOMMUNAUTE" .
+
+mnply:capucines
+	a mnply:Terrain ;
+	mnply:position 34 ;
+	mnply:nom "Boulevard des Capucines" ;
+	mnply:valeur 32000 ;
+	mnply:loyerNu 2800 ;
+	mnply:loyer1 15000 ;
+	mnply:loyer2 45000 ;
+	mnply:loyer3 100000 ;
+	mnply:loyer4 120000 ;
+	mnply:loyerHotel 140000 ;
+	mnply:couleur "Vert" ;
+	mnply:valeurMaison 20000 .	
+	
+mnply:saintlazare
+	a mnply:Case ;
+	mnply:position 35 ;
+	mnply:nom "Gare Saint-Lazare" ;
+	mnply:valeur 20000 ;
+	mnply:loyerNu 2500 ;
+	mnply:loyer1 5000 ;
+	mnply:loyer2 10000 ;
+	mnply:loyer3 20000 ;
+	mnply:couleur "Noir" .
+	
+mnply:chance3
+	a mnply:Speciale ;
+	mnply:position 36 ;
+	mnply:nom "Chance" ;
+	mnply:type "CHANCE" .
+
+mnply:champs
+	a mnply:Terrain ;
+	mnply:position 37 ;
+	mnply:nom "Avenue des Champs-Elysees" ;
+	mnply:valeur 35000 ;
+	mnply:loyerNu 3500 ;
+	mnply:loyer1 17500 ;
+	mnply:loyer2 50000 ;
+	mnply:loyer3 110000 ;
+	mnply:loyer4 130000 ;
+	mnply:loyerHotel 150000 ;
+	mnply:couleur "Bleu_Fonce" ;
+	mnply:valeurMaison 20000 .
+
+mnply:taxe
+	a mnply:Speciale ;
+	mnply:position 38 ;
+	mnply:nom "Taxe de Luxe" ;
+	mnply:type "IMPOTS" .
+
+mnply:paix
+	a mnply:Terrain ;
+	mnply:position 39 ;
+	mnply:nom "Rue de la Paix" ;
+	mnply:valeur 40000 ;
+	mnply:loyerNu 5000 ;
+	mnply:loyer1 20000 ;
+	mnply:loyer2 60000 ;
+	mnply:loyer3 140000 ;
+	mnply:loyer4 170000 ;
+	mnply:loyerHotel 200000 ;
+	mnply:couleur "Bleu_Fonce" ;
+	mnply:valeurMaison 20000 .
+	
+mnply:cc1
+	a mnply:CarteChance ;
+	mnply:texte "Amende pour exces de vitesse : 1 000 F" ;
+	mnply:valeur -1000 .
+	
+mnply:cc2
+	a mnply:CarteChance ;
+	mnply:texte "La banque vous verse un dividende de 5000 F." ;
+	mnply:valeur 5000 .
+	
+mnply:cc3
+	a mnply:CarteChance ;
+	mnply:texte "Vous etes impose pour les reparations de voirie : 15 500 F" ;
+	mnply:valeur -15500 .
+	
+mnply:cc4
+	a mnply:CarteChance ;
+	mnply:texte "Avancez jusqu'a la case depart." ;
+	mnply:valeur 0 .
+
+mnply:cc5
+	a mnply:CarteChance ;
+	mnply:texte "Payez les frais de scolarite : 15 000 F" ;
+	mnply:valeur -15000 .
+	
+mnply:cc6
+	a mnply:CarteChance ;
+	mnply:texte "Rendez-vous Rue de la Paix." ;
+	mnply:valeur 0 .
+	
+mnply:cc7
+	a mnply:CarteChance ;
+	mnply:texte "Vous etes libere de Prison. Cette carte peut-etre conservee jusqu'a ce qu'elle soit utilisee ou vendue." ;
+	mnply:valeur 0 .
+	
+mnply:cc8
+	a mnply:CarteChance ;
+	mnply:texte "Rendez-vous a l'Avenue Henri-Martin. Si vous passez par la case depart, recevez 20 000 F." ;
+	mnply:valeur 0 .
+	
+mnply:cc9
+	a mnply:CarteChance ;
+	mnply:texte "Faites des reparations dans toutes vos maisons : 12500 F" ;
+	mnply:valeur -12500 .
+	
+mnply:cc10
+	a mnply:CarteChance ;
+	mnply:texte "Avancez au Bd de la Vilette. Si vous passez par la case Depart, recevez 20 000 F" ;
+	mnply:valeur 0 .
+	
+mnply:cc11
+	a mnply:CarteChance ;
+	mnply:texte "Allez a la gare de Lyon. Si vous passez par la case Depart, recevez 20 000 F." ;
+	mnply:valeur 0 .
+	
+mnply:cc12
+	a mnply:CarteChance ;
+	mnply:texte "Votre immeuble et votre pret rapportent : 15 000 F" ;
+	mnply:valeur 15000 .
+	
+mnply:cc13
+	a mnply:CarteChance ;
+	mnply:texte "Allez en prison. Ne franchissez pas la case depart. Ne touchez pas 20 000 F." ;
+	mnply:valeur 0 .
+	
+mnply:cc14
+	a mnply:CarteChance ;
+	mnply:texte "Reculez de 3 cases." ;
+	mnply:valeur 0 .
+	
+mnply:cc15
+	a mnply:CarteChance ;
+	mnply:texte "Amende pour ivresse : 2 000 F" ;
+	mnply:valeur -2000 .
+	
+mnply:cc16
+	a mnply:CarteChance ;
+	mnply:texte "Vous avez gagne le prix de mots croises : 10 000 F" ;
+	mnply:valeur 10000 .
+	
+mnply:ccdc1
+	a mnply:CarteCommunaute ;
+	mnply:texte "Payez votre police d'assurance s'elevant a 5000 F." ;
+	mnply:valeur -5000 .
+	
+mnply:ccdc2
+	a mnply:CarteCommunaute ;
+	mnply:texte "Vous heritez de 10 000 F." ;
+	mnply:valeur 10000 .
+	
+mnply:ccdc3
+	a mnply:CarteCommunaute ;
+	mnply:texte "Vous etes libere de Prison. Cette carte peut-etre conservee jusqu'a ce qu'elle soit utilisee ou vendue." ;
+	mnply:valeur 0 .
+	
+mnply:ccdc4
+	a mnply:CarteCommunaute ;
+	mnply:texte "Payez la note du medecin : 5 000 F" ;
+	mnply:valeur -5000 .
+	
+mnply:ccdc5
+	a mnply:CarteCommunaute ;
+	mnply:texte "Vous avez gagne le 2nd prix de beaute, recevez 1 000 F." ;
+	mnply:valeur 1000 .
+	
+mnply:ccdc6
+	a mnply:CarteCommunaute ;
+	mnply:texte "Les contributions vous remboursent la somme de 2000 F." ;
+	mnply:valeur 2000 .
+
+mnply:ccdc7
+	a mnply:CarteCommunaute ;
+	mnply:texte "Recevez votre interet sur l'emprunt a 7% : 2500 F" ;
+	mnply:valeur 2500 .
+	
+mnply:ccdc8
+	a mnply:CarteCommunaute ;
+	mnply:texte "Retournez a Belleville." ;
+	mnply:valeur 0 .
+
+mnply:ccdc9
+	a mnply:CarteCommunaute ;
+	mnply:texte "Allez en prison. Ne franchissez pas la case depart. Ne touchez pas 20 000 F." ;
+	mnply:valeur 0 .
+	
+mnply:ccdc10
+	a mnply:CarteCommunaute ;
+	mnply:texte "Placez vous sur la case Depart." ;
+	mnply:valeur 0 .
+	
+mnply:ccdc11
+	a mnply:CarteCommunaute ;
+	mnply:texte "C'est votre anniversaire, recevez 1000 F." ;
+	mnply:valeur 1000 .
+	
+mnply:ccdc12
+	a mnply:CarteCommunaute ;
+	mnply:texte "Recevez votre revenu annuel : 10000 F" ;
+	mnply:valeur 10000 .
+	
+mnply:ccdc13
+	a mnply:CarteCommunaute ;
+	mnply:texte "Payez une amende de 10000 F" ;
+	mnply:valeur -10000 .
+	
+mnply:ccdc14
+	a mnply:CarteCommunaute ;
+	mnply:texte "Erreur de la banque en votre faveur, recevez 20000 F." ;
+	mnply:valeur 20000 .
+	
+mnply:ccdc15
+	a mnply:CarteCommunaute ;
+	mnply:texte "La vente de votre stock vous rapporte 5000 F." ;
+	mnply:valeur 5000 .
+	
+mnply:ccdc16
+	a mnply:CarteCommunaute ;
+	mnply:texte "Payez l'hopital : 10 000 F" ;
+	mnply:valeur -10000 .
