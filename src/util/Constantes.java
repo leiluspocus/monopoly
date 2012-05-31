@@ -5,6 +5,7 @@ public class Constantes {
 	public enum Couleur { ROUGE, JAUNE, VERT, BLEU_FONCE , MAGENTA, BLEU_CIEL, VIOLET, ORANGE, NOIR, BLANC };
 	public enum ActionSpeciale { DEPART, PRISON, CAISSECOMMUNAUTE, CHANCE, PARCGRATUIT, ALLERENPRISON, IMPOTS };
 	public enum Pion { Cheval, Canon, Voiture, Bateau, Chapeau, Brouette, Chaussure, Fer };
+	public static final Pion[] lesPions = {Pion.Cheval, Pion.Canon, Pion.Voiture, Pion.Bateau, Pion.Chapeau, Pion.Brouette, Pion.Chaussure, Pion.Fer};
 	public static final int NB_JOUEURS = 6;
 	public static final int CHANCE = 0;
 	public static final int COMMUNAUTE = 1;
@@ -24,5 +25,6 @@ public class Constantes {
 	public static final String valeurMaison = "?valeurMaison";
 	public static final String couleur = "?couleur";
 
+	public static final int CAPITAL_DEPART = 150000;
 
 }

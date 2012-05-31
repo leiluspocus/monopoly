@@ -1,8 +1,10 @@
 package behaviour;
 
 import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
 
 /**
+ * Behaviour déclenché après tirage de dés
  * N'acheter aucun terrain
  */
 public class StupideBehaviour extends Behaviour {
@@ -12,6 +14,15 @@ public class StupideBehaviour extends Behaviour {
 	@Override
 	public void action() {
 		
+		ACLMessage msgReceived = myAgent.receive();
+		if (msgReceived != null)
+		{
+			
+		}
+		else
+		{
+			block();
+		}
 	}
 
 	@Override

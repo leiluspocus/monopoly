@@ -24,7 +24,9 @@ public class CasePanel extends JPanel {
 			imgPion2 = ImageIO.read(new File("chemin des images"));
 			imgPion3 = ImageIO.read(new File("chemin des images"));
 			imgPion4 = ImageIO.read(new File("chemin des images"));
-		}catch(IOException e){ e.printStackTrace(); }
+		}catch(IOException e){ //e.printStackTrace(); 
+			
+		}
 	}
 	
 	public void paintComponent(Graphics g){

@@ -37,7 +37,7 @@ public class Plateau {
 		for ( QuerySolution carte : casesChances ) {
 			String msg = carte.getLiteral(Constantes.texte).getString();
 			int val = carte.getLiteral(Constantes.valeur).getInt();
-			cartes.add(new Carte(val, msg, Constantes.CHANCE));
+			cartes.add(new Carte(val, msg, Constantes.CHANCE)); 
 		}  
 	}
 
