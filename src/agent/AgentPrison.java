@@ -6,12 +6,14 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import util.Logger;
+import behaviour.JanitorJailBehaviour;
 
 public class AgentPrison extends Agent{
 	private static final long serialVersionUID = 1L;
 	
 	protected void setup() {
-		register();
+		register(); 
+		addBehaviour(new JanitorJailBehaviour(this));
 	}
 	
 	private void register() {

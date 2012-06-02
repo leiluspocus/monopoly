@@ -1,5 +1,6 @@
 package agent;
 
+import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -10,10 +11,9 @@ import jade.gui.GuiEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
-import behaviour.OrdonnanceurBehaviour;
-
 import util.Logger;
 import view.Monopoly;
+import behaviour.OrdonnanceurBehaviour;
 
 public class AgentMonopoly extends GuiAgent{
 	private static final long serialVersionUID = 1L; 
@@ -26,7 +26,7 @@ public class AgentMonopoly extends GuiAgent{
 		Monopoly m = new Monopoly(this);
 		register();
 		Vector<DFAgentDescription> lesJoueurs = fetchPlayers();
-		addBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs));
+		addBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs, fetchJail()));
 		changes.addPropertyChangeListener(m); 
 
 	}
@@ -57,6 +57,21 @@ public class AgentMonopoly extends GuiAgent{
 				lesJoueurs.add(o);
 			}
 			return lesJoueurs;
+		}
+		catch(FIPAException fe) { System.out.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
+		return null;
+	}
+	
+	private AID fetchJail() { 
+		DFAgentDescription template = new DFAgentDescription();
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("joueur"); 
+		template.addServices(sd);
+		try {
+			DFAgentDescription[] result =
+					DFService.search(this, template);
+			if ( result.length != 0)
+				return result[0].getName();
 		}
 		catch(FIPAException fe) { System.out.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
 		return null;

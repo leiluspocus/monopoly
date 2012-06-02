@@ -33,7 +33,7 @@ public class GenerateIntBehaviour extends CyclicBehaviour {
 	}
 	
 	public String jeterDes() {
-		int res = intGenerator.nextInt(11) +1;
+		int res = intGenerator.nextInt(11) +1; 
 		return res + "";
 	}
 

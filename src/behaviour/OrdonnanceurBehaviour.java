@@ -1,9 +1,11 @@
 package behaviour;
 
+import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -17,11 +19,13 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private Vector<DFAgentDescription> lesJoueurs;
 	private HashMap<DFAgentDescription, Integer> lesPositionsDesJoueurs;
 	private int currentTour;
+	private AID prison;
 	
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly,
-			Vector<DFAgentDescription> j) {
+			Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
 		lesJoueurs = j;
+		prison = p;
 		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
 		for ( DFAgentDescription joueur : lesJoueurs ) {
 			lesPositionsDesJoueurs.put(joueur, 0);
@@ -29,16 +33,36 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		currentTour = 0; 
 		// Tous les joueurs sont initialement sur la case depart
 	}
+	
+	public void sendToJail(AID player) {
+		Logger.info("Envoi du joueur " + player + " en prison");
+		ACLMessage tick = new ACLMessage(ACLMessage.CONFIRM);
+		tick.addReceiver(prison);
+		try {
+			tick.setContentObject(player);
+			myAgent.send(tick);
+		} 
+		catch (IOException e) { Logger.err(e.getMessage()); }
+	}
+	
+	public void libererJoueur(AID player) {
+		Logger.info("Liberation du joueur " + player + " emprisonne");
+		ACLMessage tick = new ACLMessage(ACLMessage.DISCONFIRM);
+		tick.addReceiver(prison);
+		try {
+			tick.setContentObject(player);
+			myAgent.send(tick);
+		} 
+		catch (IOException e) { Logger.err(e.getMessage()); }
+	}
+
 
 	@Override
 	public void action() { 
-		DFAgentDescription joueur = lesJoueurs.get(currentTour);
-		Logger.info("indice fou " + currentTour);
+		DFAgentDescription joueur = lesJoueurs.get(currentTour); 
 		
 		// Envoi d'un message au joueur pour qu'il lance les des
-		ACLMessage tick = new ACLMessage(ACLMessage.PROPAGATE);
-		tick.addReceiver(joueur.getName());
-		myAgent.send(tick);
+		throwDice(joueur);
  
 		// Reception du score fait par le joueur
 		ACLMessage message = myAgent.blockingReceive(); 
@@ -46,14 +70,31 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		if ( message != null ) { 
 			if ( message.getPerformative() == ACLMessage.INFORM) { 
 				Integer value = lesPositionsDesJoueurs.get(joueur);
-				Integer delta = Integer.parseInt(message.getContent());
+				Integer diceValue = Integer.parseInt(message.getContent());
 				Integer newPos;
-				if ( value + delta < Constantes.CASE_FIN ) {
-					newPos = value + delta;
+
+				// Le joueur doit aller sur la case prison
+				if ( diceValue < 0 ) {
+					newPos = Constantes.CASE_PRISON;
+					sendToJail(joueur.getName());
+				}
+				
+				// Cas où le joueur est en prison : il doit faire 12 pour en sortir 
+				if ( value == Constantes.CASE_PRISON && diceValue != 12 ) {
+					newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
 				}
 				else {
-					// On a fait un tour de plateau -> donner de l'argent au joueur !
-					newPos = value + delta - Constantes.CASE_FIN;
+					// Le joueur peut se déplacer
+					if ( value == Constantes.CASE_PRISON ) { // On envoie un message a l'agent prison pour liberer le joueur
+						libererJoueur(joueur.getName());
+					}
+					if ( value + diceValue < Constantes.CASE_FIN ) {
+						newPos = value + diceValue;
+					}
+					else {
+						// On a fait un tour de plateau -> donner de l'argent au joueur !
+						newPos = value + diceValue - Constantes.CASE_FIN;
+					}
 				}
 				lesPositionsDesJoueurs.put(joueur, newPos);
 				try {
@@ -65,6 +106,12 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		}  
 		// On passe au joueur suivant
 		tourSuivant();
+	}
+
+	private void throwDice(DFAgentDescription joueur) {
+		ACLMessage tick = new ACLMessage(ACLMessage.PROPAGATE);
+		tick.addReceiver(joueur.getName());
+		myAgent.send(tick);
 	}
 
 	private void tourSuivant() {

@@ -1,7 +1,11 @@
 package util;
 
+import java.io.Serializable;
 
-public class Constantes {
+
+public class Constantes implements Serializable { 
+	private static final long serialVersionUID = 1L;
+	
 	public enum Couleur { ROUGE, JAUNE, VERT, BLEU_FONCE , MAGENTA, BLEU_CIEL, VIOLET, ORANGE, NOIR, BLANC };
 	public enum ActionSpeciale { DEPART, PRISON, CAISSECOMMUNAUTE, CHANCE, PARCGRATUIT, ALLERENPRISON, IMPOTS };
 	public enum Pion { Cheval, Canon, Voiture, Bateau, Chapeau, Brouette, Chaussure, Fer };
@@ -28,8 +32,10 @@ public class Constantes {
 	public static final int CAPITAL_DEPART = 150000;
 	public static final long DUREE_ANIMATION = 3000;
 	
+	/* Valeurs de cases utilisees mais definies dans l'ontologie*/
 	public static final int CASE_DEPART = 0;
 	public static final int CASE_FIN = 39;
+	public static final int CASE_PRISON = 10;
 	
 
 }
