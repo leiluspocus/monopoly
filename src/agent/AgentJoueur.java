@@ -82,41 +82,41 @@ public class AgentJoueur extends Agent{
 			case 0:
 			{
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Avide !");
-				seqBehaviour.addSubBehaviour(new AvideBehaviour());
+				seqBehaviour.addSubBehaviour(new AvideBehaviour(this));
 				break;
 			}
 			case 1:
 			{
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Collectionneur !");
-				seqBehaviour.addSubBehaviour(new CollectionneurBehaviour());
+				seqBehaviour.addSubBehaviour(new CollectionneurBehaviour(this));
 				break;
 			}
 			case 2:
 			{
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Evil !");
-				seqBehaviour.addSubBehaviour(new EvilBehaviour());
+				seqBehaviour.addSubBehaviour(new EvilBehaviour(this));
 				break;
 			}
 			case 3:
 			{
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Intelligent !");
-				seqBehaviour.addSubBehaviour(new IntelligentBehaviour());
+				seqBehaviour.addSubBehaviour(new IntelligentBehaviour(this));
 				break;
 			}
 			case 4:
 			{
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Picsou !");
-				seqBehaviour.addSubBehaviour(new PicsouBehaviour());
+				seqBehaviour.addSubBehaviour(new PicsouBehaviour(this));
 				break;
 			}
 			case 5:
 			{
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Stupide !");
-				seqBehaviour.addSubBehaviour(new StupideBehaviour());
+				seqBehaviour.addSubBehaviour(new StupideBehaviour(this));
 			}
 			default:
 				Logger.info("Joueur " + getNom() + " adopte la strat使ie Avide !");
-				seqBehaviour.addSubBehaviour(new AvideBehaviour());
+				seqBehaviour.addSubBehaviour(new AvideBehaviour(this));
 				break;
 		} 
 		addBehaviour(seqBehaviour);

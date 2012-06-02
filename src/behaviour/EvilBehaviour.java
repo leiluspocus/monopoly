@@ -1,6 +1,7 @@
 package behaviour;
 
 import jade.core.behaviours.Behaviour;
+import agent.AgentJoueur;
 
 /**
  * Comportement visant à bloquer les autres agents en visant les cases 
@@ -9,6 +10,10 @@ import jade.core.behaviours.Behaviour;
 public class EvilBehaviour extends Behaviour {
 	
 	private static final long serialVersionUID = 1L;
+
+	public EvilBehaviour(AgentJoueur agentJoueur) {
+		super(agentJoueur);
+	}
 
 	@Override
 	public void action() {

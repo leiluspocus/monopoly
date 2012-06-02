@@ -2,6 +2,7 @@ package behaviour;
 
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import agent.AgentJoueur;
 
 /**
  * Behaviour déclenché après tirage de dés
@@ -10,6 +11,10 @@ import jade.lang.acl.ACLMessage;
 public class StupideBehaviour extends Behaviour {
 	
 	private static final long serialVersionUID = 1L;
+
+	public StupideBehaviour(AgentJoueur agentJoueur) {
+		super(agentJoueur);
+	}
 
 	@Override
 	public void action() {
