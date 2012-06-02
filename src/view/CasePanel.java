@@ -8,7 +8,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class CasePanel extends JPanel {
+public class CasePanel extends JPanel { 
+	
+	private static final long serialVersionUID = 1L;
 	private Image imgMaison;
 	private Image imgPion1;
 	private Image imgPion2;

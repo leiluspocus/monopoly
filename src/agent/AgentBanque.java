@@ -5,6 +5,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import util.Logger;
 
 public class AgentBanque extends Agent{
 	private static final long serialVersionUID = 1L;
@@ -23,6 +24,6 @@ public class AgentBanque extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent au service echoue - Cause : " + e); }
+        catch (FIPAException e) { Logger.err("Enregistrement de l'agent Banque au service echoue - Cause : " + e); }
 	}
 }

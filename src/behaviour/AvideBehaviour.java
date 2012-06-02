@@ -1,5 +1,6 @@
 package behaviour;
 
+import util.Logger;
 import jade.core.behaviours.Behaviour;
 
 /**
@@ -11,6 +12,8 @@ public class AvideBehaviour extends Behaviour {
 
 	@Override
 	public void action() {
+
+		Logger.info("Action d'avide");
 	}
 
 	@Override

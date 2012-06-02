@@ -9,4 +9,7 @@ public class CaseSpeciale extends Case {
 		super(p, n); 
 		spec = s;
 	}
+	
+	public ActionSpeciale getActionSpeciale() { return spec; }
+	
 }

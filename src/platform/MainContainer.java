@@ -17,13 +17,13 @@ public class MainContainer {
 	
 	private static void setup() {
 		lesNomsDeJoueur = new Vector<String>();
-		lesNomsDeJoueur.add("Bibi");
+		lesNomsDeJoueur.add("Annie");
+		lesNomsDeJoueur.add("Bobby");
+		lesNomsDeJoueur.add("Danny");
+		lesNomsDeJoueur.add("Emmy");
+		lesNomsDeJoueur.add("Fanny");
 		lesNomsDeJoueur.add("Gary");
 		lesNomsDeJoueur.add("Larry");
-		lesNomsDeJoueur.add("Wendy");
-		lesNomsDeJoueur.add("Johnny");
-		lesNomsDeJoueur.add("Ozzy");
-		lesNomsDeJoueur.add("Bobby");
 	}
 	
 	public static void main(String[] args){
@@ -36,18 +36,19 @@ public class MainContainer {
 			
 			AgentController bc = mc.createNewAgent("BANQUE", "agent.AgentBanque", null);
 			bc.start();
-			bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
-			bc.start();
-			
-			
-			bc = mc.createNewAgent("SEED", "agent.AgentSeed", null);
-			bc.start();
-			
+
 			bc = mc.createNewAgent("PRISON", "agent.AgentPrison", null);
 			bc.start();
 			
 			bc = mc.createNewAgent("BDC","agent.AgentBDC",new Object[]{50});
 			bc.start();
+			
+			bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
+			bc.start();
+			
+			
+			bc = mc.createNewAgent("SEED", "agent.AgentSeed", null);
+			bc.start(); 
 			
 			// On lance les joueurs une fois que le plateau est prêt 
 			for(int i = 1; i <= NB_JOUEURS; ++i){

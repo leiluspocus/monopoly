@@ -10,20 +10,24 @@ import jade.gui.GuiEvent;
 import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
+import behaviour.OrdonnanceurBehaviour;
+
+import util.Logger;
 import view.Monopoly;
 
 public class AgentMonopoly extends GuiAgent{
-	private static final long serialVersionUID = 1L;
-	private Vector<DFAgentDescription> lesJoueurs;
+	private static final long serialVersionUID = 1L; 
 	
 	PropertyChangeSupport changes;
 
 	protected void setup(){
+		System.out.println("SETUP MONOPOLY");
 		changes = new PropertyChangeSupport(this);
 		Monopoly m = new Monopoly(this);
 		register();
-		fetchPlayers();
-		changes.addPropertyChangeListener(m);
+		Vector<DFAgentDescription> lesJoueurs = fetchPlayers();
+		addBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs));
+		changes.addPropertyChangeListener(m); 
 
 	}
 	
@@ -31,19 +35,20 @@ public class AgentMonopoly extends GuiAgent{
 		DFAgentDescription agentDescription = new DFAgentDescription();
         agentDescription.setName(getAID());
         ServiceDescription serviceDescription  = new ServiceDescription();
-        serviceDescription.setType("monopoly");
+        serviceDescription.setType("monopoly");         
         serviceDescription.setName(getLocalName());
         agentDescription.addServices(serviceDescription);
         try {
-            DFService.register(this, agentDescription);
+            DFService.register(this, agentDescription); 
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent au service echoue - Cause : " + e); }
+        catch (FIPAException e) { Logger.err("Enregistrement de l'agent monopoly au service echoue - Cause : " + e); }
 	}
 
-	private void fetchPlayers() {
+	private Vector<DFAgentDescription> fetchPlayers() {
+		Vector<DFAgentDescription> lesJoueurs = new Vector<DFAgentDescription>();
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
-		sd.setType("joueurs"); 
+		sd.setType("joueur"); 
 		template.addServices(sd);
 		try {
 			DFAgentDescription[] result =
@@ -51,9 +56,10 @@ public class AgentMonopoly extends GuiAgent{
 			for (DFAgentDescription o : result ) {
 				lesJoueurs.add(o);
 			}
+			return lesJoueurs;
 		}
 		catch(FIPAException fe) { System.out.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
-
+		return null;
 	}
 
 

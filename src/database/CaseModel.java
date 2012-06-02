@@ -1,19 +1,12 @@
 package database;
 
-import java.io.OutputStream;
-import java.util.List;
-
-import javax.xml.stream.XMLStreamWriter;
-
 import util.Constantes;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -77,8 +70,7 @@ public class CaseModel{
 			" ?x mnply:loyer2 ?loyer2 ." +
 			" ?x mnply:loyer3 ?loyer3 ." +
 			" ?x mnply:couleur ?couleur" +
-			"}";
-		String s = ResultSetFormatter.asText(runExecQuery(sql));
+			"}"; 
 		return runExecQuery(sql);
 	}
 	

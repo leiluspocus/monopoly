@@ -9,6 +9,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import util.Constantes;
 import util.Constantes.Pion;
+import util.Logger;
 import view.Case;
 import behaviour.AvideBehaviour;
 import behaviour.CollectionneurBehaviour;
@@ -23,7 +24,7 @@ public class AgentJoueur extends Agent{
 	
 	private String 				nomJoueur;
 	private DFAgentDescription 	seed;
-	private DFAgentDescription 	monopoly;
+	private AID	 		    	monopoly;
 	private Pion 				pion;
 	private Case 				caseCourante;
 	private int					capitalJoueur;
@@ -39,24 +40,8 @@ public class AgentJoueur extends Agent{
 				seed = result[0];
 			}
 		}
-		catch(FIPAException fe) { System.out.println("Exception ‡ la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
-	}
-	
-	private void fetchMonopoly() {
-		DFAgentDescription template = new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType("monopoly"); 
-		template.addServices(sd);
-		try {
-			DFAgentDescription[] result =
-					DFService.search(this, template);
-			if (result.length > 0) {
-				monopoly = result[0];
-			}
-		}
-		catch(FIPAException fe) { System.out.println("Exception ‡ la recuperation du monopoly par le joueur "); fe.printStackTrace(); }
-		
-	}
+		catch(FIPAException fe) { Logger.err("Exception ‡ la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
+	} 
 	
 	private void registerPlayer() 
 	{
@@ -69,13 +54,13 @@ public class AgentJoueur extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent au service echoue - Cause : " + e); }  
+        catch (FIPAException e) { Logger.err("Enregistrement de l'agent joueur au service echoue - Cause : " + e); }  
 	}
 	
 	protected void setup() {
+		System.out.println("SETUP JOUEUR");
 		// Sequential Behaviour => Je lance le des, et j'applique ma tactique de jeu
-		fetchSeedAgent();
-		fetchMonopoly();
+		fetchSeedAgent(); 
 		Object[] params = this.getArguments();		
 		setPion((Pion)params[0]);
 		setNom((String)params[2]);
@@ -96,41 +81,41 @@ public class AgentJoueur extends Agent{
 		{
 			case 0:
 			{
-				System.out.println("Joueur " + getNom() + " adopte la stratégie Avide !");
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Avide !");
 				seqBehaviour.addSubBehaviour(new AvideBehaviour());
 				break;
 			}
 			case 1:
 			{
-				System.out.println("Joueur " + getNom() + " adopte la stratégie Collectionneur !");
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Collectionneur !");
 				seqBehaviour.addSubBehaviour(new CollectionneurBehaviour());
 				break;
 			}
 			case 2:
 			{
-				System.out.println("Joueur " + getNom() + " adopte la stratégie Evil !");
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Evil !");
 				seqBehaviour.addSubBehaviour(new EvilBehaviour());
 				break;
 			}
 			case 3:
 			{
-				System.out.println("Joueur " + getNom() + " adopte la stratégie Intelligent !");
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Intelligent !");
 				seqBehaviour.addSubBehaviour(new IntelligentBehaviour());
 				break;
 			}
 			case 4:
 			{
-				System.out.println("Joueur " + getNom() + " adopte la stratégie Picsou !");
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Picsou !");
 				seqBehaviour.addSubBehaviour(new PicsouBehaviour());
 				break;
 			}
 			case 5:
 			{
-				System.out.println("Joueur " + getNom() + " adopte la stratégie Stupide !");
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Stupide !");
 				seqBehaviour.addSubBehaviour(new StupideBehaviour());
-				break;
 			}
 			default:
+				Logger.info("Joueur " + getNom() + " adopte la stratégie Avide !");
 				seqBehaviour.addSubBehaviour(new AvideBehaviour());
 				break;
 		} 
@@ -138,7 +123,7 @@ public class AgentJoueur extends Agent{
 	}
 	
 	public AID getSeed() { return seed.getName();	}
-	public AID getMonopoly() { return monopoly.getName(); }
+	public AID getMonopoly() { return monopoly; }
 	public Pion getPion() { return pion; }
 	public String getNom() { return nomJoueur; }
 	public Case getCaseCourante() { return caseCourante; }
@@ -148,5 +133,6 @@ public class AgentJoueur extends Agent{
 	public void setNom(String nom) { nomJoueur = nom; }
 	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }
 	public void setCapitalJoueur(int capitalJoueur) { this.capitalJoueur = capitalJoueur; } 
+	public void setMonopoly(AID m) { monopoly = m; }
 	
 }

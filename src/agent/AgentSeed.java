@@ -5,6 +5,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import util.Logger;
 import behaviour.GenerateIntBehaviour;
 
 public class AgentSeed extends Agent{
@@ -25,6 +26,6 @@ public class AgentSeed extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent au service echoue - Cause : " + e); }
+        catch (FIPAException e) { Logger.err("Enregistrement de l'agent seed au service echoue - Cause : " + e); }
 	}
 }

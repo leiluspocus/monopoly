@@ -19,7 +19,7 @@ public class GenerateIntBehaviour extends CyclicBehaviour {
 
 	@Override
 	public void action() {
-        ACLMessage message = myAgent.receive();
+        ACLMessage message = myAgent.blockingReceive(); 
         if (message != null) {
 	        if ( message.getPerformative() == ACLMessage.REQUEST ) {
 	        	// Demande de jet de des de la part d'un agent joueur. on genere un numero compris entre 1 et 12
@@ -28,10 +28,7 @@ public class GenerateIntBehaviour extends CyclicBehaviour {
 	        	reponse.setContent(jeterDes());
 	        	myAgent.send(reponse);
 	        }
-        }
-        else {
-        	block();
-        }
+        } 
 
 	}
 	

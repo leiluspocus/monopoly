@@ -5,6 +5,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import util.Logger;
 
 // Ceci est un commentaire inutile
 public class AgentBDC extends Agent{
@@ -24,6 +25,6 @@ public class AgentBDC extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent au service echoue - Cause : " + e); }
+        catch (FIPAException e) { Logger.err("Enregistrement de l'agent BDC au service echoue - Cause : " + e); }
 	}
 }

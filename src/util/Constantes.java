@@ -26,5 +26,10 @@ public class Constantes {
 	public static final String couleur = "?couleur";
 
 	public static final int CAPITAL_DEPART = 150000;
+	public static final long DUREE_ANIMATION = 3000;
+	
+	public static final int CASE_DEPART = 0;
+	public static final int CASE_FIN = 39;
+	
 
 }
