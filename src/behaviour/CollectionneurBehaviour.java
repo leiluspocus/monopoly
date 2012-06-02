@@ -10,8 +10,7 @@ public class CollectionneurBehaviour extends Behaviour {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void action() {
-		
+	public void action() { 
 	}
 
 	@Override

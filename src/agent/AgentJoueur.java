@@ -78,6 +78,7 @@ public class AgentJoueur extends Agent{
 		fetchMonopoly();
 		Object[] params = this.getArguments();		
 		setPion((Pion)params[0]);
+		setNom((String)params[2]);
 		setCapitalJoueur(Constantes.CAPITAL_DEPART);
 		registerPlayer(); 
 		// SequentialBehaviour cyclique
@@ -95,27 +96,39 @@ public class AgentJoueur extends Agent{
 		{
 			case 0:
 			{
+				System.out.println("Joueur " + getNom() + " adopte la strat使ie Avide !");
 				seqBehaviour.addSubBehaviour(new AvideBehaviour());
+				break;
 			}
 			case 1:
 			{
+				System.out.println("Joueur " + getNom() + " adopte la strat使ie Collectionneur !");
 				seqBehaviour.addSubBehaviour(new CollectionneurBehaviour());
+				break;
 			}
 			case 2:
 			{
+				System.out.println("Joueur " + getNom() + " adopte la strat使ie Evil !");
 				seqBehaviour.addSubBehaviour(new EvilBehaviour());
+				break;
 			}
 			case 3:
 			{
+				System.out.println("Joueur " + getNom() + " adopte la strat使ie Intelligent !");
 				seqBehaviour.addSubBehaviour(new IntelligentBehaviour());
+				break;
 			}
 			case 4:
 			{
+				System.out.println("Joueur " + getNom() + " adopte la strat使ie Picsou !");
 				seqBehaviour.addSubBehaviour(new PicsouBehaviour());
+				break;
 			}
 			case 5:
 			{
+				System.out.println("Joueur " + getNom() + " adopte la strat使ie Stupide !");
 				seqBehaviour.addSubBehaviour(new StupideBehaviour());
+				break;
 			}
 			default:
 				seqBehaviour.addSubBehaviour(new AvideBehaviour());
@@ -132,6 +145,7 @@ public class AgentJoueur extends Agent{
 	public int getCapitalJoueur() { return capitalJoueur; }
 
 	public void setPion(Pion pion) { this.pion = pion; }
+	public void setNom(String nom) { nomJoueur = nom; }
 	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }
 	public void setCapitalJoueur(int capitalJoueur) { this.capitalJoueur = capitalJoueur; } 
 	

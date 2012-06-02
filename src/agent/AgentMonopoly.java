@@ -21,9 +21,23 @@ public class AgentMonopoly extends GuiAgent{
 	protected void setup(){
 		changes = new PropertyChangeSupport(this);
 		Monopoly m = new Monopoly(this);
+		register();
 		fetchPlayers();
 		changes.addPropertyChangeListener(m);
 
+	}
+	
+	private void register() {
+		DFAgentDescription agentDescription = new DFAgentDescription();
+        agentDescription.setName(getAID());
+        ServiceDescription serviceDescription  = new ServiceDescription();
+        serviceDescription.setType("monopoly");
+        serviceDescription.setName(getLocalName());
+        agentDescription.addServices(serviceDescription);
+        try {
+            DFService.register(this, agentDescription);
+        } 
+        catch (FIPAException e) { System.out.println("Enregistrement de l'agent au service echoue - Cause : " + e); }
 	}
 
 	private void fetchPlayers() {

@@ -9,8 +9,7 @@ import agent.AgentJoueur;
 
 public class DropDiceBehaviour extends OneShotBehaviour {
  
-	private static final long serialVersionUID = 1L;
-	private DFAgentDescription seed;
+	private static final long serialVersionUID = 1L; 
 	
 	public DropDiceBehaviour(Agent a) {
 		super(a); 
@@ -18,7 +17,12 @@ public class DropDiceBehaviour extends OneShotBehaviour {
 
 	@Override
 	public void action() {
-		
+		System.out.println("A mon tour " +  ((AgentJoueur)myAgent).getNom());
+		try {
+			Thread.sleep(60000);
+		} catch (InterruptedException e) { 
+			e.printStackTrace();
+		}  
         ACLMessage message = myAgent.receive();
         if (message != null) {
         	// Attente de la valeur des des émise par l'AgentSeed
@@ -37,7 +41,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
         	AID seed = ((AgentJoueur) myAgent).getSeed();
         	jetDes.addReceiver(seed);
         	myAgent.send(jetDes);
-            System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les dès");
+            System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
         }
         
 	}

@@ -11,7 +11,6 @@ public class AvideBehaviour extends Behaviour {
 
 	@Override
 	public void action() {
-		
 	}
 
 	@Override
