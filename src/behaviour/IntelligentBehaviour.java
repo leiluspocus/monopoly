@@ -2,7 +2,6 @@ package behaviour;
 
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
-import agent.AgentJoueur;
 
 /**
  * Comportement visant à acheter des terrains en fonction des prix que lui apportent les terrains
