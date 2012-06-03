@@ -59,6 +59,7 @@ public class PlayerBehaviour extends SequentialBehaviour {
 			{
 				Logger.info("Joueur " + getNom() + " adopte la stratégie Stupide !");
 				addSubBehaviour(new StupideBehaviour(myAgent));
+				break;
 			}
 			default:
 				Logger.info("Joueur " + getNom() + " adopte la stratégie Avide !");
