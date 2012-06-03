@@ -1,17 +1,17 @@
 package behaviour;
 
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import util.Logger;
-import agent.AgentJoueur;
 
 /**
  * Comportement visant à acheter un terrain dès qu'il est disponible
  */
-public class AvideBehaviour extends CyclicBehaviour {
+public class AvideBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
-	public AvideBehaviour(AgentJoueur agentJoueur) {
+	public AvideBehaviour(Agent agentJoueur) {
 		super(agentJoueur);
 	}
 

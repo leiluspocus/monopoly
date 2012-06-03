@@ -1,28 +1,24 @@
 package behaviour;
 
-import jade.core.behaviours.Behaviour;
+import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import agent.AgentJoueur;
 
 /**
  * Comportement tendant à économiser au maximum avant d'acheter un terrain
  */
 
-public class PicsouBehaviour extends Behaviour {
+public class PicsouBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
-	public PicsouBehaviour(AgentJoueur agentJoueur) {
-		super(agentJoueur);
+	public PicsouBehaviour(Agent myAgent) {
+		super(myAgent);
 	}
 
 	@Override
 	public void action() {
 		
-	}
-
-	@Override
-	public boolean done() {
-		return false;
 	}
 
 }

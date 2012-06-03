@@ -2,7 +2,6 @@ package agent;
 
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.SequentialBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -11,13 +10,7 @@ import util.Constantes;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Case;
-import behaviour.AvideBehaviour;
-import behaviour.CollectionneurBehaviour;
-import behaviour.DropDiceBehaviour;
-import behaviour.EvilBehaviour;
-import behaviour.IntelligentBehaviour;
-import behaviour.PicsouBehaviour;
-import behaviour.StupideBehaviour;
+import behaviour.PlayerBehaviour;
 
 public class AgentJoueur extends Agent{
 	private static final long serialVersionUID = 1L;
@@ -67,59 +60,7 @@ public class AgentJoueur extends Agent{
 		setCapitalJoueur(Constantes.CAPITAL_DEPART);
 		registerPlayer(); 
 		// SequentialBehaviour cyclique
-		SequentialBehaviour seqBehaviour = new SequentialBehaviour() { 
-			private static final long serialVersionUID = 1L;
-
-			public int onEnd() {
-			    reset();
-			    myAgent.addBehaviour(this);
-			    return super.onEnd();
-			}
-		};
-		seqBehaviour.addSubBehaviour(new DropDiceBehaviour(this));
-		switch((Integer) params[1])
-		{
-			case 0:
-			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Avide !");
-				seqBehaviour.addSubBehaviour(new AvideBehaviour(this));
-				break;
-			}
-			case 1:
-			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Collectionneur !");
-				seqBehaviour.addSubBehaviour(new CollectionneurBehaviour(this));
-				break;
-			}
-			case 2:
-			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Evil !");
-				seqBehaviour.addSubBehaviour(new EvilBehaviour(this));
-				break;
-			}
-			case 3:
-			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Intelligent !");
-				seqBehaviour.addSubBehaviour(new IntelligentBehaviour(this));
-				break;
-			}
-			case 4:
-			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Picsou !");
-				seqBehaviour.addSubBehaviour(new PicsouBehaviour(this));
-				break;
-			}
-			case 5:
-			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Stupide !");
-				seqBehaviour.addSubBehaviour(new StupideBehaviour(this));
-			}
-			default:
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Avide !");
-				seqBehaviour.addSubBehaviour(new AvideBehaviour(this));
-				break;
-		} 
-		addBehaviour(seqBehaviour);
+		addBehaviour(new PlayerBehaviour(this, params));
 	}
 	
 	public AID getSeed() { return seed.getName();	}

@@ -1,28 +1,22 @@
 package behaviour;
 
-import jade.core.behaviours.Behaviour;
-import agent.AgentJoueur;
+import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 
 /**
  * Comportement visant à bloquer les autres agents en visant les cases 
  * de couleur ayant déjà été achetés par des agents
  */
-public class EvilBehaviour extends Behaviour {
+public class EvilBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
-	public EvilBehaviour(AgentJoueur agentJoueur) {
+	public EvilBehaviour(Agent agentJoueur) {
 		super(agentJoueur);
 	}
 
 	@Override
 	public void action() {
 		
-	}
-
-	@Override
-	public boolean done() {
-		return false;
-	}
-
+	} 
 }

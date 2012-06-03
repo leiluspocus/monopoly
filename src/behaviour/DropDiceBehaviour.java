@@ -2,12 +2,12 @@ package behaviour;
 
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import util.Logger;
 import agent.AgentJoueur;
 
-public class DropDiceBehaviour extends CyclicBehaviour {
+public class DropDiceBehaviour extends OneShotBehaviour {
  
 	private static final long serialVersionUID = 1L; 
 	

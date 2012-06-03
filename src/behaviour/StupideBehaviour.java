@@ -1,18 +1,18 @@
 package behaviour;
 
-import jade.core.behaviours.Behaviour;
+import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import agent.AgentJoueur;
 
 /**
  * Behaviour déclenché après tirage de dés
  * N'acheter aucun terrain
  */
-public class StupideBehaviour extends Behaviour {
+public class StupideBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
-	public StupideBehaviour(AgentJoueur agentJoueur) {
+	public StupideBehaviour(Agent agentJoueur) {
 		super(agentJoueur);
 	}
 
@@ -30,9 +30,5 @@ public class StupideBehaviour extends Behaviour {
 		}
 	}
 
-	@Override
-	public boolean done() {
-		return false;
-	}
 
 }
