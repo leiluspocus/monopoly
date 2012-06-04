@@ -6,6 +6,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
 import util.Constantes;
 import util.Constantes.Pion;
 import util.Logger;
@@ -61,6 +62,18 @@ public class AgentJoueur extends Agent{
 		registerPlayer(); 
 		// SequentialBehaviour cyclique
 		addBehaviour(new PlayerBehaviour(this, params));
+	}
+	
+	/**
+	 * Envoi un message au joueur concerné lui demandant de payer le loyer qu'il doit à this
+	 * Méthode utilisée par les comportements du joueur
+	 * @param joueurCreditaire le joueur devant payer le loyer
+	 */
+	public void demanderLoyer(AID joueurCreditaire)
+	{
+		ACLMessage demandeDeLoyer = new ACLMessage(ACLMessage.REQUEST);
+		demandeDeLoyer.addReceiver(joueurCreditaire);
+		send(demandeDeLoyer);
 	}
 	
 	public AID getSeed() { return seed.getName();	}
