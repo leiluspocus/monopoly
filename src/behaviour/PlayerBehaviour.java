@@ -71,10 +71,13 @@ public class PlayerBehaviour extends SequentialBehaviour {
 	@Override
 	public int onEnd() { 
 	    reset();
-
-		addSubBehaviour(new DropDiceBehaviour(myAgent));
-		pickStrategy(); 
-	    myAgent.addBehaviour(this);
+	    // Ne pas rescheduler les behaviour si le joueur a perdu la partie
+	    if (!((AgentJoueur)myAgent).isEnFaillite())
+	    {
+			addSubBehaviour(new DropDiceBehaviour(myAgent));
+			pickStrategy(); 
+		    myAgent.addBehaviour(this);
+	    }
 	    return super.onEnd();
 	}
 
