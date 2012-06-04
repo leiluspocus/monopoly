@@ -22,6 +22,7 @@ public class AgentJoueur extends Agent{
 	private Pion 				pion;
 	private Case 				caseCourante;
 	private int					capitalJoueur;
+	private boolean				enFaillite;
 	
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -59,6 +60,7 @@ public class AgentJoueur extends Agent{
 		setPion((Pion)params[0]);
 		setNom((String)params[2]);
 		setCapitalJoueur(Constantes.CAPITAL_DEPART);
+		setEnFaillite(false);
 		registerPlayer(); 
 		// SequentialBehaviour cyclique
 		addBehaviour(new PlayerBehaviour(this, params));
@@ -76,17 +78,54 @@ public class AgentJoueur extends Agent{
 		send(demandeDeLoyer);
 	}
 	
+	/**
+	 * Envoi un message contenant le montant demandé 
+	 * à l'agent destinataire de cette somme (un joueur ou la banque)
+	 * @param msgReceived le message de demande d'argent reçu par le joueur
+	 */
+	public void payerMontantDu(ACLMessage msgReceived)
+	{
+		ACLMessage response = msgReceived.createReply();
+		int montantDu = Integer.parseInt(msgReceived.getContent().trim());
+		setCapitalJoueur(capitalJoueur-montantDu);
+		response.setContent(String.valueOf(montantDu));
+		send(response);
+		
+	}
+	
+	/**
+	 * Envoi un message à l'agent monopoly pour lui signaler que this est en faillite
+	 * Le joueur n'a plus d'argent, il a perdu
+	 */
+	public void faillite()
+	{
+		ACLMessage msgFaillite = new ACLMessage(ACLMessage.INFORM_REF);
+		msgFaillite.setContent(getNom()+ " a perdu");
+		msgFaillite.addReceiver(monopoly);
+		send(msgFaillite);
+	}
+	
 	public AID getSeed() { return seed.getName();	}
 	public AID getMonopoly() { return monopoly; }
 	public Pion getPion() { return pion; }
 	public String getNom() { return nomJoueur; }
 	public Case getCaseCourante() { return caseCourante; }
 	public int getCapitalJoueur() { return capitalJoueur; }
+	public boolean isEnFaillite() {return enFaillite;}
 
 	public void setPion(Pion pion) { this.pion = pion; }
 	public void setNom(String nom) { nomJoueur = nom; }
 	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }
-	public void setCapitalJoueur(int capitalJoueur) { this.capitalJoueur = capitalJoueur; } 
 	public void setMonopoly(AID m) { monopoly = m; }
-	
+	public void setEnFaillite(boolean enFaillite) {this.enFaillite = enFaillite;}
+	public void setCapitalJoueur(int capitalJoueur) {
+		if (capitalJoueur <= 0)
+		{
+			faillite(); // Joueur en faillite
+		}
+		else
+		{
+			this.capitalJoueur = capitalJoueur;
+		}
+	}
 }
