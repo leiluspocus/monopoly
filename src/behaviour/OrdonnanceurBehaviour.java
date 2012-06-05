@@ -79,12 +79,12 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					sendToJail(joueur.getName());
 				}
 				
-				// Cas o� le joueur est en prison : il doit faire 12 pour en sortir 
+				// Cas ou le joueur est en prison : il doit faire 12 pour en sortir 
 				if ( value == Constantes.CASE_PRISON && diceValue != 12 ) {
 					newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
 				}
 				else {
-					// Le joueur peut se dŽplacer
+					// Le joueur peut se deplacer
 					if ( value == Constantes.CASE_PRISON ) { // On envoie un message a l'agent prison pour liberer le joueur
 						libererJoueur(joueur.getName());
 					}

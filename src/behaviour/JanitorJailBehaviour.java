@@ -22,7 +22,7 @@ public class JanitorJailBehaviour extends CyclicBehaviour {
 		ACLMessage message = myAgent.blockingReceive();
 		if ( message != null ) {
 			switch ( message.getPerformative() ) {
-			case ACLMessage.CONFIRM : //Cas où un joueur doit etre enferme
+			case ACLMessage.CONFIRM : //Cas ou un joueur doit etre enferme
 				AID res;
 				try {
 					res = (AID) message.getContentObject();

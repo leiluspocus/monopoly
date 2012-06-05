@@ -27,42 +27,42 @@ public class PlayerBehaviour extends SequentialBehaviour {
 		{
 			case 0:
 			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Avide !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Avide !");
 				addSubBehaviour(new AvideBehaviour(myAgent));
 				break;
 			}
 			case 1:
 			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Collectionneur !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Collectionneur !");
 				addSubBehaviour(new CollectionneurBehaviour(myAgent));
 				break;
 			}
 			case 2:
 			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Evil !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Evil !");
 				addSubBehaviour(new EvilBehaviour(myAgent));
 				break;
 			}
 			case 3:
 			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Intelligent !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Intelligent !");
 				addSubBehaviour(new IntelligentBehaviour(myAgent));
 				break;
 			}
 			case 4:
 			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Picsou !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Picsou !");
 				addSubBehaviour(new PicsouBehaviour(myAgent));
 				break;
 			}
 			case 5:
 			{
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Stupide !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Stupide !");
 				addSubBehaviour(new StupideBehaviour(myAgent));
 				break;
 			}
 			default:
-				Logger.info("Joueur " + getNom() + " adopte la strat使ie Avide !");
+				Logger.info("Joueur " + getNom() + " adopte la strategie Avide !");
 				addSubBehaviour(new AvideBehaviour(myAgent));
 				break;
 		}

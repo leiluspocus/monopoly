@@ -33,11 +33,8 @@ public class MainContainer {
 		try {
 			p = new ProfileImpl();
 			AgentContainer mc = rt.createMainContainer(p);
-			
-			AgentController bc = mc.createNewAgent("BANQUE", "agent.AgentBanque", null);
-			bc.start();
 
-			bc = mc.createNewAgent("PRISON", "agent.AgentPrison", null);
+			AgentController bc = mc.createNewAgent("PRISON", "agent.AgentPrison", null);
 			bc.start();
 			
 			bc = mc.createNewAgent("BDC","agent.AgentBDC",new Object[]{50});
@@ -46,9 +43,11 @@ public class MainContainer {
 			bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
 			bc.start();
 			
-			
 			bc = mc.createNewAgent("SEED", "agent.AgentSeed", null);
 			bc.start(); 
+			
+			bc = mc.createNewAgent("BANQUE", "agent.AgentBanque", null);
+			bc.start();
 			
 			// On lance les joueurs une fois que le plateau est prêt 
 			for(int i = 1; i <= NB_JOUEURS; ++i){

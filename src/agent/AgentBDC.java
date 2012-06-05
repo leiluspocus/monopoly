@@ -7,7 +7,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import util.Logger;
 
-// Ceci est un commentaire inutile
 public class AgentBDC extends Agent{
 	private static final long serialVersionUID = 1L;
 	
