@@ -1,5 +1,10 @@
 package agent;
 
+import java.util.Map;
+import java.util.Random;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -67,15 +72,45 @@ public class AgentJoueur extends Agent{
 	}
 	
 	/**
-	 * Envoi un message au joueur concerné lui demandant de payer le loyer qu'il doit à this
+	 * Calcule une valeur entre 1 et 100. Si celle-ci correspond à la probabilité de demande,
+	 * on envoi un message au joueur concerné lui demandant de payer le loyer qu'il doit à this
 	 * Méthode utilisée par les comportements du joueur
 	 * @param joueurCreditaire le joueur devant payer le loyer
 	 */
-	public void demanderLoyer(AID joueurCreditaire)
+	@SuppressWarnings("unchecked")
+	public void demanderLoyer(int probaDemandeLoyer, ACLMessage msgReceived)
 	{
-		ACLMessage demandeDeLoyer = new ACLMessage(ACLMessage.REQUEST);
-		demandeDeLoyer.addReceiver(joueurCreditaire);
-		send(demandeDeLoyer);
+		Random rand = new Random();
+		int value = rand.nextInt(100)+1;
+		if (value <= probaDemandeLoyer)
+		{
+			/*
+			 * Message reçu de la forme
+			 * {
+			 * 	"destinataire":"NomCompletAgent";
+			 * 	"montant":2000
+			 * }
+			 */
+			String content = msgReceived.getContent();
+
+			Map<Object,String> map = null;
+			ObjectMapper mapper = new ObjectMapper();
+
+			try
+			{
+				map = mapper.readValue(content,Map.class);
+			}
+			catch(Exception e) {Logger.err("Erreur deserialisation message : "+e);}
+
+			ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
+
+			String receiverName = map.get("destinataire");
+			AID receiver = new AID(receiverName, true);
+			request.addReceiver(receiver);
+			request.setContent(map.get("montant"));
+			send(request);
+			Logger.info(getName()+" demande "+map.get("montant")+" à "+receiverName);
+		}
 	}
 	
 	/**
@@ -90,7 +125,6 @@ public class AgentJoueur extends Agent{
 		setCapitalJoueur(capitalJoueur-montantDu);
 		response.setContent(String.valueOf(montantDu));
 		send(response);
-		
 	}
 	
 	/**
