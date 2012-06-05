@@ -5,7 +5,8 @@ import java.util.Random;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import playerBehaviour.PlayerBehaviour;
+import behaviour.player.PlayerBehaviour;
+
 
 import jade.core.AID;
 import jade.core.Agent;
