@@ -1,4 +1,4 @@
-package behaviour;
+package playerBehaviour;
 
 import agent.AgentJoueur;
 import util.Logger;
@@ -7,21 +7,20 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 /**
- * Comportement visant à bloquer les autres agents en visant les cases 
- * de couleur ayant déjà été achetés par des agents
+ * Comportement visant à collectionner les terrains d'une même couleur
  */
-public class EvilBehaviour extends OneShotBehaviour {
+public class CollectionneurBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
-	
-	private int probaDemandeLoyer = 100;
 
-	public EvilBehaviour(Agent agentJoueur) {
+	private int probaDemandeLoyer = 95;
+	
+	public CollectionneurBehaviour(Agent agentJoueur) {
 		super(agentJoueur);
 	}
 
 	@Override
-	public void action() {
+	public void action() { 
 		
 ACLMessage msgReceived = myAgent.receive();
 		
@@ -64,6 +63,6 @@ ACLMessage msgReceived = myAgent.receive();
 		{
 			block();
 		}
-		
 	} 
+
 }

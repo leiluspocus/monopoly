@@ -22,7 +22,7 @@ public class GenerateIntBehaviour extends CyclicBehaviour {
         ACLMessage message = myAgent.blockingReceive(); 
         if (message != null) {
 	        if ( message.getPerformative() == ACLMessage.REQUEST ) {
-	        	// Demande de jet de des de la part d'un agent joueur. on genere un numero compris entre 1 et 12
+	        	// Demande de jet de des de la part d'un agent joueur. on genere un numero compris entre 2 et 12
 	        	ACLMessage reponse = message.createReply();
 	        	reponse.setPerformative(ACLMessage.CONFIRM);
 	        	reponse.setContent(jeterDes());

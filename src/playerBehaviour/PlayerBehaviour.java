@@ -1,5 +1,7 @@
-package behaviour;
+package playerBehaviour;
 
+import behaviour.DropDiceBehaviour;
+import behaviour.RecupInitialCapital;
 import jade.core.behaviours.SequentialBehaviour;
 import util.Logger;
 import agent.AgentJoueur;

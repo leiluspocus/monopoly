@@ -1,4 +1,4 @@
-package behaviour;
+package playerBehaviour;
 
 import agent.AgentJoueur;
 import util.Logger;

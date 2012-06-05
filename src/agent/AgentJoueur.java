@@ -5,6 +5,8 @@ import java.util.Random;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import playerBehaviour.PlayerBehaviour;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -16,7 +18,6 @@ import util.Constantes;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Case;
-import behaviour.PlayerBehaviour;
 
 public class AgentJoueur extends Agent{
 	private static final long serialVersionUID = 1L;

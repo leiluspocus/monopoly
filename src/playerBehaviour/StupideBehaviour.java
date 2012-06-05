@@ -1,4 +1,4 @@
-package behaviour;
+package playerBehaviour;
 
 import agent.AgentJoueur;
 import util.Logger;
@@ -7,20 +7,21 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 /**
- * Comportement visant à collectionner les terrains d'une même couleur
+ * Behaviour déclenché après tirage de dés
+ * N'acheter aucun terrain
  */
-public class CollectionneurBehaviour extends OneShotBehaviour {
+public class StupideBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
-	private int probaDemandeLoyer = 95;
+	private int probaDemandeLoyer = 50;
 	
-	public CollectionneurBehaviour(Agent agentJoueur) {
+	public StupideBehaviour(Agent agentJoueur) {
 		super(agentJoueur);
 	}
 
 	@Override
-	public void action() { 
+	public void action() {
 		
 ACLMessage msgReceived = myAgent.receive();
 		
@@ -63,6 +64,7 @@ ACLMessage msgReceived = myAgent.receive();
 		{
 			block();
 		}
-	} 
+	}
+
 
 }

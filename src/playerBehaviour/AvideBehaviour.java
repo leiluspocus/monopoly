@@ -1,4 +1,4 @@
-package behaviour;
+package playerBehaviour;
 
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;

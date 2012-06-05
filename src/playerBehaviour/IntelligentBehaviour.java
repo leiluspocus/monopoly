@@ -1,4 +1,4 @@
-package behaviour;
+package playerBehaviour;
 
 import agent.AgentJoueur;
 import util.Logger;
@@ -7,17 +7,16 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 /**
- * Behaviour déclenché après tirage de dés
- * N'acheter aucun terrain
+ * Comportement visant à acheter des terrains en fonction des prix que lui apportent les terrains
  */
-public class StupideBehaviour extends OneShotBehaviour {
+public class IntelligentBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
-
-	private int probaDemandeLoyer = 50;
 	
-	public StupideBehaviour(Agent agentJoueur) {
-		super(agentJoueur);
+	private int probaDemandeLoyer = 90;
+
+	public IntelligentBehaviour(Agent myAgent) {
+		super(myAgent);
 	}
 
 	@Override
@@ -64,7 +63,7 @@ ACLMessage msgReceived = myAgent.receive();
 		{
 			block();
 		}
-	}
-
-
+		
+	} 
+	
 }

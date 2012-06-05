@@ -1,9 +1,9 @@
 package behaviour;
 
-import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import agent.AgentBDC;
 
-public class BDCBehaviour extends Behaviour {
+public class BDCBehaviour extends OneShotBehaviour {
 	private static final long serialVersionUID = 1L;
 	
 	public BDCBehaviour(AgentBDC agentBDC) {
@@ -16,11 +16,6 @@ public class BDCBehaviour extends Behaviour {
 			request.addReceiver(slaves[i].getName());
 		
 		myAgent.send(request);*/
-	}
-
-	@Override
-	public boolean done() {
-		return false;
 	}
 
 }

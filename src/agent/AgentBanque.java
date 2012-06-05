@@ -15,6 +15,7 @@ public class AgentBanque extends Agent{
 	protected void setup() {
 		register();
 		addTargets();
+		
 	}
 	
 	private void register() {
