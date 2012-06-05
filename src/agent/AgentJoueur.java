@@ -21,13 +21,13 @@ import behaviour.PlayerBehaviour;
 public class AgentJoueur extends Agent{
 	private static final long serialVersionUID = 1L;
 	
-	private String 				nomJoueur;
-	private DFAgentDescription 	seed;
-	private AID	 		    	monopoly;
-	private Pion 				pion;
-	private Case 				caseCourante;
-	private int					capitalJoueur;
-	private boolean				enFaillite;
+	private String 	nomJoueur;
+	private AID 	seed;
+	private AID	 	monopoly;
+	private Pion 	pion;
+	private Case 	caseCourante;
+	private int		capitalJoueur;
+	private boolean	enFaillite;
 	
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -37,7 +37,8 @@ public class AgentJoueur extends Agent{
 		try {
 			DFAgentDescription[] result = DFService.search(this, template);
 			if (result.length > 0) {
-				seed = result[0];
+				seed = result[0].getName();
+				System.out.println("SEED Trouvée : "+seed);
 			}
 		}
 		catch(FIPAException fe) { Logger.err("Exception à la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
@@ -139,7 +140,7 @@ public class AgentJoueur extends Agent{
 		send(msgFaillite);
 	}
 	
-	public AID getSeed() { return seed.getName();	}
+	public AID getSeed() { return seed;	}
 	public AID getMonopoly() { return monopoly; }
 	public Pion getPion() { return pion; }
 	public String getNom() { return nomJoueur; }
