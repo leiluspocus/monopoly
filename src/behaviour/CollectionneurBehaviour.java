@@ -13,6 +13,8 @@ public class CollectionneurBehaviour extends OneShotBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
+	private int probaDemandeLoyer = 95;
+	
 	public CollectionneurBehaviour(Agent agentJoueur) {
 		super(agentJoueur);
 	}
@@ -37,7 +39,7 @@ ACLMessage msgReceived = myAgent.receive();
 				 * Un joueur est sur une des propriétés de myAgent
 				 */
 				case ACLMessage.INFORM:
-					//TODO: tirer au sort le fait qu'on va ou non demander au joueur de payer un loyer si on en possède un sur cette case
+					((AgentJoueur)myAgent).demanderLoyer(probaDemandeLoyer, msgReceived);
 					break;
 				/*
 				 * Indique au joueur sur quelle case il se trouve après le déplacement effectué (dû au jeté de dés)
