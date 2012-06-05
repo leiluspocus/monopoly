@@ -25,7 +25,7 @@ public class Plateau {
 		buildCasesSpeciales();
 		buildCasesAchetables();
 		buildCasesTerrains();
-		System.out.println(plateau);
+		//System.out.println(plateau);
 		buildCartesChances();
 		buildCartesCommunaute();
 	}

@@ -1,21 +1,47 @@
 package agent;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.lang.acl.ACLMessage;
+
+import java.util.Vector;
+
 import util.Logger;
+import behaviour.RecupPlayersList;
 
 public class AgentBanque extends Agent{
 	private static final long serialVersionUID = 1L;
-	private DFAgentDescription[] joueurs; //La liste des agents jouant au Monopoly
+	private Vector<DFAgentDescription> joueurs; //La liste des agents jouant au Monopoly
+	private AID monopolyAgent;
 	
 	protected void setup() {
 		register();
-		addTargets();
+		monopolyAgent = findMonopolyAgent();
+		addBehaviour(new RecupPlayersList(monopolyAgent, this));
+	}
+	
+	private AID findMonopolyAgent() {
+		DFAgentDescription template = new DFAgentDescription();
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("monopoly"); 
+		template.addServices(sd);
 		
+		DFAgentDescription[] result = null;
+		SearchConstraints ALL = new SearchConstraints();
+        ALL.setMaxResults(1l);
+
+		try {
+			do{
+				result = DFService.search(this, template, ALL);
+			}while(result.length == 0);
+		} catch (FIPAException e) {e.printStackTrace();}
+		
+		System.out.println("L'agent Banque a trouvé l'agent Monopoly : " + result[0].getName().getLocalName());
+		return result[0].getName();
 	}
 	
 	private void register() {
@@ -31,10 +57,6 @@ public class AgentBanque extends Agent{
         catch (FIPAException e) { Logger.err("Enregistrement de l'agent Banque au service echoue - Cause : " + e); }
 	}
 	
-	/*  
-	 * Recherche de tous les agents joueurs
-	 */
-	private void addTargets() {
-		ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-	}
+	public Vector<DFAgentDescription> getJoueurs() {return joueurs;}
+	public void setJoueurs(Vector<DFAgentDescription> joueurs) {this.joueurs = joueurs;}
 }

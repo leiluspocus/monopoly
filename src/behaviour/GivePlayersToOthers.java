@@ -24,16 +24,13 @@ public class GivePlayersToOthers extends Behaviour {
 	public void action() {
 		ACLMessage messageReceived = myAgent.receive();
 		if (messageReceived != null) {
-			String line = messageReceived.getContent();
-
 			if(messageReceived.getPerformative() == ACLMessage.REQUEST){
-				System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et j'ai reçu : " + line);
+				System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Joueurs");
 				ACLMessage messageToSend = messageReceived.createReply();
 				
 				try {
 					messageToSend.setContentObject(listeDesJoueurs);
 				} catch (IOException e) {e.printStackTrace();}
-				
 				myAgent.send(messageToSend);
 			}
 		}
@@ -44,7 +41,7 @@ public class GivePlayersToOthers extends Behaviour {
 
 	@Override
 	public boolean done() {
+		System.out.println("Le Behaviour GivePlayersToOthers a termine");
 		return nbRequest == Constantes.NB_AGENT_SERVICE;
 	}
-
 }

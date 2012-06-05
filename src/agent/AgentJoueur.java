@@ -39,7 +39,7 @@ public class AgentJoueur extends Agent{
 			DFAgentDescription[] result = DFService.search(this, template);
 			if (result.length > 0) {
 				seed = result[0].getName();
-				System.out.println("SEED Trouvée : "+seed);
+				System.out.println("SEED Trouvée : "+ seed.getLocalName());
 			}
 		}
 		catch(FIPAException fe) { Logger.err("Exception à la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
