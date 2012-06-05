@@ -1,5 +1,6 @@
 package agent;
 
+import behaviour.BDCBehaviour;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
@@ -12,6 +13,7 @@ public class AgentBDC extends Agent{
 	
 	protected void setup() {
 		register();
+		addBehaviour(new BDCBehaviour(this));
 	}
 	
 	private void register() {

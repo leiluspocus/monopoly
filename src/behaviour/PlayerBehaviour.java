@@ -16,7 +16,7 @@ public class PlayerBehaviour extends SequentialBehaviour {
 	 
 	public PlayerBehaviour(AgentJoueur agentJoueur, Object[] params) {
 		super(agentJoueur);
-		 
+		addSubBehaviour(new RecupInitialCapital());
 		addSubBehaviour(new DropDiceBehaviour(myAgent));
 		strategy = (Integer) params[1];
 		pickStrategy(); 

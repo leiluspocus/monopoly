@@ -1,6 +1,7 @@
 package agent;
 
 import jade.core.AID;
+import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -13,10 +14,12 @@ import java.util.Vector;
 
 import util.Logger;
 import view.Monopoly;
+import behaviour.GivePlayersToOthers;
 import behaviour.OrdonnanceurBehaviour;
 
 public class AgentMonopoly extends GuiAgent{
-	private static final long serialVersionUID = 1L; 
+	private static final long serialVersionUID = 1L;
+	private Vector<DFAgentDescription> lesJoueurs;
 	
 	PropertyChangeSupport changes;
 
@@ -25,10 +28,14 @@ public class AgentMonopoly extends GuiAgent{
 		changes = new PropertyChangeSupport(this);
 		Monopoly m = new Monopoly(this);
 		register();
-		Vector<DFAgentDescription> lesJoueurs = fetchPlayers();
-		addBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs, fetchJail()));
+		lesJoueurs = fetchPlayers();
 		changes.addPropertyChangeListener(m); 
-
+		
+		ParallelBehaviour parallelBehaviour = new ParallelBehaviour( ParallelBehaviour.WHEN_ALL );
+		parallelBehaviour.addSubBehaviour(new GivePlayersToOthers(this, lesJoueurs));
+		parallelBehaviour.addSubBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs, fetchJail()));
+		
+		addBehaviour(parallelBehaviour);
 	}
 	
 	private void register() {
@@ -77,7 +84,8 @@ public class AgentMonopoly extends GuiAgent{
 		return null;
 	}
 
-
+	public Vector<DFAgentDescription> getLesJoueurs(){ return lesJoueurs; }
+	
 
 	public void sendEvent (String info) {
 		//changes.firePropertyChange("line", null, info);

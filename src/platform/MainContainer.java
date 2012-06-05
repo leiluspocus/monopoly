@@ -34,13 +34,13 @@ public class MainContainer {
 			p = new ProfileImpl();
 			AgentContainer mc = rt.createMainContainer(p);
 
-			AgentController bc = mc.createNewAgent("PRISON", "agent.AgentPrison", null);
+			AgentController bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
+			bc.start();
+			
+			bc = mc.createNewAgent("PRISON", "agent.AgentPrison", null);
 			bc.start();
 			
 			bc = mc.createNewAgent("BDC","agent.AgentBDC",new Object[]{50});
-			bc.start();
-			
-			bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
 			bc.start();
 			
 			bc = mc.createNewAgent("SEED", "agent.AgentSeed", null);
