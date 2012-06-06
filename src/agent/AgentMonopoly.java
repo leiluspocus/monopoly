@@ -8,12 +8,17 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
+import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
+import platform.MainContainer;
+import util.Constantes;
 import util.Logger;
 import view.Monopoly;
+import behaviour.CreatePlateauBehaviour;
 import behaviour.GivePlayersToOthers;
 import behaviour.OrdonnanceurBehaviour;
 
@@ -21,17 +26,21 @@ public class AgentMonopoly extends GuiAgent{
 	private static final long serialVersionUID = 1L;
 	private Vector<DFAgentDescription> lesJoueurs;
 	
-	PropertyChangeSupport changes;
+	private PropertyChangeSupport changes;
 
 	protected void setup(){
-		System.out.println("SETUP MONOPOLY");
+		AgentController bc;
 		changes = new PropertyChangeSupport(this);
-		Monopoly m = new Monopoly(this);
 		register();
 		lesJoueurs = fetchPlayers();
-		changes.addPropertyChangeListener(m); 
 		
-		ParallelBehaviour parallelBehaviour = new ParallelBehaviour( ParallelBehaviour.WHEN_ALL );
+		try {
+			bc = MainContainer.getMc().createNewAgent("BANQUE", "agent.AgentBanque", null);
+			bc.start();
+		} catch (StaleProxyException e) {e.printStackTrace();}
+		
+		ParallelBehaviour parallelBehaviour = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL);
+		parallelBehaviour.addSubBehaviour(new CreatePlateauBehaviour(this));
 		parallelBehaviour.addSubBehaviour(new GivePlayersToOthers(this, lesJoueurs));
 		parallelBehaviour.addSubBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs, fetchJail()));
 		
@@ -58,8 +67,11 @@ public class AgentMonopoly extends GuiAgent{
 		sd.setType("joueur"); 
 		template.addServices(sd);
 		try {
-			DFAgentDescription[] result =
-					DFService.search(this, template);
+			DFAgentDescription[] result;
+			do{
+				result = DFService.search(this, template);
+			}while(result.length != Constantes.NB_JOUEURS);
+			
 			for (DFAgentDescription o : result ) {
 				lesJoueurs.add(o);
 			}
@@ -85,7 +97,8 @@ public class AgentMonopoly extends GuiAgent{
 	}
 
 	public Vector<DFAgentDescription> getLesJoueurs(){ return lesJoueurs; }
-	
+
+	public void addChangeListener(Monopoly m) {this.changes.addPropertyChangeListener(m);}
 
 	public void sendEvent (String info) {
 		//changes.firePropertyChange("line", null, info);
@@ -96,5 +109,4 @@ public class AgentMonopoly extends GuiAgent{
 		//			crb.sendMsg((String)ev.getParameter(0), receiver);
 		//		}
 	}
-
 }

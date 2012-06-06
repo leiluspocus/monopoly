@@ -2,26 +2,24 @@ package behaviour;
 
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
 import java.util.Vector;
 
-import util.Constantes;
-
 import agent.AgentBanque;
 
-public class RecupPlayersList extends Behaviour {
+public class GiveInitialCapital extends Behaviour {
 	private static final long serialVersionUID = 1L;
 	private AID monopolyAgent;
-	private AgentBanque myAgent;
+	private AgentBanque agentBanque;
 	private ACLMessage messageReceived;
 
-	public RecupPlayersList(AID monopolyAgent, AgentBanque myAgent) {
+	public GiveInitialCapital(AID monopolyAgent, AgentBanque agentBanque) {
 		this.monopolyAgent = monopolyAgent;
-		this.myAgent = myAgent;
+		this.agentBanque = agentBanque;
+		System.out.println("L'agent BANQUE est pret a servir");
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public class RecupPlayersList extends Behaviour {
 	public int onEnd(){ //Démarre le comportement normal de l'agent banque
 		System.out.println("Le behaviour RecupPlayersList a termine");
 		reset();
-		myAgent.addBehaviour(new BankSharkBehaviour(myAgent));
+		myAgent.addBehaviour(new BankSharkBehaviour(agentBanque));
 	    return super.onEnd();
 	}
 

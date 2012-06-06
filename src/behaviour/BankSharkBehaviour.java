@@ -9,6 +9,7 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 
 	public BankSharkBehaviour(AgentBanque agentBanque) {
 		this.agentBanque = agentBanque;
+		System.out.println("La banque est desormais dans son comportement normal");
 	}
 
 	@Override

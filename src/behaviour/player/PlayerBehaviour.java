@@ -1,10 +1,9 @@
 package behaviour.player;
 
-import behaviour.DropDiceBehaviour;
-import behaviour.RecupInitialCapital;
 import jade.core.behaviours.SequentialBehaviour;
 import util.Logger;
 import agent.AgentJoueur;
+import behaviour.DropDiceBehaviour;
 
 public class PlayerBehaviour extends SequentialBehaviour {
 
@@ -18,7 +17,6 @@ public class PlayerBehaviour extends SequentialBehaviour {
 	 
 	public PlayerBehaviour(AgentJoueur agentJoueur, Object[] params) {
 		super(agentJoueur);
-		//addSubBehaviour(new RecupInitialCapital(agentJoueur));
 		addSubBehaviour(new DropDiceBehaviour(myAgent));
 		strategy = (Integer) params[1];
 		pickStrategy(); 

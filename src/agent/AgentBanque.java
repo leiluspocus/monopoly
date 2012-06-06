@@ -11,7 +11,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import java.util.Vector;
 
 import util.Logger;
-import behaviour.RecupPlayersList;
+import behaviour.GiveInitialCapital;
 
 public class AgentBanque extends Agent{
 	private static final long serialVersionUID = 1L;
@@ -21,7 +21,7 @@ public class AgentBanque extends Agent{
 	protected void setup() {
 		register();
 		monopolyAgent = findMonopolyAgent();
-		addBehaviour(new RecupPlayersList(monopolyAgent, this));
+		addBehaviour(new GiveInitialCapital(monopolyAgent, this));
 	}
 	
 	private AID findMonopolyAgent() {
@@ -47,7 +47,7 @@ public class AgentBanque extends Agent{
 	private void register() {
 		DFAgentDescription agentDescription = new DFAgentDescription();
         agentDescription.setName(getAID());
-        ServiceDescription serviceDescription  = new ServiceDescription();
+        ServiceDescription serviceDescription = new ServiceDescription();
         serviceDescription.setType("banque");
         serviceDescription.setName(getLocalName());
         agentDescription.addServices(serviceDescription);

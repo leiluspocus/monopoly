@@ -39,11 +39,13 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 	
 	private Vector<CasePanel> cases = new Vector<CasePanel>();
 	
-	public Monopoly(AgentMonopoly agent){
+	public Monopoly(AgentMonopoly agent, Plateau p){
 		super();
-		p = new Plateau();
+		this.p = p;
 		myAgent = agent;
 		createGUI();
+		if(p != null)
+			System.out.println("L'interface graphique est operationnel");
 	}
 	
 	private void createGUI(){

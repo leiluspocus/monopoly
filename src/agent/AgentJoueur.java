@@ -1,13 +1,5 @@
 package agent;
 
-import java.util.Map;
-import java.util.Random;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
-import behaviour.player.PlayerBehaviour;
-
-
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -15,10 +7,17 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+
+import java.util.Map;
+import java.util.Random;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
 import util.Constantes;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Case;
+import behaviour.RecupInitialCapital;
 
 public class AgentJoueur extends Agent{
 	private static final long serialVersionUID = 1L;
@@ -36,12 +35,15 @@ public class AgentJoueur extends Agent{
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType("seed"); 
 		template.addServices(sd);
+		DFAgentDescription[] result;
+		
 		try {
-			DFAgentDescription[] result = DFService.search(this, template);
-			if (result.length > 0) {
-				seed = result[0].getName();
-				System.out.println("SEED Trouvée : "+ seed.getLocalName());
-			}
+			do{ 
+				result = DFService.search(this, template);
+			}while (result.length == 0);
+			
+			seed = result[0].getName();
+			System.out.println("L'agent " + getLocalName() + " est connecte a l'agent SEED");
 		}
 		catch(FIPAException fe) { Logger.err("Exception à la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
 	} 
@@ -61,7 +63,6 @@ public class AgentJoueur extends Agent{
 	}
 	
 	protected void setup() {
-		System.out.println("SETUP JOUEUR");
 		// Sequential Behaviour => Je lance le des, et j'applique ma tactique de jeu
 		fetchSeedAgent(); 
 		Object[] params = this.getArguments();		
@@ -70,8 +71,9 @@ public class AgentJoueur extends Agent{
 		setCapitalJoueur(Constantes.CAPITAL_DEPART);
 		setEnFaillite(false);
 		registerPlayer(); 
-		// SequentialBehaviour cyclique
-		addBehaviour(new PlayerBehaviour(this, params));
+		
+		// Comportement initial
+		addBehaviour(new RecupInitialCapital(this, params));
 	}
 	
 	/**

@@ -1,7 +1,9 @@
 package view;
 
+import java.io.Serializable;
 
-public abstract class Case{
+public abstract class Case implements Serializable{
+	private static final long serialVersionUID = 1L;
 	protected int position; //Position de la case sur le plateau
 	protected String nomCase;  // Nom de la case
 	protected String proprietaireCase; // Agent propriétaire de la case (nom du joueur, défini dans AgentJoueur)

@@ -14,6 +14,7 @@ import util.Constantes.Pion;
 public class MainContainer {
 	private static final int NB_JOUEURS = 6; //Peut-être changé
 	private static Vector<String> lesNomsDeJoueur;
+	private static AgentContainer mc;
 	
 	private static void setup() {
 		lesNomsDeJoueur = new Vector<String>();
@@ -32,22 +33,14 @@ public class MainContainer {
 		setup();
 		try {
 			p = new ProfileImpl();
-			AgentContainer mc = rt.createMainContainer(p);
-
-			AgentController bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
-			bc.start();
+			mc = rt.createMainContainer(p);
+			AgentController bc;
 			
 			bc = mc.createNewAgent("PRISON", "agent.AgentPrison", null);
 			bc.start();
 			
-			bc = mc.createNewAgent("BDC","agent.AgentBDC",new Object[]{50});
-			bc.start();
-			
 			bc = mc.createNewAgent("SEED", "agent.AgentSeed", null);
 			bc.start(); 
-			
-			bc = mc.createNewAgent("BANQUE", "agent.AgentBanque", null);
-			bc.start();
 			
 			// On lance les joueurs une fois que le plateau est prêt 
 			for(int i = 1; i <= NB_JOUEURS; ++i){
@@ -59,7 +52,12 @@ public class MainContainer {
 				bc.start();
 			}
 			
+			bc = mc.createNewAgent("MONOPOLY", "agent.AgentMonopoly", null);
+			bc.start();			
 		}
 		catch(Exception ex){ex.printStackTrace();}
 	}
+
+	public static AgentContainer getMc() {return mc;}
+	public static void setMc(AgentContainer mc) {MainContainer.mc = mc;}
 }

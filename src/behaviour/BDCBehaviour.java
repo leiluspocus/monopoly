@@ -1,21 +1,70 @@
 package behaviour;
 
-import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
+
+import java.io.IOException;
+import java.util.Vector;
+
+import view.Carte;
+import view.Case;
 import agent.AgentBDC;
 
-public class BDCBehaviour extends OneShotBehaviour {
+public class BDCBehaviour extends Behaviour {
 	private static final long serialVersionUID = 1L;
+	private int end;
+	private AgentBDC agentBDC;
 	
 	public BDCBehaviour(AgentBDC agentBDC) {
+		this.agentBDC = agentBDC;
+		end = 2;
 	}
 
 	@Override
 	public void action() {
-		/*ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-		for(int i = 0; i < Constantes.NB_JOUEURS; i++)
-			request.addReceiver(slaves[i].getName());
-		
-		myAgent.send(request);*/
+		ACLMessage messageReceived = agentBDC.receive();
+		if (messageReceived != null) {
+			if(messageReceived.getPerformative() == ACLMessage.QUERY_IF){
+				System.out.println("Je suis l'agent " + agentBDC.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cartes");
+				ACLMessage messageToSend = messageReceived.createReply();
+				Vector<Carte> v = new Vector<Carte>();
+				
+				v.addAll(agentBDC.buildCartesChances());
+				v.addAll(agentBDC.buildCartesCommunaute());
+				
+				try {
+					messageToSend.setContentObject(v);
+				} catch (IOException e) {e.printStackTrace();}
+				agentBDC.send(messageToSend);
+				end--;
+			}
+			else
+				if(messageReceived.getPerformative() == ACLMessage.QUERY_REF){
+					System.out.println("Je suis l'agent " + agentBDC.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cases");
+					ACLMessage messageToSend = messageReceived.createReply();
+					Vector<Case> v = new Vector<Case>();
+					
+					v.addAll(agentBDC.buildCasesSpeciales());
+					v.addAll(agentBDC.buildCasesAchetables());
+					v.addAll(agentBDC.buildCasesTerrains());
+					
+					try {
+						messageToSend.setContentObject(v);
+					} catch (IOException e) {e.printStackTrace();}
+					agentBDC.send(messageToSend);
+					end--;
+				}
+				else
+					System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
+		}
+		else {
+			block();
+		}
 	}
 
+	@Override
+	public boolean done() {
+		System.out.println("Le Behaviour de la Base de Connaissance a termine");
+		return end == 0;
+	}
 }

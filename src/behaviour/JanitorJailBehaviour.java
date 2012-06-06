@@ -15,7 +15,8 @@ public class JanitorJailBehaviour extends CyclicBehaviour {
 
 	public JanitorJailBehaviour(Agent a) {
 		super(a);
-		prisonniers = new Vector<AID>(); 
+		prisonniers = new Vector<AID>();
+		System.out.println("L'agent PRISON est pret a servir");
 	}
 	@Override
 	public void action() {
