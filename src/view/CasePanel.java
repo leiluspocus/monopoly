@@ -26,7 +26,7 @@ public class CasePanel extends JPanel {
 		this.setPreferredSize(new Dimension(60, 60));
 		try{
 			imgMaison = ImageIO.read(new File(Constantes.PATH_IMG+"house2.png"));
-			imgCase = ImageIO.read(new File(Constantes.PATH_IMG+ind+".png"));
+			imgCase = ImageIO.read(new File(Constantes.PATH_IMG+ind+".png")); // Fond de la case correspondant au panel
 			for(int i = 0; i < 8; i++)
 				imgPions.add(ImageIO.read(new File(Constantes.PATH_IMG+Constantes.lesPions[i])));
 				

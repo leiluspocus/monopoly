@@ -1,5 +1,6 @@
 package behaviour;
 
+import util.Logger;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
@@ -46,7 +47,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
     	AID seed = getSeed();
     	jetDes.addReceiver(seed);
     	myAgent.send(jetDes);
-    	System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
+    	Logger.info("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
 	}
 
 	private void deplacerPion(String diceValue) { 
@@ -54,12 +55,12 @@ public class DropDiceBehaviour extends OneShotBehaviour {
         diceMsgToMonopoly.addReceiver(getMonopoly());
         diceMsgToMonopoly.setContent(diceValue);
         myAgent.send(diceMsgToMonopoly);
-        System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " a fait " + diceValue);
+        Logger.info("Joueur " + ((AgentJoueur)myAgent).getNom() + " a fait " + diceValue);
 	}
 	
 	@Override
 	public void action() { 
-		System.out.println("Drop dice : " + myAgent.getLocalName()); 
+		Logger.info("Drop dice : " + myAgent.getLocalName()); 
 		
         ACLMessage message = myAgent.blockingReceive(); 
         if (message != null) {
