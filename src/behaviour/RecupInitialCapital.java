@@ -3,7 +3,6 @@ package behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.ParallelBehaviour;
 import jade.lang.acl.ACLMessage;
-import util.Logger;
 import agent.AgentJoueur;
 import behaviour.player.ActivePlayerBehaviour;
 import behaviour.player.PassivePlayerBehaviour;
