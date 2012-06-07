@@ -20,7 +20,7 @@ public class Logger extends JFrame {
 	private void createGUI(){
 		this.setTitle("Monopoly logs");
 		this.setSize(new Dimension(300, 660));
-		this.setLocationRelativeTo(5, 5);
+		this.setLocation(5, 5);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.add(jta);
