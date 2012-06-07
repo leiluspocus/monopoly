@@ -1,11 +1,11 @@
 package behaviour;
 
-import behaviour.player.PlayerBehaviour;
-import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import agent.AgentJoueur;
+import behaviour.player.PlayerBehaviour;
 
-public class RecupInitialCapital extends Behaviour {
+public class RecupInitialCapital extends OneShotBehaviour {
 	private static final long serialVersionUID = 1L;
 	private AgentJoueur agentJoueur;
 	private ACLMessage messageReceived;
@@ -18,7 +18,7 @@ public class RecupInitialCapital extends Behaviour {
 
 	@Override
 	public void action() {
-		messageReceived = myAgent.receive();
+		messageReceived = myAgent.blockingReceive();
 		if (messageReceived != null) {
 			if(messageReceived.getPerformative() == ACLMessage.INFORM){
 				String line = messageReceived.getContent();
@@ -33,14 +33,9 @@ public class RecupInitialCapital extends Behaviour {
 			block();
 		}
 	}
-
-	@Override
-	public boolean done() {
-		return messageReceived != null;
-	}
 	
 	public int onEnd(){ //Démarre le comportement normal de l'agent joueur
-		System.out.println("Le behaviour RecupPlayersList a termine");
+		System.out.println("Le joueur " + agentJoueur.getLocalName() +  " commence à jouer");
 		reset();
 		// SequentialBehaviour cyclique
 		agentJoueur.addBehaviour(new PlayerBehaviour(agentJoueur, params));;
