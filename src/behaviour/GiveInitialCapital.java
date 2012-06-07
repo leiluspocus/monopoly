@@ -20,7 +20,7 @@ public class GiveInitialCapital extends OneShotBehaviour {
 	public GiveInitialCapital(AID monopolyAgent, AgentBanque agentBanque) {
 		this.monopolyAgent = monopolyAgent;
 		this.agentBanque = agentBanque;
-		System.out.println("L'agent BANQUE est pret a envoyer les premieres dotations");
+		System.out.println("-- BANQUE INITIALISEE --");
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class GiveInitialCapital extends OneShotBehaviour {
 			try {
 				@SuppressWarnings("unchecked")
 				Vector<DFAgentDescription> listeDesJoueurs = (Vector<DFAgentDescription>) messageReceived.getContentObject();
-				System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et j'ai recu la liste des joueurs de l'agent " + messageReceived.getSender().getLocalName());
+			//	System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et j'ai recu la liste des joueurs de l'agent " + messageReceived.getSender().getLocalName());
 				AgentBanque agent = (AgentBanque) myAgent;
 				agent.setJoueurs(listeDesJoueurs);
 				
@@ -45,15 +45,16 @@ public class GiveInitialCapital extends OneShotBehaviour {
 					request.setContent(Constantes.CAPITAL_DEPART + "");
 					myAgent.send(request);
 				}
+				
+				ACLMessage everyoneIsReady = new ACLMessage(ACLMessage.PROPAGATE);
+				everyoneIsReady.addReceiver(monopolyAgent);
+				myAgent.send(everyoneIsReady);
 			} catch (UnreadableException e) {e.printStackTrace();}
-		}
-		else{
-			block();
-		}
+		} 
 	}
 	
 	public int onEnd(){ //Démarre le comportement normal de l'agent banque
-		System.out.println("Le behaviour GiveInitialCapital a termine");
+		//System.out.println("Le behaviour GiveInitialCapital a termine");
 		reset();
 		myAgent.addBehaviour(new BankSharkBehaviour(agentBanque));
 	    return super.onEnd();

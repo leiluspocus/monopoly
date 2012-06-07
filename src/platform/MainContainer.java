@@ -10,7 +10,7 @@ import java.util.Vector;
 
 import util.Constantes;
 import util.Constantes.Pion;
-import util.LogFrame;
+import util.Logger;
 
 public class MainContainer {
 	private static final int NB_JOUEURS = 6; //Peut-�tre chang�
@@ -29,7 +29,7 @@ public class MainContainer {
 	}
 	
 	public static void main(String[] args){
-		LogFrame l = new LogFrame();
+		Logger l = new Logger();
 		Runtime rt = Runtime.instance();
 		Profile p = null;
 		setup();

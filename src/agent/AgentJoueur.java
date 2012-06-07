@@ -67,7 +67,7 @@ public class AgentJoueur extends Agent{
 		Object[] params = this.getArguments();		
 		setPion((Pion)params[0]);
 		setNom((String)params[2]);
-		setCapitalJoueur(Constantes.CAPITAL_DEPART);
+		//setCapitalJoueur(Constantes.CAPITAL_DEPART);
 		setEnFaillite(false);
 		registerPlayer(); 
 		

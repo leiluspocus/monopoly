@@ -21,7 +21,7 @@ public class IntelligentBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() {
 		
-ACLMessage msgReceived = myAgent.receive();
+		ACLMessage msgReceived = myAgent.blockingReceive();
 		
 		if (msgReceived != null)
 		{
@@ -57,11 +57,7 @@ ACLMessage msgReceived = myAgent.receive();
 				default: System.out.println("Message non géré : "+msgReceived.getContent());
 					break;
 			}
-		}
-		else
-		{
-			block();
-		}
+		} 
 		
 	} 
 	

@@ -2,6 +2,7 @@ package behaviour;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import util.Logger;
 import agent.AgentJoueur;
 import behaviour.player.PlayerBehaviour;
 
@@ -19,26 +20,21 @@ public class RecupInitialCapital extends OneShotBehaviour {
 	@Override
 	public void action() {
 		messageReceived = myAgent.blockingReceive();
-		if (messageReceived != null) {
-			if(messageReceived.getPerformative() == ACLMessage.INFORM){
+		if (messageReceived != null) { 
+			if(messageReceived.getPerformative() == ACLMessage.INFORM){ 
 				String line = messageReceived.getContent();
 				agentJoueur.setCapitalJoueur(Integer.parseInt(line));
-				System.out.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
+				System.err.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
 			}
 			else
-				System.out.println("Le comportement RecupInitialCapital a reçu un message imprévu de type : " + messageReceived.getPerformative());
-		}
-		else{
-			System.out.println("L'agent " + agentJoueur.getLocalName() +  " est en attente du virement initial de la banque");
-			block();
-		}
+				Logger.err("Le comportement RecupInitialCapital a reçu un message imprévu de type : " + messageReceived);
+		} 
 	}
 	
 	public int onEnd(){ //Démarre le comportement normal de l'agent joueur
 		System.out.println("Le joueur " + agentJoueur.getLocalName() +  " commence à jouer");
-		reset();
-		// SequentialBehaviour cyclique
-		agentJoueur.addBehaviour(new PlayerBehaviour(agentJoueur, params));;
+		reset(); 
+		agentJoueur.addBehaviour(new PlayerBehaviour(agentJoueur, params));
 	    return super.onEnd();
 	}
 }

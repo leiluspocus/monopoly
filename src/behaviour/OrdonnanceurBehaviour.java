@@ -4,6 +4,7 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		}
 		currentTour = 0; 
 		// Tous les joueurs sont initialement sur la case depart
+		ACLMessage go = myAgent.blockingReceive(); 
 	}
 	
 	public void sendToJail(AID player) {
@@ -57,7 +59,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 
 	@Override
-	public void action() { 
+	public void action() {  
 		DFAgentDescription joueur = lesJoueurs.get(currentTour); 
 		
 		// Envoi d'un message au joueur pour qu'il lance les des

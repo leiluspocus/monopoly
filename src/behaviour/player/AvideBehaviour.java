@@ -21,9 +21,9 @@ public class AvideBehaviour extends OneShotBehaviour {
 
 	@Override
 	public void action() 
-	{
-		System.out.println("Action d'avide");
-		ACLMessage msgReceived = myAgent.receive();
+	{ 
+		System.out.println("Action d'avide");  
+		ACLMessage msgReceived = myAgent.blockingReceive(); 
 
 		if (msgReceived != null)
 		{
@@ -54,16 +54,11 @@ public class AvideBehaviour extends OneShotBehaviour {
 			case ACLMessage.AGREE:
 				int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
 				((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
-				break;
-
-			default: System.out.println("Message non géré : "+msgReceived.getContent());
+				break; 
+			default: System.err.println("Message non géré from Avide "+msgReceived); 
 			break;
 			}
-		}
-		else
-		{
-			block();
-		}
+		} 
 	}
 
 }

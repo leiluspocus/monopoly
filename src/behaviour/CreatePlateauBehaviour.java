@@ -84,7 +84,7 @@ public class CreatePlateauBehaviour extends OneShotBehaviour {
 	}
 	
 	public int onEnd(){
-		System.out.println("Le behaviour CreatePlateau a termine");
+		//System.out.println("Le behaviour CreatePlateau a termine");
 		reset();
 		agentMonopoly.addBehaviour(new GivePlayersToOthers(agentMonopoly, agentMonopoly.getLesJoueurs()));
 		

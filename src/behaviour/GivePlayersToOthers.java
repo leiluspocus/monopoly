@@ -32,7 +32,7 @@ public class GivePlayersToOthers extends OneShotBehaviour {
 		ACLMessage messageReceived = agentMonopoly.receive();
 		if (messageReceived != null) {
 			if(messageReceived.getPerformative() == ACLMessage.REQUEST){
-				System.out.println("Je suis l'agent " + agentMonopoly.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Joueurs");
+				//System.out.println("L'agent " + agentMonopoly.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Joueurs");
 				ACLMessage messageToSend = messageReceived.createReply();
 				
 				try {
@@ -48,7 +48,7 @@ public class GivePlayersToOthers extends OneShotBehaviour {
 	
 	@Override
 	public int onEnd(){
-		System.out.println("Le Behaviour GivePlayersToOthers a termine");
+	//	System.out.println("Le Behaviour GivePlayersToOthers a termine");
 		reset();
 		agentMonopoly.addBehaviour(new OrdonnanceurBehaviour(agentMonopoly, agentMonopoly.getLesJoueurs(), agentMonopoly.fetchJail()));
 	    return super.onEnd();

@@ -20,6 +20,9 @@ public class BDCBehaviour extends Behaviour {
 		end = 2;
 	}
 
+	/**
+	 * QUERY_IF from 
+	 */
 	@Override
 	public void action() {
 		ACLMessage messageReceived = agentBDC.receive();

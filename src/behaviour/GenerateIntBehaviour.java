@@ -15,7 +15,7 @@ public class GenerateIntBehaviour extends CyclicBehaviour {
 	public GenerateIntBehaviour(Agent a) {
 		super(a);
 		intGenerator = new Random();
-		System.out.println("L'agent SEED est pret a servir");
+		System.out.println(" -- SEED INITIALISE -- ");
 	}
 
 	@Override

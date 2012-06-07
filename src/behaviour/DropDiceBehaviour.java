@@ -62,18 +62,21 @@ public class DropDiceBehaviour extends OneShotBehaviour {
         ACLMessage message = myAgent.blockingReceive(); 
         if (message != null) {
         	// Attente de la valeur des des Èmise par l'AgentSeed
-        	switch ( message.getPerformative() ) {
-        	case ACLMessage.PROPAGATE :
+	       	 if ( message.getPerformative() == ACLMessage.PROPAGATE ) {
         		// C'est au tour du joueur : il faut jeter les des
         		((AgentJoueur) myAgent).setMonopoly(message.getSender());
         		jeterLesDes();
-                break;
-        	case ACLMessage.CONFIRM:
-        		// Les des sont jetes, il faut deplacer le pion
-        		deplacerPion(message.getContent());
-                break;
-             default:
-            	 System.out.println("Message inconnu non traite: " + message);
+                message = myAgent.blockingReceive(); 
+                if ( message.getPerformative() == ACLMessage.CONFIRM ) {
+                	// Les des sont jetes, il faut deplacer le pion
+                	deplacerPion(message.getContent()); 
+                }
+                else {
+               	 System.err.println("Message inconnu non traite from DropDiceBehaviour apres avoir jeté les des: " + message);
+                }
+	       	 }
+	       	 else { 
+	       		System.err.println("Message inconnu non traite from DropDiceBehaviour: " + message); 
         	} 
         } 
         
