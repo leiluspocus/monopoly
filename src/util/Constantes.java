@@ -37,4 +37,6 @@ public class Constantes implements Serializable {
 	public static final int CASE_DEPART = 0;
 	public static final int CASE_FIN = 39;
 	public static final int CASE_PRISON = 10;
+	
+	public static final String PATH_IMG = "../monopoly/res/";
 }

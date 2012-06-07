@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import agent.AgentMonopoly;
 
@@ -31,6 +32,8 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 	private JMenu gameMenu = new JMenu("Jeu");
 	private JMenuItem newMItem = new JMenuItem("Nouveau");
 	private JMenuItem exitMItem = new JMenuItem("Quitter");
+	
+	private JTextArea logs = new JTextArea();
 	
 	private GridLayout northGLayout = new GridLayout(0, 11);
 	private GridLayout eastGLayout = new GridLayout(9, 0);
@@ -64,6 +67,16 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 		this.setJMenuBar(menuBar);
 		
 		// Main layout & panels
+		JPanel panelMain = new JPanel();
+		panelMain.setSize(new Dimension(660, 660));
+		//panelMain.setLayout(new BoxLayout(panelMain, BoxLayout.Y_AXIS));
+		
+		JPanel panelMonop = new JPanel();
+		panelMonop.setSize(new Dimension(660, 660));
+		JPanel panelLog = new JPanel();
+		panelLog.setSize(new Dimension(240, 660));
+		//panelMain.setLayout(new GridLayout(1, 2));
+		
 		JPanel panelNorth = new JPanel();
 		JPanel panelEast = new JPanel();
 		JPanel panelSouth = new JPanel();
@@ -79,24 +92,35 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 		panelWest.setSize(new Dimension(660, 60));
 		panelCenter.setSize(new Dimension(540, 540));
 		panelCenter.add(new JLabel(new ImageIcon("../Monopoly/res/center2.png")));
+		
+		//this.getContentPane().add(panelMain);
+		//panelMain.add(panelMonop);
+		//panelMain.add(panelLog);
 		this.getContentPane().add(panelNorth, BorderLayout.NORTH);
 		this.getContentPane().add(panelEast, BorderLayout.EAST);
 		this.getContentPane().add(panelSouth, BorderLayout.SOUTH);
 		this.getContentPane().add(panelWest, BorderLayout.WEST);
 		this.getContentPane().add(panelCenter, BorderLayout.CENTER);
+		panelLog.add(logs);
 		
 		// Cases panels
 		for(int i = 0; i < p.getPlateau().size(); i++){
-			cases.add(new CasePanel());
-			cases.get(i).add(new JLabel(new ImageIcon("../Monopoly/res/"+i+".png")));
+			cases.add(new CasePanel(i));
+			//cases.get(i).add(new JLabel(new ImageIcon("../Monopoly/res/"+i+".png")));
 		}
 		
 		// Tests
-		panelWest.add(new JLabel(new ImageIcon("../Monopoly/res/start2.png")));
-		panelNorth.add(new JLabel(new ImageIcon("../Monopoly/res/start2.png")));
-		panelEast.add(new JLabel(new ImageIcon("../Monopoly/res/start2.png")));
-		panelSouth.add(new JLabel(new ImageIcon("../Monopoly/res/jail.png")));
-		panelSouth.add(new JLabel(new ImageIcon("../Monopoly/res/start2.png")));
+		for(int i = 10; i >= 0; i--)
+			panelSouth.add(cases.get(i));
+		
+		for(int i = 19; i >= 11; i--)
+			panelWest.add(cases.get(i));
+		
+		for(int i = 20; i <= 30; i++)
+			panelNorth.add(cases.get(i));
+		
+		for(int i = 31; i <= 39; i++)
+			panelEast.add(cases.get(i));
 		
 		this.setVisible(true);
 	}
@@ -106,7 +130,6 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 		for(int i = 0; i < cases.size(); i++){
 			if(p.getPlateau().get(i).getClass().equals(CaseTerrain.class)){
 				int nbMaisons = ((CaseTerrain)p.getPlateau().get(i)).getNbMaisons();
-				// Changer l'affichage de la case
 				cases.get(i).checkMaisons(nbMaisons);
 				cases.get(i).repaint();
 			}
@@ -114,11 +137,13 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 	}
 
 	public void propertyChange(PropertyChangeEvent arg0) {
+		String line = (String)arg0.getNewValue();
+		logs.append(line);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == newMItem){
-			
+			// Nouvelle partie
 		}
 		else if(arg0.getSource() == exitMItem){
 			System.exit(0);
