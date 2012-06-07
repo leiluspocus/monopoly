@@ -59,14 +59,18 @@ public class DropDiceBehaviour extends OneShotBehaviour {
 	
 	@Override
 	public void action() { 
+		System.out.println("Drop dice : " + myAgent.getLocalName()); 
+		
         ACLMessage message = myAgent.blockingReceive(); 
         if (message != null) {
+        	//System.err.println(" >>> alert " + message);
         	// Attente de la valeur des des émise par l'AgentSeed
 	       	 if ( message.getPerformative() == ACLMessage.PROPAGATE ) {
         		// C'est au tour du joueur : il faut jeter les des
         		((AgentJoueur) myAgent).setMonopoly(message.getSender());
         		jeterLesDes();
                 message = myAgent.blockingReceive(); 
+            	//System.err.println(" >>> alert 2 " + message);
                 if ( message.getPerformative() == ACLMessage.CONFIRM ) {
                 	// Les des sont jetes, il faut deplacer le pion
                 	deplacerPion(message.getContent()); 

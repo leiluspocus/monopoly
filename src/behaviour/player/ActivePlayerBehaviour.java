@@ -73,7 +73,7 @@ public class ActivePlayerBehaviour extends SequentialBehaviour {
 	    // Ne pas rescheduler les behaviour si le joueur a perdu la partie
 	    if (!((AgentJoueur)myAgent).isEnFaillite())
 	    {
-			addSubBehaviour(new DropDiceBehaviour(myAgent));
+			//addSubBehaviour(new DropDiceBehaviour(myAgent));
 			pickStrategy(); 
 		    myAgent.addBehaviour(this);
 	    }

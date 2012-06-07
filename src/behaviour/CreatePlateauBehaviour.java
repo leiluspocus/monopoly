@@ -14,12 +14,13 @@ import view.Carte;
 import view.Case;
 import view.Monopoly;
 import view.Plateau;
+import agent.AgentJoueur;
 import agent.AgentMonopoly;
 
 public class CreatePlateauBehaviour extends OneShotBehaviour {
 	private static final long serialVersionUID = 1L;
 	private AgentMonopoly agentMonopoly;
-	private Plateau plateau;
+
 
 	public CreatePlateauBehaviour(AgentMonopoly agentMonopoly) {
 		this.agentMonopoly = agentMonopoly;
@@ -80,15 +81,18 @@ public class CreatePlateauBehaviour extends OneShotBehaviour {
 					System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
 		} 
 		
-		plateau = new Plateau(v1, v2);
+		((AgentMonopoly) myAgent).setPlateau(new Plateau(v1, v2));
 	}
 	
+	public Plateau getPlateau() {
+		return ((AgentMonopoly) myAgent).getPlateau();
+	}
 	public int onEnd(){
 		//System.out.println("Le behaviour CreatePlateau a termine");
 		reset();
 		agentMonopoly.addBehaviour(new GivePlayersToOthers(agentMonopoly, agentMonopoly.getLesJoueurs()));
 		
-		Monopoly m = new Monopoly(agentMonopoly, plateau);
+		Monopoly m = new Monopoly(agentMonopoly, ((AgentMonopoly) myAgent).getPlateau() );
 		agentMonopoly.addChangeListener(m);
 	    return super.onEnd();
 	}

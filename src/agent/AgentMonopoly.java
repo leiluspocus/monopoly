@@ -13,11 +13,13 @@ import java.util.Vector;
 
 import util.Constantes;
 import view.Monopoly;
+import view.Plateau;
 import behaviour.CreatePlateauBehaviour;
 
 public class AgentMonopoly extends GuiAgent{
 	private static final long serialVersionUID = 1L;
 	private Vector<DFAgentDescription> lesJoueurs;
+	private Plateau plateau;
 	
 	private PropertyChangeSupport changes;
 
@@ -93,4 +95,10 @@ public class AgentMonopoly extends GuiAgent{
 		//			crb.sendMsg((String)ev.getParameter(0), receiver);
 		//		}
 	}
+
+	public Plateau getPlateau() { 
+		return plateau;
+	}
+
+	public void setPlateau(Plateau pl) { plateau = pl; }
 }

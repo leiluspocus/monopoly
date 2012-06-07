@@ -4,13 +4,13 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
 
 import util.Constantes;
+import view.Plateau;
 import agent.AgentMonopoly;
 
 public class OrdonnanceurBehaviour extends Behaviour {
@@ -98,6 +98,16 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 				}
 				lesPositionsDesJoueurs.put(joueur, newPos);
+				// L'agent Monopoly envoie au joueur la case
+				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
+				Plateau p = ((AgentMonopoly) myAgent).getPlateau();
+				try {
+					caseCourante.setContentObject(p.getCase(newPos));
+					System.err.println(caseCourante);
+					caseCourante.addReceiver(joueur.getName());
+					myAgent.send(caseCourante);
+				} 
+				catch (IOException e1) { e1.printStackTrace(); }
 				try {
 					Thread.sleep(Constantes.DUREE_ANIMATION);
 				} catch (InterruptedException e) { 

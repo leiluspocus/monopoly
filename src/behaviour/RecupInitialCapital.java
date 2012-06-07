@@ -29,7 +29,7 @@ public class RecupInitialCapital extends OneShotBehaviour {
 				System.err.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
 			}
 			else
-				Logger.err("Le comportement RecupInitialCapital a reçu un message imprévu de type : " + messageReceived);
+				System.err.println("Le comportement RecupInitialCapital a reçu un message imprévu de type : " + messageReceived);
 		} 
 	}
 	

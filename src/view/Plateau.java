@@ -15,4 +15,13 @@ public class Plateau {
 
 	public Vector<Case> getPlateau(){ return this.plateau; }
 	public Vector<Carte> getCartes(){ return this.cartes; }
+	
+	public Case getCase(int pos) {
+		for ( Case o : plateau ) {
+			if ( o.getPosition() == pos ) {
+				return o;
+			}
+		}
+		return null;
+	}
 }
