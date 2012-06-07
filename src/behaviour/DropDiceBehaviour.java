@@ -47,7 +47,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
     	AID seed = getSeed();
     	jetDes.addReceiver(seed);
     	myAgent.send(jetDes);
-    	Logger.info("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
+    	//System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
 	}
 
 	private void deplacerPion(String diceValue) { 
@@ -60,7 +60,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
 	
 	@Override
 	public void action() { 
-		Logger.info("Drop dice : " + myAgent.getLocalName()); 
+		//System.out.println("Drop dice : " + myAgent.getLocalName()); 
 		
         ACLMessage message = myAgent.blockingReceive(); 
         if (message != null) {
@@ -77,7 +77,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
                 	deplacerPion(message.getContent()); 
                 }
                 else {
-               	 System.err.println("Message inconnu non traite from DropDiceBehaviour apres avoir jeté les des: " + message);
+               	 System.err.println("Message inconnu non traite from DropDiceBehaviour apres avoir jete les des: " + message);
                 }
 	       	 }
 	       	 else { 

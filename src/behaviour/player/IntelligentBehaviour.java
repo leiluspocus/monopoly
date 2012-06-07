@@ -2,9 +2,11 @@ package behaviour.player;
 
 import agent.AgentJoueur;
 import util.Logger;
+import view.Case;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 /**
  * Comportement visant à acheter des terrains en fonction des prix que lui apportent les terrains
@@ -31,12 +33,17 @@ public class IntelligentBehaviour extends OneShotBehaviour {
 				/*
 				 * Indique au joueur sur quelle case il se trouve après le déplacement effectué (dû au jeté de dés)
 				 */
-				case ACLMessage.INFORM_REF:
-					//TODO: acheter la propriété si celle-ci est disponible
-					break;
+			case ACLMessage.INFORM_REF:
+				try {
+					((AgentJoueur)myAgent).setCaseCourante((Case) msgReceived.getContentObject());
+				} catch (UnreadableException e) {e.printStackTrace();}
+				
+				System.out.println(((AgentJoueur)myAgent).getCaseCourante());
+				
+				break;
 	
 				default: 
-					Logger.info("Message non géré : "+msgReceived.getContent());
+					Logger.err("Message non géré par le behaviour Intelligent : " + msgReceived);
 					break;
 			}
 		}

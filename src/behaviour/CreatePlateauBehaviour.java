@@ -14,7 +14,6 @@ import view.Carte;
 import view.Case;
 import view.Monopoly;
 import view.Plateau;
-import agent.AgentJoueur;
 import agent.AgentMonopoly;
 
 public class CreatePlateauBehaviour extends OneShotBehaviour {
@@ -35,7 +34,6 @@ public class CreatePlateauBehaviour extends OneShotBehaviour {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void action() {
-		System.out.println("L'agent MONOPOLY commence la creation du plateau");
 		AID agentBDC = new AID("BDC", AID.ISLOCALNAME);
 		
 		Vector<Case> v1 = null;

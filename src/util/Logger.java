@@ -41,7 +41,14 @@ public class Logger extends JFrame {
 	
 	public static void err(String line){
 		jta.append("<error>");
-		info(line);
+		
+		Pattern p = Pattern.compile("^.*\\\n+$");
+		Matcher m = p.matcher(line);
+		if(m.find())
+			jta.append(line);
+		else
+			jta.append(line+"\n");
+		
 		System.err.println(line);
 	}
 }

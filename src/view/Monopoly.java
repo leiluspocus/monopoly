@@ -42,8 +42,6 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 		this.p = p;
 		myAgent = agent;
 		createGUI();
-		if(p != null)
-			System.out.println("L'interface graphique est operationnel");
 	}
 	
 	private void createGUI(){

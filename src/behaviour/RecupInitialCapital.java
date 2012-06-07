@@ -14,6 +14,7 @@ public class RecupInitialCapital extends OneShotBehaviour {
 	private Object[] params;
 
 	public RecupInitialCapital(AgentJoueur agentJoueur, Object[] params) {
+		super(agentJoueur);
 		this.agentJoueur = agentJoueur;
 		this.params = params;
 	}
@@ -25,20 +26,20 @@ public class RecupInitialCapital extends OneShotBehaviour {
 			if(messageReceived.getPerformative() == ACLMessage.INFORM){ 
 				String line = messageReceived.getContent();
 				agentJoueur.setCapitalJoueur(Integer.parseInt(line));
-				System.out.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
+				//System.out.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
 			}
 			else
-				System.err.println("Le comportement RecupInitialCapital a reçu un message imprévu de type : " + messageReceived);
+				System.err.println("Le comportement RecupInitialCapital a reçu un message imprévu de type : "+messageReceived);
 		} 
 	}
 	
 	public int onEnd(){ //Démarre le comportement normal de l'agent joueur
-		System.out.println("Le joueur " + agentJoueur.getLocalName() +  " commence à jouer");
+		System.out.println("Le joueur "+agentJoueur.getLocalName()+" commence à jouer avec un capital de "+agentJoueur.getCapitalJoueur());
 		reset(); 
 		ParallelBehaviour parallel = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL);
 		parallel.addSubBehaviour(new ActivePlayerBehaviour(agentJoueur, params));
-		parallel.addSubBehaviour(new PassivePlayerBehaviour(agentJoueur));
-		agentJoueur.addBehaviour(new ActivePlayerBehaviour(agentJoueur, params));
+		//parallel.addSubBehaviour(new PassivePlayerBehaviour(agentJoueur));
+		agentJoueur.addBehaviour(parallel);
 	    return super.onEnd();
 	}
 }

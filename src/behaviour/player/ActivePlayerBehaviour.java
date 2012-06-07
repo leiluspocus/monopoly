@@ -22,44 +22,31 @@ public class ActivePlayerBehaviour extends SequentialBehaviour {
 	}
 
 	private void pickStrategy() {
-		switch(strategy)
-		{
+		switch(strategy){
 			case 0:
-			{
 				System.out.println("Joueur " + getNom() + " adopte la strategie Avide !");
 				addSubBehaviour(new AvideBehaviour(myAgent));
-				break;
-			}
+			break;
 			case 1:
-			{
 				System.out.println("Joueur " + getNom() + " adopte la strategie Collectionneur !");
 				addSubBehaviour(new CollectionneurBehaviour(myAgent));
-				break;
-			}
+			break;
 			case 2:
-			{
 				System.out.println("Joueur " + getNom() + " adopte la strategie Evil !");
 				addSubBehaviour(new EvilBehaviour(myAgent));
-				break;
-			}
+			break;
 			case 3:
-			{
 				System.out.println("Joueur " + getNom() + " adopte la strategie Intelligent !");
 				addSubBehaviour(new IntelligentBehaviour(myAgent));
-				break;
-			}
+			break;
 			case 4:
-			{
 				System.out.println("Joueur " + getNom() + " adopte la strategie Picsou !");
 				addSubBehaviour(new PicsouBehaviour(myAgent));
-				break;
-			}
+			break;
 			case 5:
-			{
 				System.out.println("Joueur " + getNom() + " adopte la strategie Stupide !");
 				addSubBehaviour(new StupideBehaviour(myAgent));
-				break;
-			}
+			break;
 			default:
 				System.out.println("Joueur " + getNom() + " adopte la strategie Avide !");
 				addSubBehaviour(new AvideBehaviour(myAgent));
@@ -71,10 +58,7 @@ public class ActivePlayerBehaviour extends SequentialBehaviour {
 	public int onEnd() { 
 	    reset();
 	    // Ne pas rescheduler les behaviour si le joueur a perdu la partie
-	    if (!((AgentJoueur)myAgent).isEnFaillite())
-	    {
-			//addSubBehaviour(new DropDiceBehaviour(myAgent));
-			pickStrategy(); 
+	    if (!((AgentJoueur)myAgent).isEnFaillite()){
 		    myAgent.addBehaviour(this);
 	    }
 	    return super.onEnd();

@@ -21,8 +21,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private int currentTour;
 	private AID prison;
 	
-	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly,
-			Vector<DFAgentDescription> j, AID p) {
+	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
 		lesJoueurs = j;
 		prison = p;
@@ -32,7 +31,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		}
 		currentTour = 0; 
 		// Tous les joueurs sont initialement sur la case depart
-		ACLMessage go = myAgent.blockingReceive(); 
+		myAgent.blockingReceive(); 
 	}
 	
 	public void sendToJail(AID player) {
@@ -47,7 +46,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 	
 	public void libererJoueur(AID player) {
-		System.out.println("Liberation du joueur " + player + " emprisonne");
+		System.out.println("Liberation du  joueur " + player + " emprisonne");
 		ACLMessage tick = new ACLMessage(ACLMessage.DISCONFIRM);
 		tick.addReceiver(prison);
 		try {
@@ -64,9 +63,11 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		
 		// Envoi d'un message au joueur pour qu'il lance les des
 		throwDice(joueur);
+		System.out.println("Envoi d'un message a " + joueur.getName().getLocalName() + " pour qu'il lance les des");
  
 		// Reception du score fait par le joueur
 		ACLMessage message = myAgent.blockingReceive(); 
+		System.out.println("Reception du score du joueur " + message.getSender().getLocalName() + " : " + message.getContent());
 		// Deplacement du pion du joueur
 		if ( message != null ) { 
 			if ( message.getPerformative() == ACLMessage.INFORM) { 
@@ -98,11 +99,12 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 				}
 				lesPositionsDesJoueurs.put(joueur, newPos);
+				
 				// L'agent Monopoly envoie au joueur la case
 				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
 				Plateau p = ((AgentMonopoly) myAgent).getPlateau();
 				try {
-					caseCourante.setContentObject(p.getCase(newPos));
+					caseCourante.setContentObject(p.getCase(newPos.intValue()));
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
 				} 

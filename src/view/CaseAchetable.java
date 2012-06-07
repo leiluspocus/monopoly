@@ -20,4 +20,8 @@ public class CaseAchetable extends Case{
 		loyers = loy;
 		couleur = c;
 	}
+	
+	public String toString(){
+		return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> " + proprietaireCase;
+	}
 }

@@ -39,7 +39,7 @@ public class AgentBanque extends Agent{
 			}while(result.length == 0);
 		} catch (FIPAException e) {e.printStackTrace();}
 		
-		System.out.println("L'agent Banque a trouvé l'agent Monopoly : " + result[0].getName().getLocalName());
+		//System.out.println("L'agent Banque a trouvé l'agent Monopoly : " + result[0].getName().getLocalName());
 		return result[0].getName();
 	}
 	

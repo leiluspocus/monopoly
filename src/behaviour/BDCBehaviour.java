@@ -69,7 +69,7 @@ public class BDCBehaviour extends Behaviour {
 
 	@Override
 	public boolean done() {
-		System.out.println("Etape Behaviour de la Base de Connaissance : " + end);
+		//System.out.println("Etape Behaviour de la Base de Connaissance : " + end);
 		return end == 0;
 	}
 }

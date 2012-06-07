@@ -44,7 +44,7 @@ public class AgentJoueur extends Agent{
 			}while (result.length == 0);
 			
 			seed = result[0].getName();
-			System.out.println("L'agent " + getLocalName() + " est connecte a l'agent SEED");
+			//System.out.println("L'agent " + getLocalName() + " est connecte a l'agent SEED");
 		}
 		catch(FIPAException fe) { Logger.err("Exception à la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
 	} 

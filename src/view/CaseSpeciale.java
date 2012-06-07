@@ -14,4 +14,8 @@ public class CaseSpeciale extends Case {
 	
 	public ActionSpeciale getActionSpeciale() { return spec; }
 	
+	public String toString(){
+		return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Action -> " + spec;
+	}
+	
 }
