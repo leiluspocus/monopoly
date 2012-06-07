@@ -4,7 +4,7 @@ import jade.core.behaviours.SequentialBehaviour;
 import agent.AgentJoueur;
 import behaviour.DropDiceBehaviour;
 
-public class PlayerBehaviour extends SequentialBehaviour {
+public class ActivePlayerBehaviour extends SequentialBehaviour {
 
 	private static final long serialVersionUID = 1L;
 	private Integer strategy;
@@ -14,7 +14,7 @@ public class PlayerBehaviour extends SequentialBehaviour {
 		return nom;
 	}
 	 
-	public PlayerBehaviour(AgentJoueur agentJoueur, Object[] params) {
+	public ActivePlayerBehaviour(AgentJoueur agentJoueur, Object[] params) {
 		super(agentJoueur);
 		addSubBehaviour(new DropDiceBehaviour(myAgent));
 		strategy = (Integer) params[1];

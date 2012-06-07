@@ -4,7 +4,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import util.Logger;
 import agent.AgentJoueur;
-import behaviour.player.PlayerBehaviour;
+import behaviour.player.ActivePlayerBehaviour;
 
 public class RecupInitialCapital extends OneShotBehaviour {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +34,7 @@ public class RecupInitialCapital extends OneShotBehaviour {
 	public int onEnd(){ //Démarre le comportement normal de l'agent joueur
 		System.out.println("Le joueur " + agentJoueur.getLocalName() +  " commence à jouer");
 		reset(); 
-		agentJoueur.addBehaviour(new PlayerBehaviour(agentJoueur, params));
+		agentJoueur.addBehaviour(new ActivePlayerBehaviour(agentJoueur, params));
 	    return super.onEnd();
 	}
 }

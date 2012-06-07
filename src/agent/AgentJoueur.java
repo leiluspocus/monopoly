@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import util.Constantes;
 import util.Constantes.Pion;
+import util.Logger;
 import view.Case;
 import behaviour.RecupInitialCapital;
 
@@ -28,6 +29,7 @@ public class AgentJoueur extends Agent{
 	private Case 	caseCourante;
 	private int		capitalJoueur;
 	private boolean	enFaillite;
+	private int 	probaDemandeLoyer;
 	
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -44,7 +46,7 @@ public class AgentJoueur extends Agent{
 			seed = result[0].getName();
 			System.out.println("L'agent " + getLocalName() + " est connecte a l'agent SEED");
 		}
-		catch(FIPAException fe) { System.out.println("Exception à la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
+		catch(FIPAException fe) { Logger.err("Exception à la recuperation du seedagent par le joueur "); fe.printStackTrace(); }
 	} 
 	
 	private void registerPlayer() 
@@ -58,7 +60,7 @@ public class AgentJoueur extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent joueur au service echoue - Cause : " + e); }  
+        catch (FIPAException e) { Logger.err("Enregistrement de l'agent joueur au service echoue - Cause : " + e); }  
 	}
 	
 	protected void setup() {
@@ -67,7 +69,7 @@ public class AgentJoueur extends Agent{
 		Object[] params = this.getArguments();		
 		setPion((Pion)params[0]);
 		setNom((String)params[2]);
-		//setCapitalJoueur(Constantes.CAPITAL_DEPART);
+		setCapitalJoueur(Constantes.CAPITAL_DEPART);
 		setEnFaillite(false);
 		registerPlayer(); 
 		
@@ -104,7 +106,7 @@ public class AgentJoueur extends Agent{
 			{
 				map = mapper.readValue(content,Map.class);
 			}
-			catch(Exception e) {System.out.println("Erreur deserialisation message : "+e);}
+			catch(Exception e) {Logger.err("Erreur deserialisation message : "+e);}
 
 			ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
 
@@ -113,7 +115,7 @@ public class AgentJoueur extends Agent{
 			request.addReceiver(receiver);
 			request.setContent(map.get("montant"));
 			send(request);
-			System.out.println(getName()+" demande "+map.get("montant")+" à "+receiverName);
+			Logger.info(getName()+" demande "+map.get("montant")+" à "+receiverName);
 		}
 	}
 	
@@ -128,6 +130,7 @@ public class AgentJoueur extends Agent{
 		int montantDu = Integer.parseInt(msgReceived.getContent().trim());
 		setCapitalJoueur(capitalJoueur-montantDu);
 		response.setContent(String.valueOf(montantDu));
+		response.setPerformative(ACLMessage.AGREE);
 		send(response);
 	}
 	
@@ -165,5 +168,13 @@ public class AgentJoueur extends Agent{
 		{
 			this.capitalJoueur = capitalJoueur;
 		}
+	}
+
+	public int getProbaDemandeLoyer() {
+		return probaDemandeLoyer;
+	}
+
+	public void setProbaDemandeLoyer(int probaDemandeLoyer) {
+		this.probaDemandeLoyer = probaDemandeLoyer;
 	}
 }
