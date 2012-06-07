@@ -26,7 +26,7 @@ public class RecupInitialCapital extends OneShotBehaviour {
 			if(messageReceived.getPerformative() == ACLMessage.INFORM){ 
 				String line = messageReceived.getContent();
 				agentJoueur.setCapitalJoueur(Integer.parseInt(line));
-				System.err.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
+				System.out.println("L'agent " + agentJoueur.getLocalName() +  " a recupere sa dotation initiale");
 			}
 			else
 				System.err.println("Le comportement RecupInitialCapital a reçu un message imprévu de type : " + messageReceived);

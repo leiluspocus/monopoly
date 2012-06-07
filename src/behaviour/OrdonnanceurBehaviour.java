@@ -103,7 +103,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				Plateau p = ((AgentMonopoly) myAgent).getPlateau();
 				try {
 					caseCourante.setContentObject(p.getCase(newPos));
-					System.err.println(caseCourante);
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
 				} 
