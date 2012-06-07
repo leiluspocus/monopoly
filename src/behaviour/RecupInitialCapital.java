@@ -1,10 +1,12 @@
 package behaviour;
 
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.ParallelBehaviour;
 import jade.lang.acl.ACLMessage;
 import util.Logger;
 import agent.AgentJoueur;
 import behaviour.player.ActivePlayerBehaviour;
+import behaviour.player.PassivePlayerBehaviour;
 
 public class RecupInitialCapital extends OneShotBehaviour {
 	private static final long serialVersionUID = 1L;
@@ -34,6 +36,9 @@ public class RecupInitialCapital extends OneShotBehaviour {
 	public int onEnd(){ //Démarre le comportement normal de l'agent joueur
 		System.out.println("Le joueur " + agentJoueur.getLocalName() +  " commence à jouer");
 		reset(); 
+		ParallelBehaviour parallel = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL);
+		parallel.addSubBehaviour(new ActivePlayerBehaviour(agentJoueur, params));
+		parallel.addSubBehaviour(new PassivePlayerBehaviour(agentJoueur));
 		agentJoueur.addBehaviour(new ActivePlayerBehaviour(agentJoueur, params));
 	    return super.onEnd();
 	}
