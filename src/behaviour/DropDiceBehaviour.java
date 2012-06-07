@@ -4,7 +4,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import util.Logger;
 import agent.AgentJoueur;
 
 public class DropDiceBehaviour extends OneShotBehaviour {
@@ -47,7 +46,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
     	AID seed = getSeed();
     	jetDes.addReceiver(seed);
     	myAgent.send(jetDes);
-    	Logger.info("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
+    	System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
 	}
 
 	private void deplacerPion(String diceValue) { 
@@ -55,7 +54,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
         diceMsgToMonopoly.addReceiver(getMonopoly());
         diceMsgToMonopoly.setContent(diceValue);
         myAgent.send(diceMsgToMonopoly);
-        Logger.info("Joueur " + ((AgentJoueur)myAgent).getNom() + " a fait " + diceValue);
+        System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " a fait " + diceValue);
 	}
 	
 	@Override
@@ -74,7 +73,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
         		deplacerPion(message.getContent());
                 break;
              default:
-            	 Logger.err("Message inconnu non traite: " + message);
+            	 System.out.println("Message inconnu non traite: " + message);
         	} 
         } 
         

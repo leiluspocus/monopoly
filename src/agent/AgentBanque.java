@@ -10,7 +10,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 import java.util.Vector;
 
-import util.Logger;
 import behaviour.GiveInitialCapital;
 
 public class AgentBanque extends Agent{
@@ -54,7 +53,7 @@ public class AgentBanque extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { Logger.err("Enregistrement de l'agent Banque au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.out.println("Enregistrement de l'agent Banque au service echoue - Cause : " + e); }
 	}
 	
 	public Vector<DFAgentDescription> getJoueurs() {return joueurs;}

@@ -1,10 +1,9 @@
 package behaviour.player;
 
-import agent.AgentJoueur;
-import util.Logger;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import agent.AgentJoueur;
 
 /**
  * Comportement visant à bloquer les autres agents en visant les cases 
@@ -56,7 +55,7 @@ ACLMessage msgReceived = myAgent.receive();
 					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
 					break;
 					
-				default: Logger.info("Message non géré : "+msgReceived.getContent());
+				default: System.out.println("Message non géré : "+msgReceived.getContent());
 					break;
 			}
 		}

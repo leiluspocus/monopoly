@@ -12,7 +12,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
 import util.Constantes;
-import util.Logger;
 import view.Monopoly;
 import behaviour.CreatePlateauBehaviour;
 
@@ -40,7 +39,7 @@ public class AgentMonopoly extends GuiAgent{
         try {
             DFService.register(this, agentDescription); 
         } 
-        catch (FIPAException e) { Logger.err("Enregistrement de l'agent monopoly au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.out.println("Enregistrement de l'agent monopoly au service echoue - Cause : " + e); }
 	}
 
 	private Vector<DFAgentDescription> fetchPlayers() {

@@ -3,7 +3,6 @@ package behaviour.player;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import util.Logger;
 import agent.AgentJoueur;
 
 
@@ -23,7 +22,7 @@ public class AvideBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() 
 	{
-		Logger.info("Action d'avide");
+		System.out.println("Action d'avide");
 		ACLMessage msgReceived = myAgent.receive();
 
 		if (msgReceived != null)
@@ -57,7 +56,7 @@ public class AvideBehaviour extends OneShotBehaviour {
 				((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
 				break;
 
-			default: Logger.info("Message non géré : "+msgReceived.getContent());
+			default: System.out.println("Message non géré : "+msgReceived.getContent());
 			break;
 			}
 		}

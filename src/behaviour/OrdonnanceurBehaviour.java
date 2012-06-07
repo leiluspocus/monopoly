@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import util.Constantes;
-import util.Logger;
 import agent.AgentMonopoly;
 
 public class OrdonnanceurBehaviour extends Behaviour {
@@ -35,25 +34,25 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 	
 	public void sendToJail(AID player) {
-		Logger.info("Envoi du joueur " + player + " en prison");
+		System.out.println("Envoi du joueur " + player + " en prison");
 		ACLMessage tick = new ACLMessage(ACLMessage.CONFIRM);
 		tick.addReceiver(prison);
 		try {
 			tick.setContentObject(player);
 			myAgent.send(tick);
 		} 
-		catch (IOException e) { Logger.err(e.getMessage()); }
+		catch (IOException e) { System.out.println(e.getMessage()); }
 	}
 	
 	public void libererJoueur(AID player) {
-		Logger.info("Liberation du joueur " + player + " emprisonne");
+		System.out.println("Liberation du joueur " + player + " emprisonne");
 		ACLMessage tick = new ACLMessage(ACLMessage.DISCONFIRM);
 		tick.addReceiver(prison);
 		try {
 			tick.setContentObject(player);
 			myAgent.send(tick);
 		} 
-		catch (IOException e) { Logger.err(e.getMessage()); }
+		catch (IOException e) { System.out.println(e.getMessage()); }
 	}
 
 

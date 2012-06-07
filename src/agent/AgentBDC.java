@@ -1,29 +1,29 @@
 package agent;
 
-import java.util.List;
-import java.util.Vector;
-
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-
-import database.CaseModel;
-
-import behaviour.BDCBehaviour;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+
+import java.util.List;
+import java.util.Vector;
+
 import util.Constantes;
-import util.Convert;
-import util.Logger;
 import util.Constantes.ActionSpeciale;
 import util.Constantes.Couleur;
+import util.Convert;
 import view.Carte;
 import view.Case;
 import view.CaseAchetable;
 import view.CaseSpeciale;
 import view.CaseTerrain;
+import behaviour.BDCBehaviour;
+
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+
+import database.CaseModel;
 
 public class AgentBDC extends Agent{
 	private static final long serialVersionUID = 1L;
@@ -45,7 +45,7 @@ public class AgentBDC extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { Logger.err("Enregistrement de l'agent BDC au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.out.println("Enregistrement de l'agent BDC au service echoue - Cause : " + e); }
 	}
 	
 	public Vector<Carte> buildCartesChances() {
