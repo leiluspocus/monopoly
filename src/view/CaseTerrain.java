@@ -5,6 +5,8 @@ import java.util.Vector;
 import util.Constantes.Couleur;
 
 public class CaseTerrain  extends CaseAchetable{
+	private static final long serialVersionUID = 1L;
+	
 	private int valeurMaison; // Valeur de la maison
 	private int nbMaisons; // Nombre de maisons posées sur la case 
 	

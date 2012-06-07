@@ -7,6 +7,8 @@ import java.util.Vector;
 import util.Constantes.Couleur;
 
 public class CaseAchetable extends Case{
+	private static final long serialVersionUID = 1L;
+	
 	protected int valeurTerrain; // Valeur initiale du terrain
 	protected Vector<Integer> loyers;  // Valeurs des loyers (selon le nombre de terrains possédés)
 	protected Agent proprietaire; // Propriétaire de la case
