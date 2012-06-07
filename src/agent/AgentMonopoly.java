@@ -1,26 +1,20 @@
 package agent;
 
 import jade.core.AID;
-import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
-import jade.wrapper.AgentController;
-import jade.wrapper.StaleProxyException;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
-import platform.MainContainer;
 import util.Constantes;
 import util.Logger;
 import view.Monopoly;
 import behaviour.CreatePlateauBehaviour;
-import behaviour.GivePlayersToOthers;
-import behaviour.OrdonnanceurBehaviour;
 
 public class AgentMonopoly extends GuiAgent{
 	private static final long serialVersionUID = 1L;
@@ -29,22 +23,11 @@ public class AgentMonopoly extends GuiAgent{
 	private PropertyChangeSupport changes;
 
 	protected void setup(){
-		AgentController bc;
 		changes = new PropertyChangeSupport(this);
 		register();
 		lesJoueurs = fetchPlayers();
 		
-		try {
-			bc = MainContainer.getMc().createNewAgent("BANQUE", "agent.AgentBanque", null);
-			bc.start();
-		} catch (StaleProxyException e) {e.printStackTrace();}
-		
-		ParallelBehaviour parallelBehaviour = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL);
-		parallelBehaviour.addSubBehaviour(new CreatePlateauBehaviour(this));
-		parallelBehaviour.addSubBehaviour(new GivePlayersToOthers(this, lesJoueurs));
-		parallelBehaviour.addSubBehaviour(new OrdonnanceurBehaviour(this, lesJoueurs, fetchJail()));
-		
-		addBehaviour(parallelBehaviour);
+		addBehaviour(new CreatePlateauBehaviour(this));
 	}
 	
 	private void register() {
@@ -81,16 +64,18 @@ public class AgentMonopoly extends GuiAgent{
 		return null;
 	}
 	
-	private AID fetchJail() { 
+	public AID fetchJail() { 
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
-		sd.setType("joueur"); 
+		sd.setType("jail"); 
 		template.addServices(sd);
 		try {
-			DFAgentDescription[] result =
-					DFService.search(this, template);
-			if ( result.length != 0)
-				return result[0].getName();
+			DFAgentDescription[] result;
+			do{
+				result = DFService.search(this, template);
+			}while( result.length != 1);
+			
+			return result[0].getName();
 		}
 		catch(FIPAException fe) { System.out.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
 		return null;

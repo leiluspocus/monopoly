@@ -9,8 +9,21 @@ public abstract class Case implements Serializable{
 	protected String proprietaireCase; // Agent propriétaire de la case (nom du joueur, défini dans AgentJoueur)
 	
 	public String getNom() { return nomCase; }
+	public String getProprietaireCase() { return proprietaireCase; }
+	public int getPosition() { return position; }
 	
-	public Case(int p, String n) { 
-		position = p; nomCase = n;
-	} 
+	public Case() { 
+		position = 0; 
+		nomCase = "";
+	}
+	
+	public Case(Case c) { 
+		position = c.getPosition(); 
+		nomCase = c.getNom();
+	}
+	
+	public Case(int p, String n) {
+		position = p; 
+		nomCase = n;
+	}
 }

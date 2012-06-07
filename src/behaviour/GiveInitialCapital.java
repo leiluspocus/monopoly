@@ -8,6 +8,7 @@ import jade.lang.acl.UnreadableException;
 
 import java.util.Vector;
 
+import util.Constantes;
 import agent.AgentBanque;
 
 public class GiveInitialCapital extends Behaviour {
@@ -19,7 +20,7 @@ public class GiveInitialCapital extends Behaviour {
 	public GiveInitialCapital(AID monopolyAgent, AgentBanque agentBanque) {
 		this.monopolyAgent = monopolyAgent;
 		this.agentBanque = agentBanque;
-		System.out.println("L'agent BANQUE est pret a servir");
+		System.out.println("L'agent BANQUE est pret a envoyer les premieres dotations");
 	}
 
 	@Override
@@ -38,12 +39,12 @@ public class GiveInitialCapital extends Behaviour {
 				AgentBanque agent = (AgentBanque) myAgent;
 				agent.setJoueurs(listeDesJoueurs);
 				
-				/*for (DFAgentDescription a : listeDesJoueurs ) {
+				for (DFAgentDescription a : listeDesJoueurs ) {
 					request = new ACLMessage(ACLMessage.INFORM);
 					request.addReceiver(a.getName());
 					request.setContent(Constantes.CAPITAL_DEPART + "");
 					myAgent.send(request);
-				}*/
+				}
 			} catch (UnreadableException e) {e.printStackTrace();}
 		}
 		else{

@@ -28,6 +28,7 @@ public class BDCBehaviour extends Behaviour {
 				System.out.println("Je suis l'agent " + agentBDC.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cartes");
 				ACLMessage messageToSend = messageReceived.createReply();
 				Vector<Carte> v = new Vector<Carte>();
+				messageToSend.setPerformative(ACLMessage.INFORM_IF);
 				
 				v.addAll(agentBDC.buildCartesChances());
 				v.addAll(agentBDC.buildCartesCommunaute());
@@ -43,6 +44,7 @@ public class BDCBehaviour extends Behaviour {
 					System.out.println("Je suis l'agent " + agentBDC.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cases");
 					ACLMessage messageToSend = messageReceived.createReply();
 					Vector<Case> v = new Vector<Case>();
+					messageToSend.setPerformative(ACLMessage.INFORM_REF);
 					
 					v.addAll(agentBDC.buildCasesSpeciales());
 					v.addAll(agentBDC.buildCasesAchetables());
@@ -64,7 +66,7 @@ public class BDCBehaviour extends Behaviour {
 
 	@Override
 	public boolean done() {
-		System.out.println("Le Behaviour de la Base de Connaissance a termine");
+		System.out.println("Le Behaviour de la Base de Connaissance a termine : " + end);
 		return end == 0;
 	}
 }
