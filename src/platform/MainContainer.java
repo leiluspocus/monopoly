@@ -10,9 +10,10 @@ import java.util.Vector;
 
 import util.Constantes;
 import util.Constantes.Pion;
+import util.Logger;
 
 public class MainContainer {
-	private static final int NB_JOUEURS = 6; //Peut-être changé
+	private static final int NB_JOUEURS = 6; //Peut-ï¿½tre changï¿½
 	private static Vector<String> lesNomsDeJoueur;
 	private static AgentContainer mc;
 	
@@ -28,6 +29,7 @@ public class MainContainer {
 	}
 	
 	public static void main(String[] args){
+		Logger l = new Logger();
 		Runtime rt = Runtime.instance();
 		Profile p = null;
 		setup();
@@ -42,7 +44,7 @@ public class MainContainer {
 			bc = mc.createNewAgent("SEED", "agent.AgentSeed", null);
 			bc.start(); 
 			
-			// On lance les joueurs une fois que le plateau est prêt 
+			// On lance les joueurs une fois que le plateau est prï¿½t 
 			for(int i = 1; i <= NB_JOUEURS; ++i){
 				Object[] params = new Object[3];
 				params[0] = (Pion)Constantes.lesPions[i-1];
