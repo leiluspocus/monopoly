@@ -48,7 +48,7 @@ public class StupideBehaviour extends OneShotBehaviour {
 					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
 					break;
 					
-				default: Logger.err("Message non géré par le behaviour Stupide : "+msgReceived);
+				default: Logger.err("Message non gere par le behaviour Stupide : "+msgReceived.getSender().getName());
 					break;
 			}
 		}

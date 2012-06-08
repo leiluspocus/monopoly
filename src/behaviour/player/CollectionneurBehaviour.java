@@ -42,7 +42,7 @@ public class CollectionneurBehaviour extends OneShotBehaviour {
 				break;
 	
 				default: 
-					Logger.err("Message non géré par le behaviour Collectionneur : "+msgReceived);
+					Logger.err("Message non gere par le behaviour Collectionneur from "+msgReceived.getSender().getName());
 					break;
 			}
 		}

@@ -40,7 +40,7 @@ public class AvideBehaviour extends OneShotBehaviour {
 					break;
 	
 				default: 
-					Logger.err("Message non géré par le behaviour Avide : "+msgReceived);
+					Logger.err("Message non géré par le behaviour Avide from "+ msgReceived.getSender().getName() );
 					break;
 			}
 		}

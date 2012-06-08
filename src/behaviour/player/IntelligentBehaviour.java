@@ -43,7 +43,7 @@ public class IntelligentBehaviour extends OneShotBehaviour {
 				break;
 	
 				default: 
-					Logger.err("Message non géré par le behaviour Intelligent : " + msgReceived);
+					Logger.err("Message non gere par le behaviour Intelligent : " + msgReceived.getSender().getName());
 					break;
 			}
 		}

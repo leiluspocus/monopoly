@@ -43,7 +43,7 @@ public class PicsouBehaviour extends OneShotBehaviour {
 				break;
 	
 				default: 
-					Logger.err("Message non géré par le behaviour Picsou : " + msgReceived);
+					Logger.err("Message non gere par le behaviour Picsou : " + msgReceived.getSender().getName());
 					break;
 			}
 		}
