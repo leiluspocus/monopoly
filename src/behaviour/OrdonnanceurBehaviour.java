@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import util.Constantes;
 import util.Constantes.Pion;
+import view.Carte;
 import view.Plateau;
 import agent.AgentMonopoly;
 
@@ -20,27 +21,30 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private Vector<DFAgentDescription> lesJoueurs;
 	private HashMap<DFAgentDescription, Integer> lesPositionsDesJoueurs;
 	HashMap<Pion, Integer> lesJoueursEtLesPions;
-	private AgentMonopoly agentMonopoly;
 	private int currentTour;
 	private AID prison;
 	private AID banque;
+	private Plateau plateau;
 	
-	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Vector<DFAgentDescription> j, AID p) {
+	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau plateau, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
-		this.agentMonopoly = agentMonopoly;
-		lesJoueurs = j;
-		prison = p;
-		banque = new AID("BANQUE", AID.ISLOCALNAME);
-		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
-		lesJoueursEtLesPions = new HashMap<Pion, Integer>();
+		this.lesJoueurs = j;
+		this.prison = p;
+		this.plateau = plateau;
+		this.banque = new AID("BANQUE", AID.ISLOCALNAME);
+		this.currentTour = 0; 
+		
+		this.lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
+		this.lesJoueursEtLesPions = new HashMap<Pion, Integer>();
+		
 		for ( DFAgentDescription joueur : lesJoueurs ) {
 			lesPositionsDesJoueurs.put(joueur, 0);
 			int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
 			lesJoueursEtLesPions.put(Constantes.lesPions[num-1], 0);
 		}
-		agentMonopoly.getPlateau().setPositionJoueurs(lesJoueursEtLesPions);
-		currentTour = 0; 
-		// Tous les joueurs sont initialement sur la case depart
+		this.plateau.setPositionJoueurs(lesJoueursEtLesPions);
+		
+		// Tous les joueurs doivent-être sur la case depart
 		myAgent.blockingReceive(); 
 	}
 	
@@ -107,7 +111,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 					else {
 						// On a fait un tour de plateau -> donner de l'argent au joueur !
-						System.out.println("Le joueur " + playerName + " a fini un tour");
+						System.out.println(playerName + " a fini un tour");
 						messageToTheBank.setContent(playerName + "#" + "+20000");
 						myAgent.send(messageToTheBank);
 						
@@ -115,27 +119,38 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 					
 					if(newPos == Constantes.CASE_IMPOTS){
-						System.out.println("Le joueur " + playerName + " est tombe sur la case IMPOTS");
+						System.out.println(playerName + " est tombe sur la case IMPOTS");
 						messageToTheBank.setContent(playerName + "#" + "-20000");
 						myAgent.send(messageToTheBank);
-					}
-					if(newPos == Constantes.CASE_TAXE){
-						System.out.println("Le joueur " + playerName + " est tombe sur la case TAXE");
+					} 
+					else if(newPos == Constantes.CASE_TAXE){
+						System.out.println(playerName + " est tombe sur la case TAXE");
 						messageToTheBank.setContent(playerName + "#" + "-10000");
+						myAgent.send(messageToTheBank);
+					} 
+					else if(plateau.isCaseChance(newPos)){
+						Carte c = plateau.tirageChance();
+						System.out.println(playerName + " tire une carte Chance :\n" + c.getMsg());
+						messageToTheBank.setContent(playerName + "#" + c.getValeur());
+						myAgent.send(messageToTheBank);
+					}
+					else if(plateau.isCaseCommunaute(newPos)){
+						Carte c = plateau.tirageCommunaute();
+						System.out.println(playerName + " tire une carte Communaute :\n" + c.getMsg());
+						messageToTheBank.setContent(playerName + "#" + c.getValeur());
 						myAgent.send(messageToTheBank);
 					}
 				}
 				lesPositionsDesJoueurs.put(joueur, newPos);
 				int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
 				lesJoueursEtLesPions.put(Constantes.lesPions[num-1], newPos);
-				agentMonopoly.getPlateau().setPositionJoueurs(lesJoueursEtLesPions);
-				System.out.println(lesJoueursEtLesPions);
+				plateau.setPositionJoueurs(lesJoueursEtLesPions);
+				//System.out.println(lesJoueursEtLesPions);
 				
 				// L'agent Monopoly envoie au joueur la case
 				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
-				Plateau p = ((AgentMonopoly) myAgent).getPlateau();
 				try {
-					caseCourante.setContentObject(p.getCase(newPos));
+					caseCourante.setContentObject(plateau.getCase(newPos));
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
 				} 

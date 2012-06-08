@@ -33,7 +33,7 @@ public class RecupInitialCapital extends OneShotBehaviour {
 	}
 	
 	public int onEnd(){ //Démarre le comportement normal de l'agent joueur
-		System.out.println("Le joueur "+agentJoueur.getLocalName()+" commence à jouer avec un capital de "+agentJoueur.getCapitalJoueur());
+		System.out.println(agentJoueur.getLocalName()+" commence à jouer avec un capital de "+agentJoueur.getCapitalJoueur());
 		reset(); 
 		ParallelBehaviour parallel = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL);
 		parallel.addSubBehaviour(new ActivePlayerBehaviour(agentJoueur, params));

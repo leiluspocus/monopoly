@@ -47,7 +47,7 @@ public class GivePlayersToOthers extends OneShotBehaviour {
 	public int onEnd(){
 	//	System.out.println("Le Behaviour GivePlayersToOthers a termine");
 		reset();
-		agentMonopoly.addBehaviour(new OrdonnanceurBehaviour(agentMonopoly, agentMonopoly.getLesJoueurs(), agentMonopoly.fetchJail()));
+		agentMonopoly.addBehaviour(new OrdonnanceurBehaviour(agentMonopoly, agentMonopoly.getPlateau(), agentMonopoly.getLesJoueurs(), agentMonopoly.fetchJail()));
 	    return super.onEnd();
 	}
 }

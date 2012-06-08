@@ -1,8 +1,11 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Vector;
 
+import util.Constantes.ActionSpeciale;
 import util.Constantes.Pion;
 
 public class Plateau {
@@ -10,9 +13,34 @@ public class Plateau {
 	private Vector<Carte> cartes; // Ensemble des cartes (chance et communaute)
 	private HashMap<Pion, Integer> positionPions;
 	
+	private int numCourantCartesChance;
+	private int numCourantCartesCommunaute;
+	
+	private ArrayList<Integer> listCasesChance;
+	private ArrayList<Integer> listCasesCommunaute;
+
 	public Plateau(Vector<Case> vcas, Vector<Carte> vcar){
+		Random intGenerator = new Random();
+		
 		plateau = vcas;
 		cartes = vcar;
+		numCourantCartesChance = intGenerator.nextInt(15);
+		numCourantCartesCommunaute = intGenerator.nextInt(15) +16;
+		
+		listCasesChance = new ArrayList<Integer>();
+		listCasesCommunaute = new ArrayList<Integer>();
+		
+		for(Case c : plateau){
+			if(c instanceof CaseSpeciale){
+				if(((CaseSpeciale) c).getActionSpeciale() == ActionSpeciale.CHANCE){
+					listCasesChance.add(c.getPosition());
+				}
+					
+				if(((CaseSpeciale) c).getActionSpeciale() == ActionSpeciale.CAISSECOMMUNAUTE){
+					listCasesCommunaute.add(c.getPosition());
+				}
+			}	
+		}
 	}
 
 	public Vector<Case> getPlateau(){ return this.plateau; }
@@ -28,5 +56,37 @@ public class Plateau {
 			}
 		}
 		return null;
+	}
+	
+	public Carte tirageChance(){
+		Carte c = cartes.get(numCourantCartesChance);
+		
+		if(numCourantCartesChance == 15)
+			numCourantCartesChance = 0;
+		else
+			numCourantCartesChance++;
+		
+		return c;
+	}
+	
+	public Carte tirageCommunaute(){
+		Carte c = cartes.get(numCourantCartesCommunaute);
+		
+		if(numCourantCartesCommunaute == 31)
+			numCourantCartesCommunaute = 0;
+		else
+			numCourantCartesCommunaute++;
+		
+		return c;
+	}
+
+	public boolean isCaseChance(int position) {
+		Integer i = new Integer(position);
+		return listCasesChance.contains(i);
+	}
+
+	public boolean isCaseCommunaute(int position) {
+		Integer i = new Integer(position);
+		return listCasesCommunaute.contains(i);
 	}
 }

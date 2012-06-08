@@ -6,7 +6,7 @@ public class Carte implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int valeur;
 	private String msg;
-	private int typeCarte;
+	private int typeCarte; //CHANCE = 0 | COMMUNAUTE = 1
 	
 	public int getValeur() {return valeur;}
 	public String getMsg() {return msg;}

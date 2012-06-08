@@ -55,7 +55,7 @@ public class DropDiceBehaviour extends OneShotBehaviour {
         diceMsgToMonopoly.addReceiver(getMonopoly());
         diceMsgToMonopoly.setContent(diceValue);
         myAgent.send(diceMsgToMonopoly);
-        Logger.info("Joueur " + ((AgentJoueur)myAgent).getNom() + " a fait " + diceValue);
+        Logger.info(myAgent.getLocalName() + " a fait " + diceValue);
 	}
 	
 	@Override

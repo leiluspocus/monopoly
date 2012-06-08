@@ -23,7 +23,8 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 			AID target = new AID (res[0], AID.ISLOCALNAME);
 			int value = Integer.parseInt(res[1]);
 			
-			System.out.println("Mouvement d'argent : " + target.getLocalName() + " -> " + value);
+			if(value != 0)
+				System.out.println("Mouvement d'argent : " + target.getLocalName() + " -> " + value);
 		}
 	}
 }
