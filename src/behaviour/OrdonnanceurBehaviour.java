@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import util.Constantes;
+import util.Constantes.Pion;
 import view.Plateau;
 import agent.AgentMonopoly;
 
@@ -18,17 +19,26 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private static final long serialVersionUID = 1L;
 	private Vector<DFAgentDescription> lesJoueurs;
 	private HashMap<DFAgentDescription, Integer> lesPositionsDesJoueurs;
+	HashMap<Pion, Integer> lesJoueursEtLesPions;
+	private AgentMonopoly agentMonopoly;
 	private int currentTour;
 	private AID prison;
+	private AID banque;
 	
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
+		this.agentMonopoly = agentMonopoly;
 		lesJoueurs = j;
 		prison = p;
+		banque = new AID("BANQUE", AID.ISLOCALNAME);
 		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
+		lesJoueursEtLesPions = new HashMap<Pion, Integer>();
 		for ( DFAgentDescription joueur : lesJoueurs ) {
 			lesPositionsDesJoueurs.put(joueur, 0);
+			int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
+			lesJoueursEtLesPions.put(Constantes.lesPions[num-1], 0);
 		}
+		agentMonopoly.getPlateau().setPositionJoueurs(lesJoueursEtLesPions);
 		currentTour = 0; 
 		// Tous les joueurs sont initialement sur la case depart
 		myAgent.blockingReceive(); 
@@ -60,21 +70,23 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	@Override
 	public void action() {  
 		DFAgentDescription joueur = lesJoueurs.get(currentTour); 
+		ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);
+		messageToTheBank.addReceiver(banque);
 		
-		// Envoi d'un message au joueur pour qu'il lance les des
+		//System.out.println("Envoi d'un message a " + joueur.getName().getLocalName() + " pour qu'il lance les des");
 		throwDice(joueur);
-		System.out.println("Envoi d'un message a " + joueur.getName().getLocalName() + " pour qu'il lance les des");
- 
-		// Reception du score fait par le joueur
-		ACLMessage message = myAgent.blockingReceive(); 
-		System.out.println("Reception du score du joueur " + message.getSender().getLocalName() + " : " + message.getContent());
+		
+		//System.out.println("Reception du score du joueur " + messageReceived.getSender().getLocalName() + " : " + message.getContent());
+		ACLMessage messageReceived = myAgent.blockingReceive(); 
+		
 		// Deplacement du pion du joueur
-		if ( message != null ) { 
-			if ( message.getPerformative() == ACLMessage.INFORM) { 
-				Integer value = lesPositionsDesJoueurs.get(joueur);
-				Integer diceValue = Integer.parseInt(message.getContent());
-				Integer newPos;
-
+		if ( messageReceived != null ) { 
+			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
+				String playerName = messageReceived.getSender().getLocalName();
+				Integer oldPosition = lesPositionsDesJoueurs.get(joueur);
+				Integer diceValue = Integer.parseInt(messageReceived.getContent());
+				int newPos;
+				
 				// Le joueur doit aller sur la case prison
 				if ( diceValue < 0 ) {
 					newPos = Constantes.CASE_PRISON;
@@ -82,29 +94,48 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				}
 				
 				// Cas ou le joueur est en prison : il doit faire 12 pour en sortir 
-				if ( value == Constantes.CASE_PRISON && diceValue != 12 ) {
+				if ( oldPosition == Constantes.CASE_PRISON && diceValue != 12 ) {
 					newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
 				}
 				else {
 					// Le joueur peut se deplacer
-					if ( value == Constantes.CASE_PRISON ) { // On envoie un message a l'agent prison pour liberer le joueur
+					if ( oldPosition == Constantes.CASE_PRISON ) { // On envoie un message a l'agent prison pour liberer le joueur
 						libererJoueur(joueur.getName());
 					}
-					if ( value + diceValue < Constantes.CASE_FIN ) {
-						newPos = value + diceValue;
+					if ( oldPosition + diceValue < Constantes.CASE_FIN ) {
+						newPos = oldPosition + diceValue;
 					}
 					else {
 						// On a fait un tour de plateau -> donner de l'argent au joueur !
-						newPos = value + diceValue - Constantes.CASE_FIN;
+						System.out.println("Le joueur " + playerName + " a fini un tour");
+						messageToTheBank.setContent(playerName + "#" + "+20000");
+						myAgent.send(messageToTheBank);
+						
+						newPos = oldPosition + diceValue - Constantes.CASE_FIN;
+					}
+					
+					if(newPos == Constantes.CASE_IMPOTS){
+						System.out.println("Le joueur " + playerName + " est tombe sur la case IMPOTS");
+						messageToTheBank.setContent(playerName + "#" + "-20000");
+						myAgent.send(messageToTheBank);
+					}
+					if(newPos == Constantes.CASE_TAXE){
+						System.out.println("Le joueur " + playerName + " est tombe sur la case TAXE");
+						messageToTheBank.setContent(playerName + "#" + "-10000");
+						myAgent.send(messageToTheBank);
 					}
 				}
 				lesPositionsDesJoueurs.put(joueur, newPos);
+				int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
+				lesJoueursEtLesPions.put(Constantes.lesPions[num-1], newPos);
+				agentMonopoly.getPlateau().setPositionJoueurs(lesJoueursEtLesPions);
+				System.out.println(lesJoueursEtLesPions);
 				
 				// L'agent Monopoly envoie au joueur la case
 				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
 				Plateau p = ((AgentMonopoly) myAgent).getPlateau();
 				try {
-					caseCourante.setContentObject(p.getCase(newPos.intValue()));
+					caseCourante.setContentObject(p.getCase(newPos));
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
 				} 
@@ -115,7 +146,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					e.printStackTrace();
 				}
 			}
-			else if (message.getPerformative() == ACLMessage.INFORM_REF)
+			else if (messageReceived.getPerformative() == ACLMessage.INFORM_REF)
 			{
 				// Joueur en faillite
 			}

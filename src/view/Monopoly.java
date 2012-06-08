@@ -17,13 +17,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import agent.AgentMonopoly;
-
 public class Monopoly extends JFrame implements ActionListener,PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 	
 	private Plateau p;
-	private AgentMonopoly myAgent;
 	
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu gameMenu = new JMenu("Jeu");
@@ -37,10 +34,9 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 	
 	private Vector<CasePanel> cases = new Vector<CasePanel>();
 	
-	public Monopoly(AgentMonopoly agent, Plateau p){
+	public Monopoly(Plateau p){
 		super();
 		this.p = p;
-		myAgent = agent;
 		createGUI();
 	}
 	

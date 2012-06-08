@@ -5,7 +5,6 @@ import jade.core.behaviours.ParallelBehaviour;
 import jade.lang.acl.ACLMessage;
 import agent.AgentJoueur;
 import behaviour.player.ActivePlayerBehaviour;
-import behaviour.player.PassivePlayerBehaviour;
 
 public class RecupInitialCapital extends OneShotBehaviour {
 	private static final long serialVersionUID = 1L;

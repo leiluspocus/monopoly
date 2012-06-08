@@ -29,10 +29,10 @@ public class GivePlayersToOthers extends OneShotBehaviour {
 
 	@Override
 	public void action() {
-		ACLMessage messageReceived = agentMonopoly.receive();
+		ACLMessage messageReceived = agentMonopoly.blockingReceive(); 
 		if (messageReceived != null) {
 			if(messageReceived.getPerformative() == ACLMessage.REQUEST){
-				//System.out.println("L'agent " + agentMonopoly.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Joueurs");
+				//System.out.println("Je suis l'agent " + agentMonopoly.getLocalName() + " et " + messageReceived.getSender().getLocalName() + " a demande la liste des Joueurs");
 				ACLMessage messageToSend = messageReceived.createReply();
 				
 				try {
@@ -40,9 +40,6 @@ public class GivePlayersToOthers extends OneShotBehaviour {
 				} catch (IOException e) {e.printStackTrace();}
 				agentMonopoly.send(messageToSend);
 			}
-		}
-		else {
-			block();
 		}
 	}
 	

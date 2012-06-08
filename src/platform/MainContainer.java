@@ -29,7 +29,7 @@ public class MainContainer {
 	}
 	
 	public static void main(String[] args){
-		Logger l = new Logger();
+		new Logger();
 		Runtime rt = Runtime.instance();
 		Profile p = null;
 		setup();

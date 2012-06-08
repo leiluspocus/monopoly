@@ -1,6 +1,8 @@
 package behaviour;
 
+import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import agent.AgentBanque;
 
 public class BankSharkBehaviour extends CyclicBehaviour {
@@ -14,6 +16,14 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 
 	@Override
 	public void action() {
+		ACLMessage messageReceived = agentBanque.blockingReceive(); 
+		if (messageReceived != null && messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
 
+			String[] res = messageReceived.getContent().split("#");
+			AID target = new AID (res[0], AID.ISLOCALNAME);
+			int value = Integer.parseInt(res[1]);
+			
+			System.out.println("Mouvement d'argent : " + target.getLocalName() + " -> " + value);
+		}
 	}
 }

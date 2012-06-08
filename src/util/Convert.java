@@ -55,6 +55,6 @@ public class Convert {
 		if ( ActionSpeciale.PARCGRATUIT.toString().equals(string) ) {
 			return ActionSpeciale.PARCGRATUIT;
 		}
-		return ActionSpeciale.PRISON;
+		return ActionSpeciale.VISITERPRISON;
 	}
 }

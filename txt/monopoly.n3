@@ -265,7 +265,7 @@ mnply:visite
 	a mnply:Speciale ;
 	mnply:position 10 ;
 	mnply:nom "Simple Visite" ;
-	mnply:type "PRISON" .
+	mnply:type "VISITERPRISON" .
 	
 mnply:vilette
 	a mnply:Terrain ;

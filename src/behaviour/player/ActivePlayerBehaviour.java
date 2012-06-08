@@ -16,6 +16,7 @@ public class ActivePlayerBehaviour extends SequentialBehaviour {
 	 
 	public ActivePlayerBehaviour(AgentJoueur agentJoueur, Object[] params) {
 		super(agentJoueur);
+		// Sequential Behaviour => Je lance le des, et j'applique ma tactique de jeu
 		addSubBehaviour(new DropDiceBehaviour(myAgent));
 		strategy = (Integer) params[1];
 		pickStrategy(); 

@@ -13,7 +13,6 @@ import java.util.Random;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import util.Constantes;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Case;
@@ -64,13 +63,12 @@ public class AgentJoueur extends Agent{
 	}
 	
 	protected void setup() {
-		// Sequential Behaviour => Je lance le des, et j'applique ma tactique de jeu
 		fetchSeedAgent(); 
 		Object[] params = this.getArguments();		
-		setPion((Pion)params[0]);
-		setNom((String)params[2]);
-		setCapitalJoueur(Constantes.CAPITAL_DEPART);
-		setEnFaillite(false);
+		pion = ((Pion)params[0]);
+		nomJoueur = ((String)params[2]);
+		capitalJoueur = 0;
+		enFaillite = false;
 		registerPlayer(); 
 		
 		// Comportement initial
