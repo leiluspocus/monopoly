@@ -24,13 +24,8 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 			if ( res[1] != null ) {
 				System.out.println("Voici res1 : " + res[1] + "voici charAt0 " +res[1].charAt(0) );
 				if ( res[1].charAt(0) == '+' ) {
-					res[1] = res[1].replace('+', ' ').trim();
-					System.out.println("kikou " + res[1]);
-				}
-				if ( res[1].charAt(0) == '-' ) {
-					res[1] = res[1].replace('-', ' ').trim();
-					System.out.println("kikou " + res[1] );
-				}
+					res[1] = res[1].replace('+', ' ').trim(); 
+				} 
 			}
 			int value = Integer.parseInt(res[1]);
 			
