@@ -20,29 +20,31 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private static final long serialVersionUID = 1L;
 	private Vector<DFAgentDescription> lesJoueurs;
 	private HashMap<DFAgentDescription, Integer> lesPositionsDesJoueurs;
+	private HashMap<DFAgentDescription, Boolean> canPlayerBeReleasedFromJail;
 	HashMap<Pion, Integer> lesJoueursEtLesPions;
 	private int currentTour;
 	private AID prison;
 	private AID banque;
 	private Plateau plateau;
 	
-	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau plateau, Vector<DFAgentDescription> j, AID p) {
+	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau pl, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
-		this.lesJoueurs = j;
-		this.prison = p;
-		this.plateau = plateau;
-		this.banque = new AID("BANQUE", AID.ISLOCALNAME);
-		this.currentTour = 0; 
+		lesJoueurs = j;
+		prison = p;
+		plateau = pl;
+		banque = new AID("BANQUE", AID.ISLOCALNAME);
+		currentTour = 0; 
 		
-		this.lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
-		this.lesJoueursEtLesPions = new HashMap<Pion, Integer>();
+		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
+		lesJoueursEtLesPions = new HashMap<Pion, Integer>();
+		canPlayerBeReleasedFromJail = new HashMap<DFAgentDescription, Boolean>();
 		
 		for ( DFAgentDescription joueur : lesJoueurs ) {
 			lesPositionsDesJoueurs.put(joueur, 0);
 			int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
 			lesJoueursEtLesPions.put(Constantes.lesPions[num-1], 0);
 		}
-		this.plateau.setPositionJoueurs(lesJoueursEtLesPions);
+		plateau.setPositionJoueurs(lesJoueursEtLesPions);
 		
 		// Tous les joueurs doivent-Ítre sur la case depart
 		myAgent.blockingReceive(); 
@@ -98,7 +100,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				}
 				
 				// Cas ou le joueur est en prison : il doit faire 12 pour en sortir 
-				if ( oldPosition == Constantes.CASE_PRISON && diceValue != 12 ) {
+				if ( oldPosition == Constantes.CASE_PRISON && ! playerCanBeRealeased(diceValue, joueur) ) {
 					newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
 				}
 				else {
@@ -111,11 +113,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 					else {
 						// On a fait un tour de plateau -> donner de l'argent au joueur !
-						System.out.println(playerName + " a fini un tour");
-						messageToTheBank.setContent(playerName + "#" + "+20000");
-						myAgent.send(messageToTheBank);
-						
 						newPos = oldPosition + diceValue - Constantes.CASE_FIN;
+						giveMoneyToPlayer(messageToTheBank, playerName);
 					}
 					
 					if(newPos == Constantes.CASE_IMPOTS){
@@ -131,15 +130,13 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					else if(plateau.isCaseChance(newPos)){
 						Carte c = plateau.tirageChance();
 						System.out.println(playerName + " tire une carte Chance :\n" + c.getMsg());
-						messageToTheBank.setContent(playerName + "#" + c.getValeur());
-						myAgent.send(messageToTheBank);
+						executeActionCarte(joueur, messageToTheBank, playerName, c);
 					}
 					else if(plateau.isCaseCommunaute(newPos)){
 						Carte c = plateau.tirageCommunaute();
 						System.out.println(playerName + " tire une carte Communaute :\n" + c.getMsg());
-						messageToTheBank.setContent(playerName + "#" + c.getValeur());
-						myAgent.send(messageToTheBank);
-					}
+						executeActionCarte(joueur, messageToTheBank, playerName, c);
+					} 
 				}
 				lesPositionsDesJoueurs.put(joueur, newPos);
 				int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
@@ -157,9 +154,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				catch (IOException e1) { e1.printStackTrace(); }
 				try {
 					Thread.sleep(Constantes.DUREE_ANIMATION);
-				} catch (InterruptedException e) { 
-					e.printStackTrace();
-				}
+				} 
+				catch (InterruptedException e) {  e.printStackTrace(); }
 			}
 			else if (messageReceived.getPerformative() == ACLMessage.INFORM_REF)
 			{
@@ -169,6 +165,55 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		// On passe au joueur suivant
 		plateau.redrawFrame();
 		tourSuivant();
+	}
+
+	private boolean playerCanBeRealeased(Integer diceValue,
+			DFAgentDescription joueur) {
+		if ( diceValue == 12 ) {
+			// S'il fait 12, il sort
+			return true;
+		}
+		else {
+			// Verifie l'existence d'une carte de liberation de prison pour le joueur
+			return canPlayerBeReleasedFromJail.containsKey(joueur);
+		} 
+	}
+
+	/**
+	 * Joueur execute action en fonction de la carte tiree
+	 * @param joueur le nom du joueur qui a tire la carte
+	 * @param messageToTheBank ACLMessage a envoyer a l'agent banque
+	 * @param playerName le nom du joueur
+	 * @param c la carte tiree
+	 */
+	private void executeActionCarte(DFAgentDescription joueur,
+			ACLMessage messageToTheBank, String playerName, Carte c) {
+		if (c.getValeur() != 0 ) {
+			messageToTheBank.setContent(playerName + "#" + c.getValeur());
+			myAgent.send(messageToTheBank);
+		}
+		else {
+			if ( c.goToJail() ) {
+				// Carte qui envoie le joueur en prison
+				sendToJail(joueur.getName());
+			}					
+			if ( c.canSetFreeFromJail() ) {
+				// Carte qui permet de libérer de prison
+				canPlayerBeReleasedFromJail.put(joueur, true);
+			}
+		}
+	}
+
+	/**
+	 * Incremente le capital de 20000F d'un joueur s'il n'a pas tire une carte GoToJail
+	 * @param messageToTheBank
+	 * @param playerName
+	 */
+	private void giveMoneyToPlayer(ACLMessage messageToTheBank,
+			String playerName) {
+		System.out.println(playerName + " a fini un tour");
+		messageToTheBank.setContent(playerName + "#" + "+20000");
+		myAgent.send(messageToTheBank);
 	}
 
 	private void throwDice(DFAgentDescription joueur) {

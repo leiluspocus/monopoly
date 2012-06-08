@@ -30,6 +30,14 @@ public class Carte implements Serializable{
 		typeCarte = tp; 
 	}
 	
+	public boolean goToJail() {
+		return msg.contains("Allez en prison");
+	}
+	
+	public boolean canSetFreeFromJail() {
+		return msg.contains("Vous etes libere de Prison.");
+	}
+	
 	public String toString() {
 		return "[" + typeCarte + "] - " + msg + " (" + valeur + ")\n";
 	}
