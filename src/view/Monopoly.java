@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -16,6 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+
+import util.Constantes.Pion;
 
 public class Monopoly extends JFrame implements ActionListener,PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -105,11 +108,14 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 	// Reset the frame with houses and tokens
 	public void redraw(){
 		for(int i = 0; i < cases.size(); i++){
-			if(p.getPlateau().get(i).getClass().equals(CaseTerrain.class)){
-				int nbMaisons = ((CaseTerrain)p.getPlateau().get(i)).getNbMaisons();
-				cases.get(i).checkMaisons(nbMaisons);
-				cases.get(i).repaint();
+			for(Entry<Pion, Integer> entry : p.getPositionJoueurs().entrySet()) {
+				if(entry.getValue() == i)
+					cases.get(i).addPion(entry.getKey());
 			}
+			if(p.getPlateau().get(i).getClass().equals(CaseTerrain.class)){
+				cases.get(i).checkMaisons(((CaseTerrain)p.getPlateau().get(i)).getNbMaisons());
+			}
+			cases.get(i).repaint();
 		}
 	}
 

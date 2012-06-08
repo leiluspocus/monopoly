@@ -12,6 +12,7 @@ public class Plateau {
 	private Vector<Case> plateau; // Ensemble des cases du plateau
 	private Vector<Carte> cartes; // Ensemble des cartes (chance et communaute)
 	private HashMap<Pion, Integer> positionPions;
+	private Monopoly m;
 	
 	private int numCourantCartesChance;
 	private int numCourantCartesCommunaute;
@@ -41,6 +42,14 @@ public class Plateau {
 				}
 			}	
 		}
+	}
+	
+	public void setFrame(Monopoly m){
+		this.m = m;
+	}
+	
+	public void redrawFrame(){
+		m.redraw();
 	}
 
 	public Vector<Case> getPlateau(){ return this.plateau; }

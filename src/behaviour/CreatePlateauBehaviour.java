@@ -91,6 +91,7 @@ public class CreatePlateauBehaviour extends OneShotBehaviour {
 		agentMonopoly.addBehaviour(new GivePlayersToOthers(agentMonopoly, agentMonopoly.getLesJoueurs()));
 		
 		Monopoly m = new Monopoly(((AgentMonopoly) myAgent).getPlateau() );
+		((AgentMonopoly) myAgent).getPlateau().setFrame(m);
 		agentMonopoly.addChangeListener(m);
 	    return super.onEnd();
 	}

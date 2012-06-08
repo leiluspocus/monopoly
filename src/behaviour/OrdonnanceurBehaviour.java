@@ -167,6 +167,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			}
 		}  
 		// On passe au joueur suivant
+		plateau.redrawFrame();
 		tourSuivant();
 	}
 
