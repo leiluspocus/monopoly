@@ -35,11 +35,10 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 					try 
 					{
 						((AgentJoueur)myAgent).setCaseCourante((Case) msgReceived.getContentObject());
-						// La case n'appartient à personne
-						if ( ((AgentJoueur)myAgent).getCaseCourante().getProprietaireCase() == null )
+						if (((AgentJoueur)myAgent).getCaseCourante() instanceof CaseAchetable)
 						{
-							// .. et la case est achetable
-							if ( ((AgentJoueur)myAgent).getCaseCourante() instanceof CaseAchetable )
+							CaseAchetable caseCour = (CaseAchetable) ((AgentJoueur)myAgent).getCaseCourante(); 
+							if (caseCour.getProprietaireCase() != null)
 							{
 								decideAchatTerrain(((AgentJoueur)myAgent).getCaseCourante());
 							}

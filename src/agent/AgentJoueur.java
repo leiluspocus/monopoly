@@ -7,15 +7,15 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
-import java.util.Map;
 import java.util.Random;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import util.Constantes.Pion;
 import util.Logger;
 import view.Case;
+import view.CaseAchetable;
+import view.CaseTerrain;
 import behaviour.RecupInitialCapital;
 
 public class AgentJoueur extends Agent{
@@ -79,41 +79,41 @@ public class AgentJoueur extends Agent{
 	 * Calcule une valeur entre 1 et 100. Si celle-ci correspond à la probabilité de demande,
 	 * on envoi un message au joueur concerné lui demandant de payer le loyer qu'il doit à this
 	 * Méthode utilisée par les comportements du joueur
-	 * @param joueurCreditaire le joueur devant payer le loyer
+	 * @param msgReceived message de requête reçu
 	 */
-	@SuppressWarnings("unchecked")
-	public boolean demanderLoyer(int probaDemandeLoyer, ACLMessage msgReceived)
+
+	public boolean demanderLoyer(ACLMessage msgReceived)
 	{
 		Random rand = new Random();
 		int value = rand.nextInt(100)+1;
 		if (value <= probaDemandeLoyer)
 		{
-			/*
-			 * Message reçu de la forme
-			 * {
-			 * 	"destinataire":"NomCompletAgent";
-			 * 	"montant":2000
-			 * }
-			 */
-			String content = msgReceived.getContent();
-
-			Map<Object,String> map = null;
-			ObjectMapper mapper = new ObjectMapper();
-
+			Case caseJoueur = null;
 			try
 			{
-				map = mapper.readValue(content,Map.class);
+				caseJoueur = (Case) msgReceived.getContentObject();
 			}
-			catch(Exception e) {Logger.err("Erreur deserialisation message : "+e);}
+			catch (UnreadableException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
-			ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-
-			String receiverName = map.get("destinataire");
-			AID receiver = new AID(receiverName, true);
-			request.addReceiver(receiver);
-			request.setContent(map.get("montant"));
-			send(request);
-			Logger.info(getName()+" demande "+map.get("montant")+" à "+receiverName);
+			ACLMessage demandeLoyer = new ACLMessage(ACLMessage.REQUEST);
+			int montantLoyer = 0;
+			if (caseJoueur instanceof CaseTerrain)
+			{
+				int nbMaisons = ((CaseTerrain)caseJoueur).getNbMaisons(); 
+				montantLoyer = ((CaseAchetable)caseJoueur).getLoyers().get(nbMaisons);
+			}
+			else if (caseJoueur instanceof CaseAchetable)
+			{
+				// TODO: loyer pour les gares / compagnies
+			}
+			demandeLoyer.setContent(String.valueOf(montantLoyer));
+			demandeLoyer.addReceiver(caseJoueur.getJoueurPresent());
+			send(demandeLoyer);
+			
 			return true;
 		}
 		

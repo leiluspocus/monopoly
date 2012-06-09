@@ -1,15 +1,16 @@
 package view;
 
+import jade.core.AID;
+
 import java.io.Serializable;
 
 public abstract class Case implements Serializable{
 	private static final long serialVersionUID = 1L;
 	protected int position; //Position de la case sur le plateau
-	protected String nomCase;  // Nom de la case
-	protected String proprietaireCase; // Agent propriétaire de la case (nom du joueur, défini dans AgentJoueur)
+	protected String nomCase;  // Nom de la case 
+	protected AID joueurPresent; // AgentJoueur présent sur la case
 	
 	public String getNom() { return nomCase; }
-	public String getProprietaireCase() { return proprietaireCase; }
 	public int getPosition() { return position; }
 	
 	public Case() { 
@@ -25,5 +26,11 @@ public abstract class Case implements Serializable{
 	public Case(int p, String n) {
 		position = p; 
 		nomCase = n;
+	}
+	public AID getJoueurPresent() {
+		return joueurPresent;
+	}
+	public void setJoueurPresent(AID aid) {
+		this.joueurPresent = aid;
 	}
 }

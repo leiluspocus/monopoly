@@ -19,31 +19,37 @@ public class PassivePlayerBehaviour extends Behaviour{
 	@Override
 	public void action(){
 		ACLMessage msgReceived = myAgent.receive();
-		
-		switch(msgReceived.getPerformative()){
-			/*
-			 * Un joueur est sur une des propriétés de myAgent
-			 */
-			case ACLMessage.INFORM:
-				waitingForMoney = ((AgentJoueur)myAgent).demanderLoyer(((AgentJoueur)myAgent).getProbaDemandeLoyer(), msgReceived);
-			break;
-			/*
-			 * Demande de paiement: à destination d'un joueur (loyer/terrain/case spéciale), ou de la banque (taxes)
-			 * Envoi du paiement au destinataire
-			 */
-			case ACLMessage.REQUEST:
-				((AgentJoueur)myAgent).payerMontantDu(msgReceived);
-			break;
-			/*
-			 * Message receptionnant l'argent d'un joueur ou de la banque
-			 */
-			case ACLMessage.AGREE:
-				int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
-				((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
-			break;
-				
-			default: Logger.err("Message inconnu from " + msgReceived.getSender().getName()); 
+		if (msgReceived != null)
+		{
+			switch(msgReceived.getPerformative()){
+				/*
+				 * Un joueur est sur une des propriétés de myAgent
+				 */
+				case ACLMessage.INFORM:
+					waitingForMoney = ((AgentJoueur)myAgent).demanderLoyer(msgReceived);
 				break;
+				/*
+				 * Demande de paiement: à destination d'un joueur (loyer/terrain/case spéciale), ou de la banque (taxes)
+				 * Envoi du paiement au destinataire
+				 */
+				case ACLMessage.REQUEST:
+					((AgentJoueur)myAgent).payerMontantDu(msgReceived);
+				break;
+				/*
+				 * Message receptionnant l'argent d'un joueur ou de la banque
+				 */
+				case ACLMessage.AGREE:
+					int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
+					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
+				break;
+					
+				default: Logger.err("Message inconnu from " + msgReceived.getSender().getName()); 
+					break;
+			}
+		}
+		else
+		{
+			block();
 		}
 	}
 

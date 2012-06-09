@@ -14,6 +14,7 @@ import java.util.Vector;
 import util.Constantes;
 import util.Constantes.Pion;
 import view.Carte;
+import view.CaseAchetable;
 import view.Plateau;
 import agent.AgentMonopoly;
 
@@ -156,6 +157,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				// L'agent Monopoly envoie au joueur la case
 				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
 				try {
+					plateau.getCase(newPos).setJoueurPresent(joueur.getName());
 					caseCourante.setContentObject(plateau.getCase(newPos));
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
@@ -163,15 +165,20 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					/**
 					 * Avertir le propriétaire de la case qu'un joueur se trouve sur son terrain
 					 */
-					// Si la case a un propriétaire
-					if (plateau.getCase(newPos).getProprietaireCase() != null)
+					if (plateau.getCase(newPos) instanceof CaseAchetable)
 					{
-						// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
-						if (!(plateau.getCase(newPos).getProprietaireCase().equals(joueur.getName())))
+						CaseAchetable caseJoueurCourant = (CaseAchetable) plateau.getCase(newPos);
+						// Si la case a un propriétaire
+						if (caseJoueurCourant.getProprietaireCase() != null)
 						{
-							ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
-							joueurSurVotreTerritoire.addReceiver(new AID(plateau.getCase(newPos).getProprietaireCase(), true));
-							myAgent.send(joueurSurVotreTerritoire);
+							// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
+							if (!(caseJoueurCourant.getProprietaireCase().equals(joueur.getName())))
+							{
+								ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
+								joueurSurVotreTerritoire.addReceiver(caseJoueurCourant.getProprietaireCase());
+								joueurSurVotreTerritoire.setContentObject(plateau.getCase(newPos));
+								myAgent.send(joueurSurVotreTerritoire);
+							}
 						}
 					}
 				} 

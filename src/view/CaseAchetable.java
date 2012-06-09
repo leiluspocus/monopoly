@@ -1,6 +1,6 @@
 package view;
 
-import jade.core.Agent;
+import jade.core.AID;
 
 import java.util.Vector;
 
@@ -11,7 +11,7 @@ public class CaseAchetable extends Case{
 	
 	protected int valeurTerrain; // Valeur initiale du terrain
 	protected Vector<Integer> loyers;  // Valeurs des loyers (selon le nombre de terrains possédés)
-	protected Agent proprietaire; // Propriétaire de la case
+	protected AID proprietaireCase; // Propriétaire de la case
 	protected Couleur couleur; // Couleur à laquelle appartient
 	
 	public CaseAchetable(int pos, String nom, int valT, Vector<Integer> loy, Couleur c) {
@@ -23,5 +23,17 @@ public class CaseAchetable extends Case{
 	
 	public String toString(){
 		return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> " + proprietaireCase;
+	}
+
+	public Vector<Integer> getLoyers() {
+		return loyers;
+	}
+
+	public AID getProprietaireCase() {
+		return proprietaireCase;
+	}
+
+	public void setProprietaireCase(AID proprietaireCase) {
+		this.proprietaireCase = proprietaireCase;
 	}
 }
