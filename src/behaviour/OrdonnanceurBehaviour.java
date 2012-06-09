@@ -77,6 +77,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 	@Override
 	public void action() {  
+		try {
 		DFAgentDescription joueur = lesJoueurs.get(currentTour); 
 		
 		//System.out.println("Envoi d'un message a " + joueur.getName().getLocalName() + " pour qu'il lance les des");
@@ -91,7 +92,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				// Cas classique : le joueur n'est pas en faillite
 				String playerName = messageReceived.getSender().getLocalName();
 				Integer oldPosition = lesPositionsDesJoueurs.get(joueur);
-				Integer diceValue = Integer.parseInt(messageReceived.getContent());
+				Vector<Integer> des = (Vector<Integer>) messageReceived.getContentObject();
+				Integer diceValue = des.get(0) + des.get(1);
 				int newPos;
 				boolean canPlayerPlay = true;
 				
@@ -100,7 +102,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				
 				if ( wasPlayerInJail(joueur) ) {
 					// Le joueur etait en prison >> 
-					if ( ! playerCanBeRealeased(diceValue, joueur, playerName) ) {
+					if ( ! playerCanBeRealeased(des, joueur, playerName) ) {
 						newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
 						canPlayerPlay = false;
 					}
@@ -171,6 +173,10 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		// On passe au joueur suivant
 		plateau.redrawFrame();
 		tourSuivant();
+		}
+		catch ( Exception o ) {
+			o.printStackTrace();
+		}
 	}
 
 	private boolean wasPlayerInJail(DFAgentDescription joueur) {
@@ -200,16 +206,14 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	 * @param joueur
 	 * @return
 	 */
-	private boolean playerCanBeRealeased(Integer diceValue,
+	private boolean playerCanBeRealeased(Vector<Integer> diceValue,
 			DFAgentDescription joueur, String playerName) {
 		// Sur les valeurs du des
-		if ( diceValue == 12 ) {
+		if ( diceValue.get(0) == diceValue.get(1) ) {
 			// S'il fait 12, il sort
+			System.err.println("Le joueur " + playerName + " a fait un double et sort de prison! Quelle chance !");
 			return true;
-		}
-		if ( diceValue % 2 == 0 && diceValue > 6 ) {
-			return true;
-		}
+		} 
 		int nbTours = getTimePassedInJail(joueur.getName());
 		if ( nbTours == 3 ) {
 			makePlayerPay(playerName, 5000);

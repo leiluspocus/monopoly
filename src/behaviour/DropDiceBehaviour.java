@@ -1,10 +1,13 @@
 package behaviour;
 
-import util.Logger;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import java.io.Serializable;
+
+import util.Logger;
 import agent.AgentJoueur;
 
 public class DropDiceBehaviour extends OneShotBehaviour {
@@ -50,12 +53,15 @@ public class DropDiceBehaviour extends OneShotBehaviour {
     	//System.out.println("Joueur " + ((AgentJoueur)myAgent).getNom() + " jette les des");
 	}
 
-	private void deplacerPion(String diceValue) { 
+	private void deplacerPion(Serializable diceValue) { 
+		try {
         ACLMessage diceMsgToMonopoly = new ACLMessage(ACLMessage.INFORM);
         diceMsgToMonopoly.addReceiver(getMonopoly());
-        diceMsgToMonopoly.setContent(diceValue);
+        diceMsgToMonopoly.setContentObject(diceValue);
         myAgent.send(diceMsgToMonopoly);
         Logger.info(myAgent.getLocalName() + " a fait " + diceValue);
+		}
+		catch ( Exception o ) { o.printStackTrace(); }
 	}
 	
 	@Override
@@ -74,7 +80,10 @@ public class DropDiceBehaviour extends OneShotBehaviour {
             	//System.err.println(" >>> alert 2 " + message);
                 if ( message.getPerformative() == ACLMessage.CONFIRM ) {
                 	// Les des sont jetes, il faut deplacer le pion
-                	deplacerPion(message.getContent()); 
+                	try {
+                		deplacerPion(message.getContentObject()); 
+                	}
+                	catch ( Exception o ) { o.printStackTrace(); }
                 }
                 else {
                	 System.err.println("Message inconnu non traite from DropDiceBehaviour apres avoir jete les des: " + message.getSender().getName());
