@@ -8,6 +8,7 @@ import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Vector;
 
 import util.Constantes;
@@ -77,8 +78,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	@Override
 	public void action() {  
 		DFAgentDescription joueur = lesJoueurs.get(currentTour); 
-		ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);
-		messageToTheBank.addReceiver(banque);
 		
 		//System.out.println("Envoi d'un message a " + joueur.getName().getLocalName() + " pour qu'il lance les des");
 		throwDice(joueur);
@@ -101,7 +100,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				
 				if ( wasPlayerInJail(joueur) ) {
 					// Le joueur etait en prison >> 
-					if ( ! playerCanBeRealeased(diceValue, joueur) ) {
+					if ( ! playerCanBeRealeased(diceValue, joueur, playerName) ) {
 						newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
 						canPlayerPlay = false;
 					}
@@ -119,30 +118,29 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 					if ( newPos > Constantes.CASE_FIN ) {
 						newPos -= Constantes.CASE_FIN;
-						giveMoneyToPlayer(messageToTheBank, playerName); // Le joueur a fait un tour complet
+						System.out.println(playerName + " a fini un tour");
+						giveMoneyToPlayer(playerName, 20000); // Le joueur a fait un tour complet
 					}
 					switch ( newPos ) {
 					case Constantes.CASE_IMPOTS :
 						System.out.println(playerName + " est tombe sur la case IMPOTS");
-						messageToTheBank.setContent(playerName + "#" + "-20000");
-						myAgent.send(messageToTheBank);
+						makePlayerPay(playerName, 20000); 
 						break;
 					case  Constantes.CASE_TAXE :
 						System.out.println(playerName + " est tombe sur la case TAXE");
-						messageToTheBank.setContent(playerName + "#" + "-10000");
-						myAgent.send(messageToTheBank);
+						makePlayerPay(playerName, 10000); 
 						break;	
 					}
 					if ( plateau.isCaseChance(newPos)) {
 						Carte c = plateau.tirageChance();
 						System.out.println(playerName + " tire une carte Chance :\n" + c.getMsg());
-						executeActionCarte(joueur, messageToTheBank, playerName, c);
+						executeActionCarte(joueur, playerName, c);
 						
 					}
 					if ( plateau.isCaseCommunaute(newPos)) {
 						Carte c = plateau.tirageCommunaute();
 						System.out.println(playerName + " tire une carte Communaute :\n" + c.getMsg());
-						executeActionCarte(joueur, messageToTheBank, playerName, c);
+						executeActionCarte(joueur, playerName, c);
 					} 
 				}
 			 
@@ -183,9 +181,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			myAgent.send(req);
 			ACLMessage reply = myAgent.blockingReceive();
 			if ( reply != null ) {
-				if ( reply.getPerformative() == ACLMessage.CONFIRM ) {
-					boolean isPlayerInJail = (Boolean) reply.getContentObject();
-					return isPlayerInJail;
+				if ( reply.getPerformative() == ACLMessage.CONFIRM ) { 
+					return (Boolean) reply.getContentObject();
 				}
 			}
 		} 
@@ -197,16 +194,87 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		return false;
 	}
 
+	/**
+	 * Retourne si un joueur peut sortir ou non de prison
+	 * @param diceValue
+	 * @param joueur
+	 * @return
+	 */
 	private boolean playerCanBeRealeased(Integer diceValue,
-			DFAgentDescription joueur) {
+			DFAgentDescription joueur, String playerName) {
+		// Sur les valeurs du des
 		if ( diceValue == 12 ) {
 			// S'il fait 12, il sort
 			return true;
 		}
+		if ( diceValue % 2 == 0 && diceValue > 6 ) {
+			return true;
+		}
+		int nbTours = getTimePassedInJail(joueur.getName());
+		if ( nbTours == 3 ) {
+			makePlayerPay(playerName, 5000);
+			return true;
+		}
 		else {
-			// Verifie l'existence d'une carte de liberation de prison pour le joueur
-			return canPlayerBeReleasedFromJail.containsKey(joueur);
+			if ( canPlayerBeReleasedFromJail.containsKey(joueur) ) {
+				// Le joueur décide de se servir de sa carte
+				canPlayerBeReleasedFromJail.remove(joueur);
+				System.err.println("Le joueur " + playerName + " utilise sa carte et sort de prison!");
+				return true;
+			}
+			else {
+				// Le joueur décide ou non de payer pour sortir TODO le faire dépendre du behaviour ?
+				boolean pay = new Random().nextBoolean();
+				if ( pay ) {
+					makePlayerPay(playerName, 5000);
+					System.err.println("Le joueur " + playerName + " decide de payer 5000F et de sortir de prison!");
+					return true;
+				}
+				System.err.println("Le joueur " + playerName + " prefere rester en prison");
+				incrementTimePassedInJail(joueur.getName());
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * Demande à la prison, le nombre de tours passes par un joueur en prison
+	 * @param name le nom du joueur
+	 * @return le nombre de tours passes
+	 */
+	private void incrementTimePassedInJail(AID name) {
+		try {
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST_WHENEVER);
+			msg.addReceiver(prison);
+			msg.setContentObject(name);
+			myAgent.send(msg); 
 		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+
+	
+	/**
+	 * Demande à la prison, le nombre de tours passes par un joueur en prison
+	 * @param name le nom du joueur
+	 * @return le nombre de tours passes
+	 */
+	private int getTimePassedInJail(AID name) {
+		try {
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST_WHEN);
+			msg.addReceiver(prison);
+			msg.setContentObject(name);
+			myAgent.send(msg);
+			ACLMessage reply = myAgent.blockingReceive();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 
 	/**
@@ -216,9 +284,10 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	 * @param playerName le nom du joueur
 	 * @param c la carte tiree
 	 */
-	private void executeActionCarte(DFAgentDescription joueur,
-			ACLMessage messageToTheBank, String playerName, Carte c) {
+	private void executeActionCarte(DFAgentDescription joueur, String playerName, Carte c) {
 		if (c.getValeur() != 0 ) {
+			ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);
+			messageToTheBank.addReceiver(banque);
 			messageToTheBank.setContent(playerName + "#" + c.getValeur());
 			myAgent.send(messageToTheBank);
 		}
@@ -235,14 +304,26 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 
 	/**
-	 * Incremente le capital de 20000F d'un joueur s'il n'a pas tire une carte GoToJail
-	 * @param messageToTheBank
-	 * @param playerName
+	 * Faire payer un joueur
+	 * @param playerName le nom du joueur
+	 * @param money la somme à prelever
 	 */
-	private void giveMoneyToPlayer(ACLMessage messageToTheBank,
-			String playerName) {
-		System.out.println(playerName + " a fini un tour");
-		messageToTheBank.setContent(playerName + "#" + "+20000");
+	private void makePlayerPay(String playerName, int money) {
+		ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);
+		messageToTheBank.addReceiver(banque);
+		messageToTheBank.setContent(playerName + "#" + "-" + money);
+		myAgent.send(messageToTheBank);
+	}
+	 
+	/**
+	 * Donner de l'argent a un joueur
+	 * @param playerName le nom du joueur
+	 * @param money la somme à donner
+	 */
+	private void giveMoneyToPlayer(String playerName, int money) {
+		ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);
+		messageToTheBank.addReceiver(banque);
+		messageToTheBank.setContent(playerName + "#" + "+" + money);
 		myAgent.send(messageToTheBank);
 	}
 
