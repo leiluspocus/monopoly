@@ -20,6 +20,7 @@ public class Constantes implements Serializable {
 	public static final String nom = "?nom";
 	public static final String type = "?type";
 	public static final String valeur = "?valeur";
+	public static final String deplacement = "?deplacement";
 	public static final String texte = "?texte";
 	public static final String loyerNu = "?loyerNu";
 	public static final String loyer1 = "?loyer1";

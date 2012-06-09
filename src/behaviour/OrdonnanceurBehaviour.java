@@ -105,7 +105,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				if ( wasPlayerInJail(joueur) ) {
 					// Le joueur etait en prison >> 
 					if ( ! playerCanBeRealeased(des, joueur, playerName) ) {
-						newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
+						newPos = Constantes.CASE_PRISON;
 						canPlayerPlay = false;
 					}
 					else {
@@ -244,13 +244,13 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		}
 		else {
 			if ( canPlayerBeReleasedFromJail.containsKey(joueur) ) {
-				// Le joueur décide de se servir de sa carte
+				// Le joueur decide de se servir de sa carte
 				canPlayerBeReleasedFromJail.remove(joueur);
 				System.err.println("Le joueur " + playerName + " utilise sa carte et sort de prison!");
 				return true;
 			}
 			else {
-				// Le joueur décide ou non de payer pour sortir TODO le faire dépendre du behaviour ?
+				// Le joueur decide ou non de payer pour sortir TODO le faire dependre du behaviour ?
 				boolean pay = new Random().nextBoolean();
 				if ( pay ) {
 					makePlayerPay(playerName, 5000);
@@ -265,7 +265,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 
 	/**
-	 * Demande à la prison, le nombre de tours passes par un joueur en prison
+	 * Demande a la prison, le nombre de tours passes par un joueur en prison
 	 * @param name le nom du joueur
 	 * @return le nombre de tours passes
 	 */
@@ -284,7 +284,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 	
 	/**
-	 * Demande à la prison, le nombre de tours passes par un joueur en prison
+	 * Demande a la prison, le nombre de tours passes par un joueur en prison
 	 * @param name le nom du joueur
 	 * @return le nombre de tours passes
 	 */
@@ -323,7 +323,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				sendToJail(joueur.getName());
 			}					
 			if ( c.canSetFreeFromJail() ) {
-				// Carte qui permet de libérer de prison
+				// Carte qui permet de liberer de prison
 				canPlayerBeReleasedFromJail.put(joueur, true);
 			}
 		}
@@ -332,7 +332,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	/**
 	 * Faire payer un joueur
 	 * @param playerName le nom du joueur
-	 * @param money la somme à prelever
+	 * @param money la somme a prelever
 	 */
 	private void makePlayerPay(String playerName, int money) {
 		ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);
@@ -344,7 +344,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	/**
 	 * Donner de l'argent a un joueur
 	 * @param playerName le nom du joueur
-	 * @param money la somme à donner
+	 * @param money la somme a donner
 	 */
 	private void giveMoneyToPlayer(String playerName, int money) {
 		ACLMessage messageToTheBank = new ACLMessage(ACLMessage.SUBSCRIBE);

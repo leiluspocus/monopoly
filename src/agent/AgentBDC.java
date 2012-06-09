@@ -55,7 +55,8 @@ public class AgentBDC extends Agent{
 		for ( QuerySolution carte : casesChances ) {
 			String msg = carte.getLiteral(Constantes.texte).getString();
 			int val = carte.getLiteral(Constantes.valeur).getInt();
-			cartes.add(new Carte(val, msg, Constantes.CHANCE)); 
+			int dep = carte.getLiteral(Constantes.deplacement).getInt();
+			cartes.add(new Carte(val, msg, Constantes.CHANCE, dep)); 
 		}
 		return cartes;
 	}
@@ -67,7 +68,8 @@ public class AgentBDC extends Agent{
 		for ( QuerySolution carte : casesChances ) {
 			String msg = carte.getLiteral(Constantes.texte).getString();
 			int val = carte.getLiteral(Constantes.valeur).getInt();
-			cartes.add(new Carte(val, msg, Constantes.COMMUNAUTE));
+			int dep = carte.getLiteral(Constantes.deplacement).getInt();
+			cartes.add(new Carte(val, msg, Constantes.COMMUNAUTE, dep));
 		}
 		return cartes;
 		

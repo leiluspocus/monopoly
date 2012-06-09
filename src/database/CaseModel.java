@@ -108,10 +108,11 @@ public class CaseModel{
 	 */
 	public ResultSet lookForCartesChance() {
 		String sql = "PREFIX mnply: <http://Monopoly#>" +
-			"SELECT " + Constantes.texte + " " + Constantes.valeur + " WHERE { "+
+			"SELECT " + Constantes.texte + " " + Constantes.valeur + " " + Constantes.deplacement + " WHERE { "+
 			" ?x a mnply:CarteChance ." +
 			" ?x mnply:texte ?texte ." +
-			" ?x mnply:valeur ?valeur" +
+			" ?x mnply:valeur ?valeur ." +
+			" ?x mnply:deplacement ?deplacement" +
 			"}"; 
 		return runExecQuery(sql);
 	}
@@ -122,10 +123,11 @@ public class CaseModel{
 	 */
 	public ResultSet lookForCartesCommunaute() {
 		String sql = "PREFIX mnply: <http://Monopoly#>" + 
-			"SELECT " + Constantes.texte + " " + Constantes.valeur + " WHERE { "+
+			"SELECT " + Constantes.texte + " " + Constantes.valeur + " " + Constantes.deplacement + " WHERE { "+
 			" ?x a mnply:CarteCommunaute ." +
 			" ?x mnply:texte ?texte ." +
-			" ?x mnply:valeur ?valeur" +
+			" ?x mnply:valeur ?valeur ." +
+			" ?x mnply:deplacement ?deplacement" +
 			"}"; 
 		return runExecQuery(sql);
 	}
