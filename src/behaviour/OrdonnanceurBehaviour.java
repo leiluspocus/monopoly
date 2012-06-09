@@ -29,7 +29,9 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private AID prison;
 	private AID banque;
 	private Plateau plateau;
-	
+	private int newPos;
+	private int oldPosition;
+
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau pl, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
 		lesJoueurs = j;
@@ -88,23 +90,22 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		ACLMessage messageReceived = myAgent.blockingReceive(); 
 		
 		// Deplacement du pion du joueur
-		if ( messageReceived != null ) { 
+		if (messageReceived != null) { 
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
 				// Cas classique : le joueur n'est pas en faillite
 				String playerName = messageReceived.getSender().getLocalName();
-				Integer oldPosition = lesPositionsDesJoueurs.get(joueur);
+				oldPosition = lesPositionsDesJoueurs.get(joueur);
 				@SuppressWarnings("unchecked")
 				Vector<Integer> des = (Vector<Integer>) messageReceived.getContentObject();
 				Integer diceValue = des.get(0) + des.get(1);
-				int newPos;
 				boolean canPlayerPlay = true;
 				
 				// Calcul de la nouvelle position
 				newPos = oldPosition + diceValue;
 				
-				if ( wasPlayerInJail(joueur) ) {
-					// Le joueur etait en prison >> 
-					if ( ! playerCanBeRealeased(des, joueur, playerName) ) {
+				if (wasPlayerInJail(joueur)) {
+					// Le joueur etait en prison
+					if (! playerCanBeRealeased(des, joueur, playerName)) {
 						newPos = Constantes.CASE_PRISON;
 						canPlayerPlay = false;
 					}
@@ -113,41 +114,43 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 					
 				}
-				if ( canPlayerPlay ) {
+				if (canPlayerPlay) {
 					// Libre de se deplacer
-					if ( newPos == Constantes.CASE_GOTOPRISON ) {
-						// Le joueur tombe sur la case prison, il faut l'y envoyer
-						newPos = Constantes.CASE_PRISON;
-						sendToJail(joueur.getName() );
-					}
-					if ( newPos > Constantes.CASE_FIN ) {
+					if (newPos > Constantes.CASE_FIN) {
 						newPos -= Constantes.CASE_FIN;
 						System.out.println(playerName + " a fini un tour");
 						giveMoneyToPlayer(playerName, 20000); // Le joueur a fait un tour complet
 					}
-					switch ( newPos ) {
-					case Constantes.CASE_IMPOTS :
-						System.out.println(playerName + " est tombe sur la case IMPOTS");
-						makePlayerPay(playerName, 20000); 
-						break;
-					case  Constantes.CASE_TAXE :
-						System.out.println(playerName + " est tombe sur la case TAXE");
-						makePlayerPay(playerName, 10000); 
-						break;	
-					}
-					if ( plateau.isCaseChance(newPos)) {
+					
+					if (plateau.isCaseChance(newPos)) {
 						Carte c = plateau.tirageChance();
 						System.out.println(playerName + " tire une carte Chance :\n" + c.getMsg());
 						executeActionCarte(joueur, playerName, c);
 						
 					}
-					if ( plateau.isCaseCommunaute(newPos)) {
+					if (plateau.isCaseCommunaute(newPos)) {
 						Carte c = plateau.tirageCommunaute();
 						System.out.println(playerName + " tire une carte Communaute :\n" + c.getMsg());
 						executeActionCarte(joueur, playerName, c);
-					} 
+					}
+					
+					switch(newPos) {
+						case Constantes.CASE_GOTOPRISON :
+							// Le joueur tombe sur la case prison, il faut l'y envoyer
+							newPos = Constantes.CASE_PRISON;
+							sendToJail(joueur.getName());
+						break;
+						case Constantes.CASE_IMPOTS :
+							System.out.println(playerName + " est tombe sur la case IMPOTS");
+							makePlayerPay(playerName, 20000);
+						break;
+						case  Constantes.CASE_TAXE :
+							System.out.println(playerName + " est tombe sur la case TAXE");
+							makePlayerPay(playerName, 10000);
+						break;
+					}
 				}
-			 
+
 				lesPositionsDesJoueurs.put(joueur, newPos);
 				int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
 				lesJoueursEtLesPions.put(Constantes.lesPions[num-1], newPos);
@@ -318,13 +321,27 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			myAgent.send(messageToTheBank);
 		}
 		else {
-			if ( c.goToJail() ) {
+			if (c.goToJail()) {
 				// Carte qui envoie le joueur en prison
 				sendToJail(joueur.getName());
 			}					
-			if ( c.canSetFreeFromJail() ) {
+			if (c.canSetFreeFromJail()) {
 				// Carte qui permet de liberer de prison
 				canPlayerBeReleasedFromJail.put(joueur, true);
+			}
+			if (c.getDeplacement() >= 0){
+				newPos = c.getDeplacement();
+				if (newPos <= oldPosition){
+					if(c.getTypeCarte() == Constantes.CHANCE)
+						System.out.println(playerName + " vient de passer par la case Depart grace a la carte Communaute");
+					else
+						System.out.println(playerName + " vient de passer par la case Depart grace a la carte Chance");
+					giveMoneyToPlayer(playerName, 20000); // Le joueur a fait un tour complet
+				}
+			}
+			if (c.getDeplacement() == -3){
+				newPos -= 3;
+				System.out.println(playerName + " recule de 3 cases");
 			}
 		}
 	}

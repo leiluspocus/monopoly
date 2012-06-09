@@ -22,7 +22,7 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 			String[] res = messageReceived.getContent().split("#");
 			AID target = new AID (res[0], AID.ISLOCALNAME);
 			if ( res[1] != null ) {
-				System.out.println("Voici res1 : " + res[1] + "voici charAt0 " +res[1].charAt(0) );
+				//System.out.println("Voici res1 : " + res[1] + "voici charAt0 " +res[1].charAt(0) );
 				if ( res[1].charAt(0) == '+' ) {
 					res[1] = res[1].replace('+', ' ').trim(); 
 				} 

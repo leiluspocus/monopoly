@@ -12,7 +12,7 @@ public class Carte implements Serializable{
 	public int getValeur() {return valeur;}
 	public String getMsg() {return msg;}
 	public int getTypeCarte() {return typeCarte;}
-	private int getDeplacement() {return deplacement;}
+	public int getDeplacement() {return deplacement;}
 
 	public Carte(){
 		valeur = 0;
