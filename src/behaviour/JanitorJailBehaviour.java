@@ -6,6 +6,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
+import java.io.IOException;
 import java.util.Vector;
 
 public class JanitorJailBehaviour extends CyclicBehaviour {
@@ -41,9 +42,29 @@ public class JanitorJailBehaviour extends CyclicBehaviour {
 					e.printStackTrace();
 				}
 				break;
+			case ACLMessage.REQUEST : // Le monopoly demande si le joueur XX est en prison 
+				checkIsPlayerInJail(message);
+				break;
 			}
 		}
 
+	}
+	private void checkIsPlayerInJail(ACLMessage message) {
+		AID x;
+		try {
+			x = (AID) message.getContentObject();
+			boolean isPlayerInJail = prisonniers.contains(x);
+			ACLMessage reply = message.createReply();
+			reply.setPerformative(ACLMessage.CONFIRM);
+			reply.setContentObject(isPlayerInJail);
+			myAgent.send(reply);
+		} 
+		catch (UnreadableException e) { 
+			e.printStackTrace();
+		}
+		catch (IOException excep) { 
+			excep.printStackTrace();
+		}
 	} 
 
 }

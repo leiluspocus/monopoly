@@ -4,6 +4,7 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -88,56 +89,63 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		// Deplacement du pion du joueur
 		if ( messageReceived != null ) { 
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
+				// Cas classique : le joueur n'est pas en faillite
 				String playerName = messageReceived.getSender().getLocalName();
 				Integer oldPosition = lesPositionsDesJoueurs.get(joueur);
 				Integer diceValue = Integer.parseInt(messageReceived.getContent());
 				int newPos;
+				boolean canPlayerPlay = true;
 				
-				// Le joueur doit aller sur la case prison
-				if ( diceValue < 0 ) {
-					newPos = Constantes.CASE_PRISON;
-					sendToJail(joueur.getName());
-				}
+				// Calcul de la nouvelle position
+				newPos = oldPosition + diceValue;
 				
-				// Cas ou le joueur est en prison : il doit faire 12 pour en sortir 
-				if ( oldPosition == Constantes.CASE_PRISON && ! playerCanBeRealeased(diceValue, joueur) ) {
-					newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
-				}
-				else {
-					// Le joueur peut se deplacer
-					if ( oldPosition == Constantes.CASE_PRISON ) { // On envoie un message a l'agent prison pour liberer le joueur
-						libererJoueur(joueur.getName());
-					}
-					if ( oldPosition + diceValue < Constantes.CASE_FIN ) {
-						newPos = oldPosition + diceValue;
+				if ( wasPlayerInJail(joueur) ) {
+					// Le joueur etait en prison >> 
+					if ( ! playerCanBeRealeased(diceValue, joueur) ) {
+						newPos = Constantes.CASE_PRISON; // S'il n'a pas fait 12, il reste sur sa case
+						canPlayerPlay = false;
 					}
 					else {
-						// On a fait un tour de plateau -> donner de l'argent au joueur !
-						newPos = oldPosition + diceValue - Constantes.CASE_FIN;
-						giveMoneyToPlayer(messageToTheBank, playerName);
+						libererJoueur(joueur.getName());
 					}
 					
-					if(newPos == Constantes.CASE_IMPOTS){
+				}
+				if ( canPlayerPlay ) {
+					// Libre de se deplacer
+					if ( newPos == Constantes.CASE_GOTOPRISON ) {
+						// Le joueur tombe sur la case prison, il faut l'y envoyer
+						newPos = Constantes.CASE_PRISON;
+						sendToJail(joueur.getName() );
+					}
+					if ( newPos > Constantes.CASE_FIN ) {
+						newPos -= Constantes.CASE_FIN;
+						giveMoneyToPlayer(messageToTheBank, playerName); // Le joueur a fait un tour complet
+					}
+					switch ( newPos ) {
+					case Constantes.CASE_IMPOTS :
 						System.out.println(playerName + " est tombe sur la case IMPOTS");
 						messageToTheBank.setContent(playerName + "#" + "-20000");
 						myAgent.send(messageToTheBank);
-					} 
-					else if(newPos == Constantes.CASE_TAXE){
+						break;
+					case  Constantes.CASE_TAXE :
 						System.out.println(playerName + " est tombe sur la case TAXE");
 						messageToTheBank.setContent(playerName + "#" + "-10000");
 						myAgent.send(messageToTheBank);
-					} 
-					else if(plateau.isCaseChance(newPos)){
+						break;	
+					}
+					if ( plateau.isCaseChance(newPos)) {
 						Carte c = plateau.tirageChance();
 						System.out.println(playerName + " tire une carte Chance :\n" + c.getMsg());
 						executeActionCarte(joueur, messageToTheBank, playerName, c);
+						
 					}
-					else if(plateau.isCaseCommunaute(newPos)){
+					if ( plateau.isCaseCommunaute(newPos)) {
 						Carte c = plateau.tirageCommunaute();
 						System.out.println(playerName + " tire une carte Communaute :\n" + c.getMsg());
 						executeActionCarte(joueur, messageToTheBank, playerName, c);
 					} 
 				}
+			 
 				lesPositionsDesJoueurs.put(joueur, newPos);
 				int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
 				lesJoueursEtLesPions.put(Constantes.lesPions[num-1], newPos);
@@ -165,6 +173,28 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		// On passe au joueur suivant
 		plateau.redrawFrame();
 		tourSuivant();
+	}
+
+	private boolean wasPlayerInJail(DFAgentDescription joueur) {
+		try {
+			ACLMessage req = new ACLMessage(ACLMessage.REQUEST);
+			req.setContentObject(joueur.getName());
+			req.addReceiver(prison);
+			myAgent.send(req);
+			ACLMessage reply = myAgent.blockingReceive();
+			if ( reply != null ) {
+				if ( reply.getPerformative() == ACLMessage.CONFIRM ) {
+					boolean isPlayerInJail = (Boolean) reply.getContentObject();
+					return isPlayerInJail;
+				}
+			}
+		} 
+		catch (IOException e) { 
+			e.printStackTrace();
+		} catch (UnreadableException e) { 
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private boolean playerCanBeRealeased(Integer diceValue,

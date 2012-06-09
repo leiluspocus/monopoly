@@ -36,7 +36,8 @@ public class Constantes implements Serializable {
 	/* Valeurs de cases utilisees mais definies dans l'ontologie*/
 	public static final int CASE_DEPART = 0;
 	public static final int CASE_FIN = 39;
-	public static final int CASE_PRISON = 30;
+	public static final int CASE_GOTOPRISON = 30;
+	public static final int CASE_PRISON = 10;
 	public static final int CASE_TAXE = 38;
 	public static final int CASE_IMPOTS = 4;
 	
