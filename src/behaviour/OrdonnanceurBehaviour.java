@@ -161,7 +161,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				try {
 					Thread.sleep(Constantes.DUREE_ANIMATION);
 				} 
-				catch (InterruptedException e) {  e.printStackTrace(); }
+				catch (InterruptedException e) {  return; }
 			}
 			else if (messageReceived.getPerformative() == ACLMessage.INFORM_REF)
 			{
