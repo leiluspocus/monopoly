@@ -56,6 +56,14 @@ mnply:valeur
       rdfs:isDefinedBy mnply: ;
       rdfs:label "valeur" ;
       vs:term_status "stable" .
+      
+mnply:deplacement
+      a rdf:Property, owl:DatatypeProperty ;
+      rdfs:comment "La case ou le joueur doit se deplacer" ;
+      rdfs:domain mnply:CarteChance, mnply:CarteCommunaute ;
+      rdfs:isDefinedBy mnply: ;
+      rdfs:label "deplacement" ;
+      vs:term_status "stable" .
 
 mnply:position
       a rdf:Property, owl:DatatypeProperty ;
@@ -605,159 +613,191 @@ mnply:paix
 mnply:cc1
 	a mnply:CarteChance ;
 	mnply:texte "Amende pour exces de vitesse : 1 000 F" ;
-	mnply:valeur -1000 .
+	mnply:valeur -1000 ;
+	mnply:deplacement -1 .
 	
 mnply:cc2
 	a mnply:CarteChance ;
 	mnply:texte "La banque vous verse un dividende de 5000 F." ;
-	mnply:valeur 5000 .
+	mnply:valeur 5000 ;
+	mnply:deplacement -1 .
 	
 mnply:cc3
 	a mnply:CarteChance ;
 	mnply:texte "Vous etes impose pour les reparations de voirie : 15 500 F" ;
-	mnply:valeur -15500 .
+	mnply:valeur -15500 ;
+	mnply:deplacement -1 .
 	
 mnply:cc4
 	a mnply:CarteChance ;
 	mnply:texte "Avancez jusqu'a la case depart." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 0 .
 
 mnply:cc5
 	a mnply:CarteChance ;
 	mnply:texte "Payez les frais de scolarite : 15 000 F" ;
-	mnply:valeur -15000 .
+	mnply:valeur -15000 ;
+	mnply:deplacement -1 .
 	
 mnply:cc6
 	a mnply:CarteChance ;
 	mnply:texte "Rendez-vous Rue de la Paix." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 39 .
 	
 mnply:cc7
 	a mnply:CarteChance ;
 	mnply:texte "Vous etes libere de Prison. Cette carte peut-etre conservee jusqu'a ce qu'elle soit utilisee ou vendue." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement -1 .
 	
 mnply:cc8
 	a mnply:CarteChance ;
 	mnply:texte "Rendez-vous a l'Avenue Henri-Martin. Si vous passez par la case depart, recevez 20 000 F." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 24 .
 	
 mnply:cc9
 	a mnply:CarteChance ;
 	mnply:texte "Faites des reparations dans toutes vos maisons : 12500 F" ;
-	mnply:valeur -12500 .
+	mnply:valeur -12500 ;
+	mnply:deplacement -1 .
 	
 mnply:cc10
 	a mnply:CarteChance ;
 	mnply:texte "Avancez au Bd de la Vilette. Si vous passez par la case Depart, recevez 20 000 F" ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 1 .
 	
 mnply:cc11
 	a mnply:CarteChance ;
 	mnply:texte "Allez a la gare de Lyon. Si vous passez par la case Depart, recevez 20 000 F." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 15 .
 	
 mnply:cc12
 	a mnply:CarteChance ;
 	mnply:texte "Votre immeuble et votre pret rapportent : 15 000 F" ;
-	mnply:valeur 15000 .
+	mnply:valeur 15000 ;
+	mnply:deplacement -1 .
 	
 mnply:cc13
 	a mnply:CarteChance ;
 	mnply:texte "Allez en prison. Ne franchissez pas la case depart. Ne touchez pas 20 000 F." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement -1 .
 	
 mnply:cc14
 	a mnply:CarteChance ;
 	mnply:texte "Reculez de 3 cases." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement -3 .
 	
 mnply:cc15
 	a mnply:CarteChance ;
 	mnply:texte "Amende pour ivresse : 2 000 F" ;
-	mnply:valeur -2000 .
+	mnply:valeur -2000 ;
+	mnply:deplacement -1 .
 	
 mnply:cc16
 	a mnply:CarteChance ;
 	mnply:texte "Vous avez gagne le prix de mots croises : 10 000 F" ;
-	mnply:valeur 10000 .
+	mnply:valeur 10000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc1
 	a mnply:CarteCommunaute ;
 	mnply:texte "Payez votre police d'assurance s'elevant a 5000 F." ;
-	mnply:valeur -5000 .
+	mnply:valeur -5000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc2
 	a mnply:CarteCommunaute ;
 	mnply:texte "Vous heritez de 10 000 F." ;
-	mnply:valeur 10000 .
+	mnply:valeur 10000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc3
 	a mnply:CarteCommunaute ;
 	mnply:texte "Vous etes libere de Prison. Cette carte peut-etre conservee jusqu'a ce qu'elle soit utilisee ou vendue." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc4
 	a mnply:CarteCommunaute ;
 	mnply:texte "Payez la note du medecin : 5 000 F" ;
-	mnply:valeur -5000 .
+	mnply:valeur -5000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc5
 	a mnply:CarteCommunaute ;
 	mnply:texte "Vous avez gagne le 2nd prix de beaute, recevez 1 000 F." ;
-	mnply:valeur 1000 .
+	mnply:valeur 1000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc6
 	a mnply:CarteCommunaute ;
 	mnply:texte "Les contributions vous remboursent la somme de 2000 F." ;
-	mnply:valeur 2000 .
+	mnply:valeur 2000 ;
+	mnply:deplacement -1 .
 
 mnply:ccdc7
 	a mnply:CarteCommunaute ;
 	mnply:texte "Recevez votre interet sur l'emprunt a 7% : 2500 F" ;
-	mnply:valeur 2500 .
+	mnply:valeur 2500 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc8
 	a mnply:CarteCommunaute ;
 	mnply:texte "Retournez a Belleville." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 1 .
 
 mnply:ccdc9
 	a mnply:CarteCommunaute ;
 	mnply:texte "Allez en prison. Ne franchissez pas la case depart. Ne touchez pas 20 000 F." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc10
 	a mnply:CarteCommunaute ;
 	mnply:texte "Placez vous sur la case Depart." ;
-	mnply:valeur 0 .
+	mnply:valeur 0 ;
+	mnply:deplacement 0 .
 	
 mnply:ccdc11
 	a mnply:CarteCommunaute ;
 	mnply:texte "C'est votre anniversaire, recevez 1000 F." ;
-	mnply:valeur 1000 .
+	mnply:valeur 1000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc12
 	a mnply:CarteCommunaute ;
 	mnply:texte "Recevez votre revenu annuel : 10000 F" ;
-	mnply:valeur 10000 .
+	mnply:valeur 10000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc13
 	a mnply:CarteCommunaute ;
 	mnply:texte "Payez une amende de 10000 F" ;
-	mnply:valeur -10000 .
+	mnply:valeur -10000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc14
 	a mnply:CarteCommunaute ;
 	mnply:texte "Erreur de la banque en votre faveur, recevez 20000 F." ;
-	mnply:valeur 20000 .
+	mnply:valeur 20000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc15
 	a mnply:CarteCommunaute ;
 	mnply:texte "La vente de votre stock vous rapporte 5000 F." ;
-	mnply:valeur 5000 .
+	mnply:valeur 5000 ;
+	mnply:deplacement -1 .
 	
 mnply:ccdc16
 	a mnply:CarteCommunaute ;
 	mnply:texte "Payez l'hopital : 10 000 F" ;
-	mnply:valeur -10000 .
+	mnply:valeur -10000 ;
+	mnply:deplacement -1 .

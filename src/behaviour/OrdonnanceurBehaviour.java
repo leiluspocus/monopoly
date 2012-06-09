@@ -53,7 +53,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 	
 	public void sendToJail(AID player) {
-		System.out.println("Envoi du joueur " + player + " en prison");
+		System.out.println("Envoi du joueur " + player.getLocalName() + " en prison");
 		ACLMessage tick = new ACLMessage(ACLMessage.CONFIRM);
 		tick.addReceiver(prison);
 		try {
@@ -64,7 +64,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 	
 	public void libererJoueur(AID player) {
-		System.out.println("Liberation du  joueur " + player + " emprisonne");
+		System.out.println("Liberation du  joueur " + player.getLocalName() + " emprisonne");
 		ACLMessage tick = new ACLMessage(ACLMessage.DISCONFIRM);
 		tick.addReceiver(prison);
 		try {
@@ -92,6 +92,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				// Cas classique : le joueur n'est pas en faillite
 				String playerName = messageReceived.getSender().getLocalName();
 				Integer oldPosition = lesPositionsDesJoueurs.get(joueur);
+				@SuppressWarnings("unchecked")
 				Vector<Integer> des = (Vector<Integer>) messageReceived.getContentObject();
 				Integer diceValue = des.get(0) + des.get(1);
 				int newPos;
@@ -271,12 +272,11 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			msg.addReceiver(prison);
 			msg.setContentObject(name);
 			myAgent.send(msg);
-			ACLMessage reply = myAgent.blockingReceive();
+			
+			//Attend la réponse
+			myAgent.blockingReceive();
 		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		catch (IOException e) {e.printStackTrace();}
 		
 		return 0;
 	}
