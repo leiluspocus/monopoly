@@ -82,7 +82,7 @@ public class AgentJoueur extends Agent{
 	 * @param joueurCreditaire le joueur devant payer le loyer
 	 */
 	@SuppressWarnings("unchecked")
-	public void demanderLoyer(int probaDemandeLoyer, ACLMessage msgReceived)
+	public boolean demanderLoyer(int probaDemandeLoyer, ACLMessage msgReceived)
 	{
 		Random rand = new Random();
 		int value = rand.nextInt(100)+1;
@@ -114,7 +114,10 @@ public class AgentJoueur extends Agent{
 			request.setContent(map.get("montant"));
 			send(request);
 			Logger.info(getName()+" demande "+map.get("montant")+" à "+receiverName);
+			return true;
 		}
+		
+		return false;
 	}
 	
 	/**

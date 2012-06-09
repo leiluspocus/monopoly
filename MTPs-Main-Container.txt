@@ -1,1 +1,1 @@
-http://latrmouh-hz-1.etu.utc:7778/acc
+http://desktop-ronan:7778/acc

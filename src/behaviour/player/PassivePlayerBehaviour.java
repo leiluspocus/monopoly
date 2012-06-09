@@ -9,9 +9,11 @@ import jade.lang.acl.ACLMessage;
 public class PassivePlayerBehaviour extends Behaviour{
 
 	private static final long serialVersionUID = 1L;
+	private boolean waitingForMoney;
 
 	public PassivePlayerBehaviour(Agent a){
 		super(a);
+		waitingForMoney = false;
 	}
 	
 	@Override
@@ -23,7 +25,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 			 * Un joueur est sur une des propriétés de myAgent
 			 */
 			case ACLMessage.INFORM:
-				((AgentJoueur)myAgent).demanderLoyer(((AgentJoueur)myAgent).getProbaDemandeLoyer(), msgReceived);
+				waitingForMoney = ((AgentJoueur)myAgent).demanderLoyer(((AgentJoueur)myAgent).getProbaDemandeLoyer(), msgReceived);
 			break;
 			/*
 			 * Demande de paiement: à destination d'un joueur (loyer/terrain/case spéciale), ou de la banque (taxes)
@@ -48,7 +50,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 	@Override
 	public boolean done() 
 	{
-		return false;
+		return !waitingForMoney;
 	}
 
 }

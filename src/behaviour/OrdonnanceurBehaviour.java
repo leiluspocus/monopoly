@@ -159,6 +159,21 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					caseCourante.setContentObject(plateau.getCase(newPos));
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
+					
+					/**
+					 * Avertir le propriétaire de la case qu'un joueur se trouve sur son terrain
+					 */
+					// Si la case a un propriétaire
+					if (plateau.getCase(newPos).getProprietaireCase() != null)
+					{
+						// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
+						if (!(plateau.getCase(newPos).getProprietaireCase().equals(joueur.getName())))
+						{
+							ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
+							joueurSurVotreTerritoire.addReceiver(new AID(plateau.getCase(newPos).getProprietaireCase(), true));
+							myAgent.send(joueurSurVotreTerritoire);
+						}
+					}
 				} 
 				catch (IOException e1) { e1.printStackTrace(); }
 				try {

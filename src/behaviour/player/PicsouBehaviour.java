@@ -1,18 +1,14 @@
 package behaviour.player;
 
-import agent.AgentJoueur;
-import util.Logger;
-import view.Case;
 import jade.core.Agent;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
+import view.Case;
+import agent.AgentJoueur;
 
 /**
  * Comportement tendant à économiser au maximum avant d'acheter un terrain
  */
 
-public class PicsouBehaviour extends OneShotBehaviour {
+public class PicsouBehaviour extends ActivePlayerBehaviour {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -22,31 +18,9 @@ public class PicsouBehaviour extends OneShotBehaviour {
 	}
 
 	@Override
-	public void action() {
+	protected void decideAchatTerrain(Case caseCourante) {
+		// TODO Auto-generated method stub
 		
-		ACLMessage msgReceived = myAgent.blockingReceive();
-
-		if (msgReceived != null)
-		{
-			switch (msgReceived.getPerformative()) 
-			{
-				/*
-				 * Indique au joueur sur quelle case il se trouve après le déplacement effectué (dû au jeté de dés)
-				 */
-			case ACLMessage.INFORM_REF:
-				try {
-					((AgentJoueur)myAgent).setCaseCourante((Case) msgReceived.getContentObject());
-				} catch (UnreadableException e) {e.printStackTrace();}
-				
-				System.out.println(((AgentJoueur)myAgent).getCaseCourante());
-				
-				break;
-	
-				default: 
-					Logger.err("Message non gere par le behaviour Picsou : " + msgReceived.getSender().getName());
-					break;
-			}
-		}
 	}
 
 }
