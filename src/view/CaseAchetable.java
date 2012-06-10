@@ -13,7 +13,7 @@ public class CaseAchetable extends Case{
 	protected Vector<Integer> loyers;  // Valeurs des loyers (selon le nombre de terrains possédés)
 	protected AID proprietaireCase; // Propriétaire de la case
 	protected Couleur couleur; // Couleur à laquelle appartient
-	
+
 	public CaseAchetable(int pos, String nom, int valT, Vector<Integer> loy, Couleur c) {
 		super(pos, nom);
 		valeurTerrain = valT;
@@ -39,4 +39,5 @@ public class CaseAchetable extends Case{
 	public Vector<Integer> getLoyers() {return loyers;}
 	public AID getProprietaireCase() {return proprietaireCase;}
 	public void setProprietaireCase(AID proprietaireCase) {this.proprietaireCase = proprietaireCase;}
+	public Couleur getCouleur() {return couleur;}
 }

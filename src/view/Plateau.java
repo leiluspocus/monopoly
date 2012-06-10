@@ -109,10 +109,10 @@ public class Plateau {
 		return null;
 	}
 	
-	public String nouveauProprietaire(int positionCaseAchetee, AID proprietaire) {
+	public CaseAchetable nouveauProprietaire(int positionCaseAchetee, AID proprietaire) {
 		CaseAchetable c = (CaseAchetable) getCaseAtPosition(positionCaseAchetee);
 		c.setProprietaireCase(proprietaire);
 		
-		return c.getNom();
+		return c;
 	}
 }

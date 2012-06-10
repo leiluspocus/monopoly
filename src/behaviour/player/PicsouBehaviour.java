@@ -1,6 +1,6 @@
 package behaviour.player;
 
-import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import view.CaseAchetable;
 import agent.AgentJoueur;
 
@@ -11,15 +11,27 @@ import agent.AgentJoueur;
 public class PicsouBehaviour extends ActivePlayerBehaviour {
 	
 	private static final long serialVersionUID = 1L;
+	private static final int SEUIL_ACHAT = 80000;
+	private AgentJoueur agentJoueur;
 
-	public PicsouBehaviour(Agent myAgent) {
+	public PicsouBehaviour(AgentJoueur myAgent) {
 		super(myAgent);
-		((AgentJoueur)myAgent).setProbaDemandeLoyer(100);
+		this.agentJoueur = myAgent;
+		this.agentJoueur.setProbaDemandeLoyer(100);
 	}
 
 	@Override
 	protected void decideAchatTerrain(CaseAchetable caseCourante) {
-		// TODO Auto-generated method stub
-		
+		if (caseCourante.getProprietaireCase() == null){
+			if(agentJoueur.getCapitalJoueur() > SEUIL_ACHAT){
+				ACLMessage demandeAchat = new ACLMessage(ACLMessage.SUBSCRIBE);
+				demandeAchat.setContent(caseCourante.getPosition() + "");
+				demandeAchat.addReceiver(agentJoueur.getMonopoly());
+				agentJoueur.send(demandeAchat);
+				System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
+			}
+			else
+				System.out.println("Not enough money to buy " + caseCourante.getNom());
+		}
 	}
 }

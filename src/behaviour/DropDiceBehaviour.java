@@ -86,11 +86,11 @@ public class DropDiceBehaviour extends OneShotBehaviour {
                 	catch ( Exception o ) { o.printStackTrace(); }
                 }
                 else {
-               	 System.err.println("Message inconnu non traite from DropDiceBehaviour apres avoir jete les des: " + message.getSender().getName());
+               	 System.err.println("DropDiceBehaviour1 a recu un message inconnu de: " + message.getSender().getLocalName() + ":" + message.getPerformative());
                 }
 	       	 }
 	       	 else { 
-	       		System.err.println("Message inconnu non traite from DropDiceBehaviour: " + message.getSender().getName()); 
+	       		System.err.println("DropDiceBehaviour2 a recu un message inconnu de: " + message.getSender().getLocalName() + ":" + message.getPerformative());
         	} 
         } 
         

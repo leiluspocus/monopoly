@@ -43,7 +43,7 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 					
 				break;
 				default: 
-					Logger.err("Message non géré par le behaviour Avide from "+ msgReceived.getSender().getName() );
+					Logger.err("Message non géré par " + myAgent.getLocalName() + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
 				break;
 			}
 		}	

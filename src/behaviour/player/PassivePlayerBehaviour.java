@@ -43,7 +43,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
 				break;
 					
-				default: Logger.err("Message inconnu from " + msgReceived.getSender().getName()); 
+				default: Logger.err("PassivePlayerBehaviour a recu un message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
 					break;
 			}
 		}
