@@ -216,7 +216,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						Vector<AID> prop = plateau.getProprietaires(propriete.getCouleur()); 
 						plateau.setProprietairesPotentielsPourLesCouleurs(prop);
 						makePlayerPay(proprietaire.getLocalName(), propriete.getValeurTerrain());
-						Logger.err(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
+						Logger.info(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
 						agentMonopoly.addPossession(proprietaire.getLocalName(), propriete.getNom());
 					}
 					else if (messageReceived.getPerformative() == ACLMessage.PROXY){

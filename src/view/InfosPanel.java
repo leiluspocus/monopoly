@@ -9,7 +9,6 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import util.Constantes;
 import util.Logger;

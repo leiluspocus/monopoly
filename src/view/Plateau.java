@@ -47,7 +47,6 @@ public class Plateau {
 				}
 			}	
 		}
-		System.out.println(plateau);
 	}
 	
 	public void setFrame(Monopoly m){

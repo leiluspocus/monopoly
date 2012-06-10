@@ -12,7 +12,6 @@ import java.util.Vector;
 import util.Constantes;
 import util.Constantes.ActionSpeciale;
 import util.Constantes.Couleur;
-import util.Convert;
 import view.Carte;
 import view.Case;
 import view.CaseAchetable;
