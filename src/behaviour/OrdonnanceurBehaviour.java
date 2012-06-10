@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import util.Constantes;
 import util.Constantes.Pion;
+import util.Logger;
 import view.Carte;
 import view.CaseAchetable;
 import view.Plateau;
@@ -24,7 +25,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private Vector<DFAgentDescription> lesJoueurs;
 	private HashMap<DFAgentDescription, Integer> lesPositionsDesJoueurs;
 	private HashMap<DFAgentDescription, Boolean> canPlayerBeReleasedFromJail;
-	HashMap<Pion, Integer> lesJoueursEtLesPions;
+	private HashMap<Pion, Integer> lesJoueursEtLesPions;
+	private Vector<String> joueursEnFaillite;
 	private int currentTour;
 	private AID prison;
 	private AID banque;
@@ -42,6 +44,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		
 		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
 		lesJoueursEtLesPions = new HashMap<Pion, Integer>();
+		joueursEnFaillite = new Vector<String>();
 		canPlayerBeReleasedFromJail = new HashMap<DFAgentDescription, Boolean>();
 		
 		for ( DFAgentDescription joueur : lesJoueurs ) {
@@ -93,7 +96,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		if (messageReceived != null) { 
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
 				// Cas classique : le joueur n'est pas en faillite
-				String playerName = messageReceived.getSender().getLocalName();
+				String localPlayerName = joueur.getName().getLocalName();
 				oldPosition = lesPositionsDesJoueurs.get(joueur);
 				@SuppressWarnings("unchecked")
 				Vector<Integer> des = (Vector<Integer>) messageReceived.getContentObject();
@@ -105,7 +108,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				
 				if (wasPlayerInJail(joueur)) {
 					// Le joueur etait en prison
-					if (! playerCanBeRealeased(des, joueur, playerName)) {
+					if (! playerCanBeRealeased(des, joueur, localPlayerName)) {
 						newPos = Constantes.CASE_PRISON;
 						canPlayerPlay = false;
 					}
@@ -118,20 +121,20 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					// Libre de se deplacer
 					if (newPos > Constantes.CASE_FIN) {
 						newPos -= Constantes.CASE_FIN;
-						System.out.println(playerName + " a fini un tour");
-						giveMoneyToPlayer(playerName, 20000); // Le joueur a fait un tour complet
+						System.out.println(localPlayerName + " a fini un tour");
+						giveMoneyToPlayer(localPlayerName, 20000); // Le joueur a fait un tour complet
 					}
 					
 					if (plateau.isCaseChance(newPos)) {
 						Carte c = plateau.tirageChance();
-						System.out.println(playerName + " tire une carte Chance :\n" + c.getMsg());
-						executeActionCarte(joueur, playerName, c);
+						System.out.println(localPlayerName + " tire une carte Chance :\n" + c.getMsg());
+						executeActionCarte(joueur, localPlayerName, c);
 						
 					}
 					if (plateau.isCaseCommunaute(newPos)) {
 						Carte c = plateau.tirageCommunaute();
-						System.out.println(playerName + " tire une carte Communaute :\n" + c.getMsg());
-						executeActionCarte(joueur, playerName, c);
+						System.out.println(localPlayerName + " tire une carte Communaute :\n" + c.getMsg());
+						executeActionCarte(joueur, localPlayerName, c);
 					}
 					
 					switch(newPos) {
@@ -141,18 +144,18 @@ public class OrdonnanceurBehaviour extends Behaviour {
 							sendToJail(joueur.getName());
 						break;
 						case Constantes.CASE_IMPOTS :
-							System.out.println(playerName + " est tombe sur la case IMPOTS");
-							makePlayerPay(playerName, 20000);
+							System.out.println(localPlayerName + " est tombe sur la case IMPOTS");
+							makePlayerPay(localPlayerName, 20000);
 						break;
 						case  Constantes.CASE_TAXE :
-							System.out.println(playerName + " est tombe sur la case TAXE");
-							makePlayerPay(playerName, 10000);
+							System.out.println(localPlayerName + " est tombe sur la case TAXE");
+							makePlayerPay(localPlayerName, 10000);
 						break;
 					}
 				}
 
 				lesPositionsDesJoueurs.put(joueur, newPos);
-				int num = Integer.parseInt(joueur.getName().getLocalName().substring(6));
+				int num = Integer.parseInt(localPlayerName.substring(6));
 				lesJoueursEtLesPions.put(Constantes.lesPions[num-1], newPos);
 				plateau.setPositionJoueurs(lesJoueursEtLesPions);
 				//System.out.println(lesJoueursEtLesPions);
@@ -160,7 +163,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				// L'agent Monopoly envoie au joueur la case
 				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
 				try {
-					plateau.getCase(newPos).setJoueurPresent(joueur.getName());
+					plateau.getCase(oldPosition).removeJoueurPresent(joueur.getName());
+					plateau.getCase(newPos).addJoueurPresent(joueur.getName());
 					caseCourante.setContentObject(plateau.getCase(newPos));
 					caseCourante.addReceiver(joueur.getName());
 					myAgent.send(caseCourante);
@@ -175,7 +179,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						if (caseJoueurCourant.getProprietaireCase() != null)
 						{
 							// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
-							if (!(caseJoueurCourant.getProprietaireCase().equals(joueur.getName())))
+							if (!(caseJoueurCourant.getProprietaireCase().getLocalName().equals(localPlayerName)))
 							{
 								ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
 								joueurSurVotreTerritoire.addReceiver(caseJoueurCourant.getProprietaireCase());
@@ -191,18 +195,26 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				} 
 				catch (InterruptedException e) {  return; }
 			}
-			else if (messageReceived.getPerformative() == ACLMessage.INFORM_REF)
-			{
-				// Joueur en faillite
+			else if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){
+				joueursEnFaillite.add(messageReceived.getSender().getLocalName());
 			}
-		}  
+			else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
+				AID proprietaire = messageReceived.getSender();
+				CaseAchetable caseAchetee = (CaseAchetable) messageReceived.getContentObject();
+				
+				caseAchetee.setProprietaireCase(proprietaire);
+				Logger.info(proprietaire.getLocalName() + "est désormais proprietaire de " + caseAchetee.getNom());
+			}
+			else{
+				Logger.err("OrdonnanceurBehaviour a reçu un message qu'il n'a pas compris !");
+			}
+		}
+		
 		// On passe au joueur suivant
 		plateau.redrawFrame();
 		tourSuivant();
 		}
-		catch ( Exception o ) {
-			o.printStackTrace();
-		}
+		catch (Exception o) {o.printStackTrace();}
 	}
 
 	private boolean wasPlayerInJail(DFAgentDescription joueur) {
@@ -218,11 +230,9 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				}
 			}
 		} 
-		catch (IOException e) { 
-			e.printStackTrace();
-		} catch (UnreadableException e) { 
-			e.printStackTrace();
-		}
+		catch (IOException e) { e.printStackTrace();}
+		catch (UnreadableException e) { e.printStackTrace();}
+		
 		return false;
 	}
 
@@ -279,10 +289,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			msg.setContentObject(name);
 			myAgent.send(msg); 
 		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		catch (IOException e) {e.printStackTrace();} 
 	}
 
 	
@@ -378,15 +385,18 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 	private void tourSuivant() {
 		currentTour ++;
-		if ( currentTour >= Constantes.NB_JOUEURS ) {
+		if(currentTour >= Constantes.NB_JOUEURS) {
 			currentTour = 0;
 		}
+	}
+	
+	private boolean isGameOver() {
+		return joueursEnFaillite.size() == Constantes.NB_JOUEURS;
 	}
 
 	@Override
 	public boolean done() {
-		// A voir
-		return false;
+		return isGameOver();
 	}
 
 }

@@ -9,10 +9,7 @@ public class PlayerBehaviour extends SequentialBehaviour {
 	private static final long serialVersionUID = 1L;
 	private Integer strategy;
 	
-	public String getNom() {
-		String nom = ((AgentJoueur) myAgent).getNom();
-		return nom;
-	}
+	public String getNom() {return ((AgentJoueur) myAgent).getNom();}
 	 
 	public PlayerBehaviour(AgentJoueur agentJoueur, Object[] params) {
 		super(agentJoueur);
@@ -26,32 +23,32 @@ public class PlayerBehaviour extends SequentialBehaviour {
 	private void pickStrategy() {
 		switch(strategy){
 			case 0:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Avide !");
-				addSubBehaviour(new AvideBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Avide !");
+				addSubBehaviour(new AvideBehaviour((AgentJoueur) myAgent));
 			break;
 			case 1:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Collectionneur !");
-				addSubBehaviour(new CollectionneurBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Collectionneur !");
+				addSubBehaviour(new CollectionneurBehaviour((AgentJoueur) myAgent));
 			break;
 			case 2:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Evil !");
-				addSubBehaviour(new EvilBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Evil !");
+				addSubBehaviour(new EvilBehaviour((AgentJoueur) myAgent));
 			break;
 			case 3:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Intelligent !");
-				addSubBehaviour(new IntelligentBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Intelligent !");
+				addSubBehaviour(new IntelligentBehaviour((AgentJoueur) myAgent));
 			break;
 			case 4:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Picsou !");
-				addSubBehaviour(new PicsouBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Picsou !");
+				addSubBehaviour(new PicsouBehaviour((AgentJoueur) myAgent));
 			break;
 			case 5:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Stupide !");
-				addSubBehaviour(new StupideBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Stupide !");
+				addSubBehaviour(new StupideBehaviour((AgentJoueur) myAgent));
 			break;
 			default:
-				System.out.println("Joueur " + getNom() + " adopte la strategie Avide !");
-				addSubBehaviour(new AvideBehaviour(myAgent));
+				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Avide !");
+				addSubBehaviour(new AvideBehaviour((AgentJoueur) myAgent));
 				break;
 		}
 	}

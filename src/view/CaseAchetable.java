@@ -9,7 +9,7 @@ import util.Constantes.Couleur;
 public class CaseAchetable extends Case{
 	private static final long serialVersionUID = 1L;
 	
-	protected int valeurTerrain; // Valeur initiale du terrain
+	protected int valeurTerrain; // Valeur du terrain
 	protected Vector<Integer> loyers;  // Valeurs des loyers (selon le nombre de terrains possédés)
 	protected AID proprietaireCase; // Propriétaire de la case
 	protected Couleur couleur; // Couleur à laquelle appartient
@@ -21,19 +21,19 @@ public class CaseAchetable extends Case{
 		couleur = c;
 	}
 	
+	public CaseAchetable(CaseAchetable c) {
+		super(c);
+		valeurTerrain = c.valeurTerrain;
+		loyers = c.loyers;
+		couleur = c.couleur;
+	}
+	
 	public String toString(){
 		return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> " + proprietaireCase;
 	}
 
-	public Vector<Integer> getLoyers() {
-		return loyers;
-	}
-
-	public AID getProprietaireCase() {
-		return proprietaireCase;
-	}
-
-	public void setProprietaireCase(AID proprietaireCase) {
-		this.proprietaireCase = proprietaireCase;
-	}
+	public int getValeurTerrain() {return valeurTerrain;}
+	public Vector<Integer> getLoyers() {return loyers;}
+	public AID getProprietaireCase() {return proprietaireCase;}
+	public void setProprietaireCase(AID proprietaireCase) {this.proprietaireCase = proprietaireCase;}
 }

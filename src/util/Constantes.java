@@ -32,7 +32,7 @@ public class Constantes implements Serializable {
 	public static final String couleur = "?couleur";
 
 	public static final int CAPITAL_DEPART = 150000;
-	public static final long DUREE_ANIMATION = 2000;
+	public static final long DUREE_ANIMATION = 3000;
 	
 	/* Valeurs de cases utilisees mais definies dans l'ontologie*/
 	public static final int CASE_DEPART = 0;

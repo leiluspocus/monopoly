@@ -13,16 +13,14 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 
 	private static final long serialVersionUID = 1L;
 
-	protected abstract void decideAchatTerrain(Case caseCourante);
+	protected abstract void decideAchatTerrain(CaseAchetable caseCourante);
 	
-	public ActivePlayerBehaviour(Agent a) 
-	{
+	public ActivePlayerBehaviour(Agent a) {
 		super(a);
 	}
 	
 	@Override
-	public void action() 
-	{
+	public void action(){
 		ACLMessage msgReceived = myAgent.blockingReceive();
 
 		if (msgReceived != null){
@@ -31,16 +29,13 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 				 * Indique au joueur sur quelle case il se trouve après le déplacement effectué (dû au jeté de dés)
 				 */
 				case ACLMessage.INFORM_REF:
-				{
-					try 
-					{
+					try {
 						((AgentJoueur)myAgent).setCaseCourante((Case) msgReceived.getContentObject());
 						if (((AgentJoueur)myAgent).getCaseCourante() instanceof CaseAchetable)
 						{
 							CaseAchetable caseCour = (CaseAchetable) ((AgentJoueur)myAgent).getCaseCourante(); 
-							if (caseCour.getProprietaireCase() != null)
-							{
-								decideAchatTerrain(((AgentJoueur)myAgent).getCaseCourante());
+							if (caseCour.getProprietaireCase() != null){
+								decideAchatTerrain(caseCour);
 							}
 						}
 					}
@@ -51,13 +46,11 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 					
 					System.out.println(((AgentJoueur)myAgent).getCaseCourante());
 					
-					break;
-				}
+				break;
 				default: 
 					Logger.err("Message non géré par le behaviour Avide from "+ msgReceived.getSender().getName() );
-					break;
+				break;
 			}
 		}	
 	}
-
 }

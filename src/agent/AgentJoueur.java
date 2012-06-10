@@ -82,36 +82,31 @@ public class AgentJoueur extends Agent{
 	 * @param msgReceived message de requête reçu
 	 */
 
-	public boolean demanderLoyer(ACLMessage msgReceived)
-	{
+	public boolean demanderLoyer(ACLMessage msgReceived){
 		Random rand = new Random();
 		int value = rand.nextInt(100)+1;
-		if (value <= probaDemandeLoyer)
-		{
+		if (value <= probaDemandeLoyer){
 			Case caseJoueur = null;
-			try
-			{
+			try{
 				caseJoueur = (Case) msgReceived.getContentObject();
 			}
-			catch (UnreadableException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			catch (UnreadableException e1){e1.printStackTrace();}
 
 			ACLMessage demandeLoyer = new ACLMessage(ACLMessage.REQUEST);
 			int montantLoyer = 0;
-			if (caseJoueur instanceof CaseTerrain)
-			{
+			if (caseJoueur instanceof CaseTerrain){
 				int nbMaisons = ((CaseTerrain)caseJoueur).getNbMaisons(); 
 				montantLoyer = ((CaseAchetable)caseJoueur).getLoyers().get(nbMaisons);
 			}
-			else if (caseJoueur instanceof CaseAchetable)
-			{
+			else if (caseJoueur instanceof CaseAchetable){
 				// TODO: loyer pour les gares / compagnies
 			}
 			demandeLoyer.setContent(String.valueOf(montantLoyer));
-			demandeLoyer.addReceiver(caseJoueur.getJoueurPresent());
+			
+			// TODO: Le joueur risque de demander deux fois le loyer à un même joueur
+			for(AID a : caseJoueur.getJoueurPresents())
+				demandeLoyer.addReceiver(a);
+				
 			send(demandeLoyer);
 			
 			return true;

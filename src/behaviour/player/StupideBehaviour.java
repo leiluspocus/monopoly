@@ -1,8 +1,8 @@
 package behaviour.player;
 
-import agent.AgentJoueur;
 import jade.core.Agent;
-import view.Case;
+import view.CaseAchetable;
+import agent.AgentJoueur;
 
 /**
  * Behaviour déclenché après tirage de dés
@@ -18,7 +18,7 @@ public class StupideBehaviour extends ActivePlayerBehaviour {
 	}
 
 	@Override
-	protected void decideAchatTerrain(Case caseCourante) {
-		System.out.println(((AgentJoueur)myAgent).getLocalName()+" est stupide : il n'achète aucun terrain");
+	protected void decideAchatTerrain(CaseAchetable caseCourante) {
+		System.out.println(((AgentJoueur)myAgent).getLocalName() + " est stupide : il n'achète aucun terrain");
 	}
 }

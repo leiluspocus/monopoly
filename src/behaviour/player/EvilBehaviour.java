@@ -1,7 +1,7 @@
 package behaviour.player;
 
 import jade.core.Agent;
-import view.Case;
+import view.CaseAchetable;
 import agent.AgentJoueur;
 
 /**
@@ -18,9 +18,8 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 	}
 
 	@Override
-	protected void decideAchatTerrain(Case caseCourante) {
+	protected void decideAchatTerrain(CaseAchetable caseCourante) {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
