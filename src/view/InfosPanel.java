@@ -22,6 +22,7 @@ public class InfosPanel extends JPanel {
 	
 	private String nomJ = "Inconnu";
 	private String pion = "Inconnu";
+	private String strategie = "Aucune";
 	private String caseJ = "Départ";
 	private Vector<String> possessions = new Vector<String>();
 	private Integer argent = 0;
@@ -41,41 +42,44 @@ public class InfosPanel extends JPanel {
 	public void paintComponent(Graphics g){
 		
         g.drawString("Joueur : ", 5, 20);
-        g.drawString(nomJ, 60, 20);
+        g.drawString(nomJ, 65, 20);
         
         g.drawString("Pion : ", 5, 40);
         if(pion == "Cheval")
-        	g.drawImage(imgPions.get(0), 60, 23, this);
+        	g.drawImage(imgPions.get(0), 65, 23, this);
         else if(pion == "Canon")
-        	g.drawImage(imgPions.get(1), 60, 23, this);
+        	g.drawImage(imgPions.get(1), 65, 23, this);
 		else if(pion == "Voiture")
-			g.drawImage(imgPions.get(2), 60, 30, this);
+			g.drawImage(imgPions.get(2), 65, 30, this);
 		else if(pion == "Bateau")
-			g.drawImage(imgPions.get(3), 60, 30, this);
+			g.drawImage(imgPions.get(3), 65, 30, this);
 		else if(pion == "Chapeau")
-			g.drawImage(imgPions.get(4), 60, 30, this);
+			g.drawImage(imgPions.get(4), 65, 30, this);
 		else if(pion == "Brouette")
-			g.drawImage(imgPions.get(5), 60, 30, this);
+			g.drawImage(imgPions.get(5), 65, 30, this);
 		else if(pion == "Chaussure")
-			g.drawImage(imgPions.get(6), 60, 30, this);
+			g.drawImage(imgPions.get(6), 65, 30, this);
 		else if(pion == "Fer")
-			g.drawImage(imgPions.get(7), 60, 30, this);
+			g.drawImage(imgPions.get(7), 65, 30, this);
         
-        g.drawString("("+pion+")", 80, 40);
+        g.drawString("("+pion+")", 85, 40);
         
         g.drawString("Argent : ", 5, 60);
-        g.drawString(argent.toString(), 60, 60);
+        g.drawString(argent.toString(), 65, 60);
         
         g.drawString("Case : ", 5, 80);
-        g.drawString(caseJ, 60, 80);
+        g.drawString(caseJ, 65, 80);
         
-        g.drawString("Possessions : ", 5, 100);
+        g.drawString("Stratégie : ", 5, 100);
+        g.drawString(strategie, 65, 100);
+        
+        g.drawString("Possessions : ", 5, 120);
         for(int i=0; i < possessions.size(); i++){
-        	g.drawString(possessions.get(i), 30, 120+i*20);
+        	g.drawString(possessions.get(i), 30, 140+i*20);
         }
         int j = 0;
-        if(possessions.size() >= 4)
-        	j = possessions.size() - 4;
+        if(possessions.size() >= 2)
+        	j = possessions.size() - 2;
         this.setPreferredSize(new Dimension(185, 200+j*20));
 	}
 	
@@ -88,5 +92,7 @@ public class InfosPanel extends JPanel {
 			this.possessions.add(value);
 		else if(info == "pion")
 			this.pion = value;
+		else if(info == "strategie")
+			this.strategie = value;
 	}
 }

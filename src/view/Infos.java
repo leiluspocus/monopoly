@@ -22,7 +22,7 @@ public class Infos extends JFrame {
 	}
 	
 	private void createGUI(){
-		this.setTitle("Monopoly logs");
+		this.setTitle("Monopoly Joueurs");
 		this.setSize(new Dimension(1170, 200));
 		this.setLocation(5, 670);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -25,30 +25,37 @@ public class PlayerBehaviour extends SequentialBehaviour {
 			case 0:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Avide !");
 				addSubBehaviour(new AvideBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Avide");
 			break;
 			case 1:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Collectionneur !");
 				addSubBehaviour(new CollectionneurBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Collectionneur");
 			break;
 			case 2:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Evil !");
 				addSubBehaviour(new EvilBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Evil");
 			break;
 			case 3:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Intelligent !");
 				addSubBehaviour(new IntelligentBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Intelligent");
 			break;
 			case 4:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Picsou !");
 				addSubBehaviour(new PicsouBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Picsou");
 			break;
 			case 5:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Stupide !");
 				addSubBehaviour(new StupideBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Stupide");
 			break;
 			default:
 				System.out.println("Joueur " + myAgent.getLocalName() + " adopte la strategie Avide !");
 				addSubBehaviour(new AvideBehaviour((AgentJoueur) myAgent));
+				((AgentJoueur)myAgent).addComportement("Avide");
 				break;
 		}
 	}

@@ -85,6 +85,10 @@ public class AgentJoueur extends Agent{
 		addBehaviour(new RecupInitialCapital(this, params));
 	}
 	
+	public void addComportement(String value){
+		myInfos.addInfo("strategie", value, myID);
+	}
+	
 	/**
 	 * Calcule une valeur entre 1 et 100. Si celle-ci correspond à la probabilité de demande,
 	 * on envoi un message au joueur concerné lui demandant de payer le loyer qu'il doit à this
