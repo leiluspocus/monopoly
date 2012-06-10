@@ -15,7 +15,7 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 	public AvideBehaviour(AgentJoueur agentJoueur) {
 		super(agentJoueur);
 		this.agentJoueur = agentJoueur;
-		this.agentJoueur.setProbaDemandeLoyer(95);
+		this.agentJoueur.setProbaDemandeLoyer(45);
 	}
 
 	@Override

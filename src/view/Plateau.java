@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
 
-import util.Logger;
 import util.Constantes.ActionSpeciale;
+import util.Constantes.Couleur;
 import util.Constantes.Pion;
+import util.Logger;
 
 public class Plateau {
 	private Vector<Case> plateau; // Ensemble des cases du plateau
@@ -111,10 +112,50 @@ public class Plateau {
 		return null;
 	}
 	
+	// Retourne le nombre de terrains d'une couleur donnee que possede un proprietaire
+	public int getNbTerrains(Couleur c, AID proprietaire) {
+		int nb=0;
+		for ( Case terrain : plateau ) {
+			if ( terrain instanceof CaseAchetable ) {
+				if ( ((CaseAchetable) terrain).getCouleur() == c && ((CaseAchetable) terrain).getProprietaireCase() == proprietaire) {
+					nb++;
+				}
+			}
+		}
+		return nb;
+	}
+	
+	public Vector<AID> getProprietaires(Couleur c) {
+		Vector<AID> res = new Vector<AID>();
+		for ( Case terrain : plateau ) {
+			if ( terrain instanceof CaseAchetable ) {
+				AID tmp = ((CaseAchetable) terrain).getProprietaireCase();
+				if ( ((CaseAchetable) terrain).getCouleur() == c && tmp != null ) {
+					if ( ! res.contains(tmp))
+						res.add(tmp);
+				}
+			}
+		}
+		return res;
+	}
+	
 	public CaseAchetable nouveauProprietaire(int positionCaseAchetee, AID proprietaire) {
 		CaseAchetable c = (CaseAchetable) getCaseAtPosition(positionCaseAchetee);
 		c.setProprietaireCase(proprietaire);
-		
+		c.setProprietairesPotentiels(getProprietaires(c.getCouleur()));
 		return c;
+	}
+
+	/**
+	 * A l'achat d'une propriete, les autres cases appartenant a la meme propriete notifient
+	 * le vecteur des "proprietaires potentiels"
+	 * @param prop le vecteur de proprietaires a jour
+	 */
+	public void setProprietairesPotentielsPourLesCouleurs(Vector<AID> prop) {
+		for ( Case terrain : plateau ) {
+			if ( terrain instanceof CaseAchetable ) {
+				((CaseAchetable) terrain).setProprietairesPotentiels(prop);
+			}
+		}
 	}
 }

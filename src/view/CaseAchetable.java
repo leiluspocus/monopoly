@@ -14,12 +14,14 @@ public class CaseAchetable extends Case{
 	protected AID proprietaireCase; // Propriétaire de la case
 	protected Couleur couleur; // Couleur à laquelle appartient
 	protected int nbTerrainsPossedes;
-
+	protected Vector<AID> proprietairesPotentiels;
+	
 	public CaseAchetable(int pos, String nom, int valT, Vector<Integer> loy, Couleur c) {
 		super(pos, nom);
 		valeurTerrain = valT;
 		loyers = loy;
 		couleur = c;
+		proprietairesPotentiels = new Vector<AID>();
 	}
 	
 	public CaseAchetable(CaseAchetable c) {
@@ -55,7 +57,13 @@ public class CaseAchetable extends Case{
 		return 0;
 	}
 
-	public void majTerrainsPossedes() {
-		nbTerrainsPossedes++;
+	public void setNbTerrainsPossedes(int nb) {  
+		nbTerrainsPossedes = nb;
 	}
+	
+	public void setProprietairesPotentiels(Vector<AID> p) { 
+		proprietairesPotentiels = p;
+	}
+	
+	public Vector<AID> getProprietairesPotentiels() { return proprietairesPotentiels; }
 }
