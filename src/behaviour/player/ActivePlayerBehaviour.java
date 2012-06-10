@@ -43,7 +43,7 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 					
 				break;
 				default: 
-					Logger.err("Message non géré par " + myAgent.getLocalName() + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
+					Logger.err("Message non géré par " + myAgent.getLocalName()+" envoyé par : " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
 				break;
 			}
 		}	

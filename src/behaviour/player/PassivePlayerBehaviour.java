@@ -19,6 +19,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 	@Override
 	public void action(){
 		ACLMessage msgReceived = myAgent.receive();
+		Logger.info(myAgent.getLocalName() + " a atteint son comportement passif");
 		if (msgReceived != null)
 		{
 			switch(msgReceived.getPerformative()){
@@ -41,6 +42,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 				case ACLMessage.AGREE:
 					int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
 					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
+					waitingForMoney = false;
 				break;
 					
 				default: Logger.err("PassivePlayerBehaviour a recu un message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
