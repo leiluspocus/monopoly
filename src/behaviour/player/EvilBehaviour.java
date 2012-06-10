@@ -24,7 +24,7 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 
 	public boolean canBlockPeople(CaseAchetable c) {
 		Vector<AID> potentialAgents = c.getProprietairesPotentiels();
-		System.err.println("Proprios de la case: " + potentialAgents);
+		//System.err.println("Proprios de la case: " + potentialAgents);
 		if ( potentialAgents != null ) {
 			if ( potentialAgents.size() == 0 ) {
 				return false;
@@ -47,10 +47,17 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 					agentJoueur.send(demandeAchat);
 					System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom()
 							+ " c'est une action evil ! qu'il est mechant et vilain !!!");
+					agentJoueur.addProprieteToJoueur(caseCourante);
 				}
 			}
 			else
 				System.out.println("Not enough money to buy " + caseCourante.getNom());
 		}
+	}
+
+	@Override
+	protected void decideAchatMaison() {
+		// TODO Auto-generated method stub
+		
 	}
 }

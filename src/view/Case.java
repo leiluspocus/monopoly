@@ -3,7 +3,6 @@ package view;
 import jade.core.AID;
 
 import java.io.Serializable;
-import java.util.Vector;
 
 public abstract class Case implements Serializable{
 	private static final long serialVersionUID = 1L;

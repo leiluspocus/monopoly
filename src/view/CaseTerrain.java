@@ -18,6 +18,5 @@ public class CaseTerrain  extends CaseAchetable{
 	
 	public int getNbMaisons(){ return nbMaisons; }
 	public int getValeurMaison() { return valeurMaison; }
-	
-
+	public void ajouterMaison() { nbMaisons++; }
 }

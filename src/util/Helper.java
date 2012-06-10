@@ -2,14 +2,6 @@ package util;
 
 import java.util.Vector;
 
-import agent.AgentJoueur;
-import behaviour.player.AvideBehaviour;
-import behaviour.player.CollectionneurBehaviour;
-import behaviour.player.EvilBehaviour;
-import behaviour.player.IntelligentBehaviour;
-import behaviour.player.PicsouBehaviour;
-import behaviour.player.StupideBehaviour;
-
 public class Helper {
 
 	public static Vector<String> computePlayersName() {

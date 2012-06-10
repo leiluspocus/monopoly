@@ -83,7 +83,7 @@ public class AgentBDC extends Agent{
 			String nom = carte.getLiteral(Constantes.nom).getString();
 			int valeur = carte.getLiteral(Constantes.valeur).getInt();
 			int valeurMaison = carte.getLiteral(Constantes.valeurMaison).getInt();
-			Couleur couleur = Convert.stringToCouleur(carte.getLiteral(Constantes.couleur).getString());
+			Couleur couleur = Couleur.valueOf(carte.getLiteral(Constantes.couleur).getString().toUpperCase());
 			Vector<Integer> loyers = new Vector<Integer>();
 			loyers.add(carte.getLiteral(Constantes.loyerNu).getInt());
 			loyers.add(carte.getLiteral(Constantes.loyer1).getInt());
@@ -104,7 +104,7 @@ public class AgentBDC extends Agent{
 			int pos = carte.getLiteral(Constantes.position).getInt();
 			String nom = carte.getLiteral(Constantes.nom).getString();
 			int valeur = carte.getLiteral(Constantes.valeur).getInt(); 
-			Couleur couleur = Convert.stringToCouleur(carte.getLiteral(Constantes.couleur).getString());
+			Couleur couleur = Couleur.valueOf(carte.getLiteral(Constantes.couleur).getString().toUpperCase());
 			Vector<Integer> loyers = new Vector<Integer>();
 			loyers.add(carte.getLiteral(Constantes.loyerNu).getInt());
 			loyers.add(carte.getLiteral(Constantes.loyer1).getInt());
@@ -122,7 +122,7 @@ public class AgentBDC extends Agent{
 		for ( QuerySolution carte : casesTerrains ) {
 			int pos = carte.getLiteral(Constantes.position).getInt();
 			String nom = carte.getLiteral(Constantes.nom).getString();
-			ActionSpeciale type = Convert.stringToAction(carte.getLiteral(Constantes.type).getString());
+			ActionSpeciale type = ActionSpeciale.valueOf(carte.getLiteral(Constantes.type).getString().toUpperCase());
 			plateau.add(new CaseSpeciale(pos, nom, type));
 		}
 		return plateau;

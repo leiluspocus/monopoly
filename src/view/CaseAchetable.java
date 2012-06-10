@@ -33,9 +33,9 @@ public class CaseAchetable extends Case{
 	
 	public String toString(){
 		if(proprietaireCase == null)
-			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> Aucun";
+			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Couleur -> " + couleur + " : Proprietaire -> Aucun";
 		else
-			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> " + proprietaireCase.getLocalName();
+			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Couleur -> " + couleur + " : Proprietaire -> " + proprietaireCase.getLocalName();
 	}
 
 	public int getValeurTerrain() {return valeurTerrain;}
@@ -57,13 +57,7 @@ public class CaseAchetable extends Case{
 		return 0;
 	}
 
-	public void setNbTerrainsPossedes(int nb) {  
-		nbTerrainsPossedes = nb;
-	}
-	
-	public void setProprietairesPotentiels(Vector<AID> p) { 
-		proprietairesPotentiels = p;
-	}
-	
+	public void setNbTerrainsPossedes(int nb) {  nbTerrainsPossedes = nb;}
+	public void setProprietairesPotentiels(Vector<AID> p) { proprietairesPotentiels = p;}
 	public Vector<AID> getProprietairesPotentiels() { return proprietairesPotentiels; }
 }

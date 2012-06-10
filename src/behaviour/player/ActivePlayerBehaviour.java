@@ -14,6 +14,7 @@ public abstract class ActivePlayerBehaviour extends Behaviour{
 	private ACLMessage msgReceived = null;
 
 	protected abstract void decideAchatTerrain(CaseAchetable caseCourante);
+	protected abstract void decideAchatMaison();
 	
 	public ActivePlayerBehaviour(Agent a) {
 		super(a);
@@ -28,14 +29,18 @@ public abstract class ActivePlayerBehaviour extends Behaviour{
 				 * Indique au joueur sur quelle case il se trouve après le déplacement effectué (dû au jeté de dés)
 				 */
 				case ACLMessage.INFORM_REF:
+					
 					try {
+						CaseAchetable caseCour = null;
 						((AgentJoueur)myAgent).setCaseCourante((Case) msgReceived.getContentObject());
 						if (((AgentJoueur)myAgent).getCaseCourante() instanceof CaseAchetable){
-							CaseAchetable caseCour = (CaseAchetable) ((AgentJoueur)myAgent).getCaseCourante(); 
+							caseCour = (CaseAchetable) ((AgentJoueur)myAgent).getCaseCourante(); 
 							if (caseCour.getProprietaireCase() == null){
 								decideAchatTerrain(caseCour);
 							}
 						}
+						decideAchatMaison();
+						
 					}catch (UnreadableException e){e.printStackTrace();}
 					
 				break;

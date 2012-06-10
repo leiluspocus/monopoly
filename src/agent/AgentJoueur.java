@@ -9,8 +9,12 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.Vector;
 
+import util.Constantes.Couleur;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Case;
@@ -31,9 +35,12 @@ public class AgentJoueur extends Agent{
 	private boolean	enFaillite;
 	private int 	probaDemandeLoyer;
 	private ACLMessage propagateMessage = null;
-	
+	private Vector<CaseAchetable> proprietesDujoueur;
+<<<<<<< Updated upstream
 	private Infos myInfos;
 	private int myID;
+=======
+>>>>>>> Stashed changes
 
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -69,7 +76,8 @@ public class AgentJoueur extends Agent{
 	
 	protected void setup() {
 		fetchSeedAgent(); 
-		Object[] params = this.getArguments();		
+		Object[] params = this.getArguments();	
+		proprietesDujoueur = new Vector<CaseAchetable>();
 		pion = ((Pion)params[0]);
 		nomJoueur = ((String)params[2]);
 		capitalJoueur = 0;
@@ -90,12 +98,111 @@ public class AgentJoueur extends Agent{
 	}
 	
 	/**
+	 * Regarde si le joueur peux acheter des Maisons
+	 * Condition : Avoir tous les terrains de la couleur
+	 */
+	public ArrayList<Couleur> possedeLaCouleur(){
+		HashMap<Couleur, Integer> m = new HashMap<Couleur, Integer>();
+		m.put(Couleur.ROUGE, 0); m.put(Couleur.JAUNE, 0); m.put(Couleur.VERT, 0); m.put(Couleur.BLEU_FONCE, 0); m.put(Couleur.MAGENTA, 0); 
+		m.put(Couleur.BLEU_CIEL, 0); m.put(Couleur.VIOLET, 0); m.put(Couleur.ORANGE, 0);
+		
+		for(CaseAchetable c : proprietesDujoueur){
+			Integer i = m.get(c.getCouleur());
+			if(i != null){
+				i++;
+				m.put(c.getCouleur(), i);
+			}
+		}
+		//System.out.println(m);
+		
+		ArrayList<Couleur> res = new ArrayList<Couleur>();
+		
+		if(m.get(Couleur.ROUGE) == 3) res.add(Couleur.ROUGE);
+		if(m.get(Couleur.JAUNE) == 3) res.add(Couleur.JAUNE);
+		if(m.get(Couleur.VERT) == 3) res.add(Couleur.VERT);
+		if(m.get(Couleur.BLEU_FONCE) == 2) res.add(Couleur.BLEU_FONCE);
+		if(m.get(Couleur.MAGENTA) == 2) res.add(Couleur.MAGENTA);
+		if(m.get(Couleur.BLEU_CIEL) == 3) res.add(Couleur.BLEU_CIEL);
+		if(m.get(Couleur.VIOLET) == 3) res.add(Couleur.VIOLET);
+		if(m.get(Couleur.ORANGE) == 3) res.add(Couleur.ORANGE);
+		
+		return res;
+	}
+	
+	/**
+	 * Recherche le prix des maisons pour une couleur particulière
+	 * @param coul : la couleur des cases
+	 */
+	public int[] getPrixMaison(Couleur coul) {
+		int prix[] = {0,0};
+		
+		for(CaseAchetable c : proprietesDujoueur){
+			if(c.getCouleur() == coul){
+				prix[0] = ((CaseTerrain) c).getValeurMaison();
+				prix[1]++;
+			}
+				
+		}
+		return prix;
+	}
+	
+	
+	/**
+	 * Regarde si le joueur peux acheter des Maisons
+	 * Condition : Avoir tous les terrains de la couleur
+	 */
+	public ArrayList<Couleur> possedeLaCouleur(){
+		HashMap<Couleur, Integer> m = new HashMap<Couleur, Integer>();
+		m.put(Couleur.ROUGE, 0); m.put(Couleur.JAUNE, 0); m.put(Couleur.VERT, 0); m.put(Couleur.BLEU_FONCE, 0); m.put(Couleur.MAGENTA, 0); 
+		m.put(Couleur.BLEU_CIEL, 0); m.put(Couleur.VIOLET, 0); m.put(Couleur.ORANGE, 0);
+		
+		for(CaseAchetable c : proprietesDujoueur){
+			Integer i = m.get(c.getCouleur());
+			if(i != null){
+				i++;
+				m.put(c.getCouleur(), i);
+			}
+		}
+		//System.out.println(m);
+		
+		ArrayList<Couleur> res = new ArrayList<Couleur>();
+		
+		if(m.get(Couleur.ROUGE) == 3) res.add(Couleur.ROUGE);
+		if(m.get(Couleur.JAUNE) == 3) res.add(Couleur.JAUNE);
+		if(m.get(Couleur.VERT) == 3) res.add(Couleur.VERT);
+		if(m.get(Couleur.BLEU_FONCE) == 2) res.add(Couleur.BLEU_FONCE);
+		if(m.get(Couleur.MAGENTA) == 2) res.add(Couleur.MAGENTA);
+		if(m.get(Couleur.BLEU_CIEL) == 3) res.add(Couleur.BLEU_CIEL);
+		if(m.get(Couleur.VIOLET) == 3) res.add(Couleur.VIOLET);
+		if(m.get(Couleur.ORANGE) == 3) res.add(Couleur.ORANGE);
+		
+		return res;
+	}
+	
+	/**
+	 * Recherche le prix des maisons pour une couleur particulière
+	 * @param coul : la couleur des cases
+	 */
+	public int[] getPrixMaison(Couleur coul) {
+		int prix[] = {0,0};
+		
+		for(CaseAchetable c : proprietesDujoueur){
+			if(c.getCouleur() == coul){
+				prix[0] = ((CaseTerrain) c).getValeurMaison();
+				prix[1]++;
+			}
+				
+		}
+		return prix;
+	}
+	
+	
+	/**
 	 * Calcule une valeur entre 1 et 100. Si celle-ci correspond à la probabilité de demande,
 	 * on envoi un message au joueur concerné lui demandant de payer le loyer qu'il doit à this
 	 * Méthode utilisée par les comportements du joueur
 	 * @param msgReceived message de requête reçu
 	 */
-
 	public boolean demanderLoyer(ACLMessage msgReceived){
 		Random rand = new Random();
 		int value = rand.nextInt(100)+1;
@@ -163,6 +270,10 @@ public class AgentJoueur extends Agent{
 	public ACLMessage getPropagateMessage() {return propagateMessage;}
 	public void setPropagateMessage(ACLMessage propagateMessage) {this.propagateMessage = propagateMessage;}
 	
+	public Vector<CaseAchetable> getProprietesDujoueur() {return proprietesDujoueur;}
+	public void setProprietesDujoueur(Vector<CaseAchetable> proprietesDujoueur) {this.proprietesDujoueur = proprietesDujoueur;}
+	public void addProprieteToJoueur(CaseAchetable propriete) {this.proprietesDujoueur.add(propriete);}
+	
 	public void setPion(Pion pion) { this.pion = pion; }
 	public void setNom(String nom) { nomJoueur = nom; }
 	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }
@@ -180,11 +291,6 @@ public class AgentJoueur extends Agent{
 		myInfos.addInfo("argent", Integer.toString(this.capitalJoueur), myID);
 	}
 
-	public int getProbaDemandeLoyer() {
-		return probaDemandeLoyer;
-	}
-
-	public void setProbaDemandeLoyer(int probaDemandeLoyer) {
-		this.probaDemandeLoyer = probaDemandeLoyer;
-	}
+	public int getProbaDemandeLoyer() {return probaDemandeLoyer;}
+	public void setProbaDemandeLoyer(int probaDemandeLoyer) {this.probaDemandeLoyer = probaDemandeLoyer;}
 }

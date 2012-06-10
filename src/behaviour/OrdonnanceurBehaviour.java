@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import util.Constantes;
+import util.Constantes.Couleur;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Carte;
@@ -33,8 +34,12 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private Plateau plateau;
 	private int newPos;
 	private int oldPosition;
+	//private int tag = 0;
+<<<<<<< Updated upstream
 	
 	private AgentMonopoly agentMonopoly;
+=======
+>>>>>>> Stashed changes
 
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau pl, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
@@ -92,7 +97,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		ACLMessage messageReceived = myAgent.blockingReceive(); 
 		
 		if (messageReceived != null) { 
-			System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
+			//System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
 				// Cas classique : le joueur n'est pas en faillite
 				String playerLocalName = joueur.getName().getLocalName();
@@ -102,9 +107,21 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				Integer diceValue = des.get(0) + des.get(1);
 				boolean canPlayerPlay = true;
 
-				Logger.majInfosForPlayer(playerLocalName, " a fait " + diceValue + " aux des");
+				//Logger.majInfosForPlayer(playerLocalName, " a fait " + diceValue + " aux des");
 				// Calcul de la nouvelle position
 				newPos = oldPosition + diceValue;
+				
+				
+				//Triche pour tester l'achat des maisons.
+				/*if(playerLocalName.equals("JOUEUR1")){
+					if(tag == 0){
+						newPos = 39;
+						tag = 1;
+					}
+					else
+						newPos = 37;
+				}*/
+				
 				
 				if (wasPlayerInJail(joueur)) {
 					// Le joueur etait en prison
@@ -188,14 +205,13 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				//Avant de s'endormir, l'ordonnanceur doit vérifier sa liste de message !
 				messageReceived = myAgent.blockingReceive(100);
 				while(messageReceived != null){
-					System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
+					//System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 					
 					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){
 						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
 						System.out.println("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
 					}
-					
-					if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
+					else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
 						AID proprietaire = messageReceived.getSender();
 						int positionCaseAchetee = Integer.parseInt(messageReceived.getContent());
 						
@@ -206,6 +222,26 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						makePlayerPay(proprietaire.getLocalName(), propriete.getValeurTerrain());
 						Logger.err(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
 						agentMonopoly.addPossession(proprietaire.getLocalName(), propriete.getNom());
+					}
+					else if (messageReceived.getPerformative() == ACLMessage.PROXY){
+						AID proprietaire = messageReceived.getSender();
+						String[] res = messageReceived.getContent().split("#");
+						Couleur c = Couleur.valueOf(res[0]);
+						int prixTotal = Integer.parseInt(res[1]);
+						
+						plateau.addHouses(c);
+						makePlayerPay(proprietaire.getLocalName(), prixTotal);
+						Logger.err(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
+					}
+					else if (messageReceived.getPerformative() == ACLMessage.PROXY){
+						AID proprietaire = messageReceived.getSender();
+						String[] res = messageReceived.getContent().split("#");
+						Couleur c = Couleur.valueOf(res[0]);
+						int prixTotal = Integer.parseInt(res[1]);
+						
+						plateau.addHouses(c);
+						makePlayerPay(proprietaire.getLocalName(), prixTotal);
+						Logger.err(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
 					}
 					
 					messageReceived = myAgent.blockingReceive(100);

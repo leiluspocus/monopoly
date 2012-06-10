@@ -47,6 +47,7 @@ public class Plateau {
 				}
 			}	
 		}
+		System.out.println(plateau);
 	}
 	
 	public void setFrame(Monopoly m){
@@ -157,5 +158,16 @@ public class Plateau {
 				((CaseAchetable) terrain).setProprietairesPotentiels(prop);
 			}
 		}
+	}
+
+	/**
+	 * Ajoute des maisons sur les cases de couleur c
+	 * @param c : La couleur
+	 */
+	public void addHouses(Couleur coul) {
+		for(Case c : plateau)
+			if(c instanceof CaseTerrain)
+				if(((CaseTerrain) c).getCouleur() == coul)
+					((CaseTerrain) c).ajouterMaison();
 	}
 }

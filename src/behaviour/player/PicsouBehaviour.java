@@ -29,9 +29,16 @@ public class PicsouBehaviour extends ActivePlayerBehaviour {
 				demandeAchat.addReceiver(agentJoueur.getMonopoly());
 				agentJoueur.send(demandeAchat);
 				System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
+				agentJoueur.addProprieteToJoueur(caseCourante);
 			}
 			else
 				System.out.println("Not enough money to buy " + caseCourante.getNom());
 		}
+	}
+
+	@Override
+	protected void decideAchatMaison() {
+		// TODO Auto-generated method stub
+		
 	}
 }

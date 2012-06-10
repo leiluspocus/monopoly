@@ -26,7 +26,7 @@ public class Logger extends JFrame {
 	public void initInfosJoueurs() {
 		int i=1;
 		nomsJoueurs = Helper.computePlayersName();
-		for ( String j : nomsJoueurs ) {
+		for (String j : nomsJoueurs) {
 			infosJoueurs.put(i, null);
 			++i;
 		}

@@ -40,6 +40,7 @@ public class CollectionneurBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
 					System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
+					agentJoueur.addProprieteToJoueur(caseCourante);
 					
 					if(doitAcheter == 1)
 						couleur1 = caseCourante.getCouleur();
@@ -50,5 +51,11 @@ public class CollectionneurBehaviour extends ActivePlayerBehaviour {
 					System.out.println("Not enough money to buy " + caseCourante.getNom());
 			}
 		}
+	}
+
+	@Override
+	protected void decideAchatMaison() {
+		// TODO Auto-generated method stub
+		
 	}
 }
