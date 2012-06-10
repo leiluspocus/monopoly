@@ -27,6 +27,7 @@ public class MainContainer {
 		lesNomsDeJoueur = Helper.computePlayersName();
 		try {
 			p = new ProfileImpl();
+			p.setParameter(Profile.GUI, "true");
 			mc = rt.createMainContainer(p);
 			AgentController bc;
 			

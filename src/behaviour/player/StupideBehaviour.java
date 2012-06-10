@@ -19,12 +19,11 @@ public class StupideBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatTerrain(CaseAchetable caseCourante) {
-		System.out.println(((AgentJoueur)myAgent).getLocalName() + " est stupide : il n'achète aucun terrain");
+		System.out.println(((AgentJoueur)myAgent).getLocalName() + " est stupide : il n'achète aucun terrain ni maison");
 	}
 
 	@Override
 	protected void decideAchatMaison() {
-		// TODO Auto-generated method stub
 		
 	}
 }

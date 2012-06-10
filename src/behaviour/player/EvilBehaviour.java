@@ -57,7 +57,6 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatMaison() {
-		// TODO Auto-generated method stub
 		
 	}
 }

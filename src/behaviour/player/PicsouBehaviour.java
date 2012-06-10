@@ -1,6 +1,9 @@
 package behaviour.player;
 
+import java.util.ArrayList;
+
 import jade.lang.acl.ACLMessage;
+import util.Constantes.Couleur;
 import view.CaseAchetable;
 import agent.AgentJoueur;
 
@@ -38,7 +41,26 @@ public class PicsouBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatMaison() {
-		// TODO Auto-generated method stub
+		ArrayList<Couleur> cpp = agentJoueur.possedeLaCouleur();
+		
+		if(cpp.size() != 0){
+			for(Couleur coul : cpp){
+				int prix[] = agentJoueur.getPrixMaison(coul);
+				int prixTotal = prix[0] * prix[1];
+				
+				if(agentJoueur.getCapitalJoueur() > SEUIL_ACHAT){
+					ACLMessage demandeAchat = new ACLMessage(ACLMessage.PROXY);
+					demandeAchat.setContent(coul + "#" + prixTotal);
+					demandeAchat.addReceiver(agentJoueur.getMonopoly());
+					agentJoueur.send(demandeAchat);
+					System.out.println(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
+				}
+				else
+					System.out.println("Not enough money to buy houses on" + coul);
+			}
+		}
+		else
+			System.out.println(agentJoueur.getLocalName() + " ne peut pas encore acheter de maisons");
 		
 	}
 }
