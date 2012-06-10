@@ -36,11 +36,8 @@ public class AgentJoueur extends Agent{
 	private int 	probaDemandeLoyer;
 	private ACLMessage propagateMessage = null;
 	private Vector<CaseAchetable> proprietesDujoueur;
-<<<<<<< Updated upstream
 	private Infos myInfos;
 	private int myID;
-=======
->>>>>>> Stashed changes
 
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -145,57 +142,6 @@ public class AgentJoueur extends Agent{
 		}
 		return prix;
 	}
-	
-	
-	/**
-	 * Regarde si le joueur peux acheter des Maisons
-	 * Condition : Avoir tous les terrains de la couleur
-	 */
-	public ArrayList<Couleur> possedeLaCouleur(){
-		HashMap<Couleur, Integer> m = new HashMap<Couleur, Integer>();
-		m.put(Couleur.ROUGE, 0); m.put(Couleur.JAUNE, 0); m.put(Couleur.VERT, 0); m.put(Couleur.BLEU_FONCE, 0); m.put(Couleur.MAGENTA, 0); 
-		m.put(Couleur.BLEU_CIEL, 0); m.put(Couleur.VIOLET, 0); m.put(Couleur.ORANGE, 0);
-		
-		for(CaseAchetable c : proprietesDujoueur){
-			Integer i = m.get(c.getCouleur());
-			if(i != null){
-				i++;
-				m.put(c.getCouleur(), i);
-			}
-		}
-		//System.out.println(m);
-		
-		ArrayList<Couleur> res = new ArrayList<Couleur>();
-		
-		if(m.get(Couleur.ROUGE) == 3) res.add(Couleur.ROUGE);
-		if(m.get(Couleur.JAUNE) == 3) res.add(Couleur.JAUNE);
-		if(m.get(Couleur.VERT) == 3) res.add(Couleur.VERT);
-		if(m.get(Couleur.BLEU_FONCE) == 2) res.add(Couleur.BLEU_FONCE);
-		if(m.get(Couleur.MAGENTA) == 2) res.add(Couleur.MAGENTA);
-		if(m.get(Couleur.BLEU_CIEL) == 3) res.add(Couleur.BLEU_CIEL);
-		if(m.get(Couleur.VIOLET) == 3) res.add(Couleur.VIOLET);
-		if(m.get(Couleur.ORANGE) == 3) res.add(Couleur.ORANGE);
-		
-		return res;
-	}
-	
-	/**
-	 * Recherche le prix des maisons pour une couleur particulière
-	 * @param coul : la couleur des cases
-	 */
-	public int[] getPrixMaison(Couleur coul) {
-		int prix[] = {0,0};
-		
-		for(CaseAchetable c : proprietesDujoueur){
-			if(c.getCouleur() == coul){
-				prix[0] = ((CaseTerrain) c).getValeurMaison();
-				prix[1]++;
-			}
-				
-		}
-		return prix;
-	}
-	
 	
 	/**
 	 * Calcule une valeur entre 1 et 100. Si celle-ci correspond à la probabilité de demande,

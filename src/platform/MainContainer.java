@@ -11,10 +11,7 @@ import java.util.Vector;
 import util.Constantes;
 import util.Constantes.Pion;
 import util.Helper;
-<<<<<<< Updated upstream
 import view.Infos;
-=======
->>>>>>> Stashed changes
 
 public class MainContainer {
 	private static final int NB_JOUEURS = 6; //Peut-être changé

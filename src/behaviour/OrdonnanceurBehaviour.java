@@ -35,11 +35,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private int newPos;
 	private int oldPosition;
 	//private int tag = 0;
-<<<<<<< Updated upstream
-	
 	private AgentMonopoly agentMonopoly;
-=======
->>>>>>> Stashed changes
 
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau pl, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
