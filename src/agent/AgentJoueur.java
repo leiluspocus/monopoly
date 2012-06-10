@@ -29,7 +29,8 @@ public class AgentJoueur extends Agent{
 	private int		capitalJoueur;
 	private boolean	enFaillite;
 	private int 	probaDemandeLoyer;
-	
+	private ACLMessage propagateMessage = null;
+
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
@@ -101,11 +102,8 @@ public class AgentJoueur extends Agent{
 			else if (caseJoueur instanceof CaseAchetable){
 				// TODO: loyer pour les gares / compagnies
 			}
-			demandeLoyer.setContent(String.valueOf(montantLoyer));
-			
-			// TODO: Le joueur risque de demander deux fois le loyer à un même joueur
-			for(AID a : caseJoueur.getJoueurPresents())
-				demandeLoyer.addReceiver(a);
+			demandeLoyer.setContent(String.valueOf(montantLoyer));			
+			demandeLoyer.addReceiver(caseJoueur.getJoueurQuiVientdArriver());
 				
 			send(demandeLoyer);
 			
@@ -126,6 +124,7 @@ public class AgentJoueur extends Agent{
 		response.setContent(String.valueOf(montantDu));
 		response.setPerformative(ACLMessage.AGREE);
 		send(response);
+		System.out.println("Mouvement d'argent : " + getLocalName() + " -> -" + montantDu);
 	}
 	
 	/**
@@ -147,6 +146,10 @@ public class AgentJoueur extends Agent{
 	public int getCapitalJoueur() { return capitalJoueur; }
 	public boolean isEnFaillite() {return enFaillite;}
 
+	public boolean aRecuPropagate() {return propagateMessage != null;}
+	public ACLMessage getPropagateMessage() {return propagateMessage;}
+	public void setPropagateMessage(ACLMessage propagateMessage) {this.propagateMessage = propagateMessage;}
+	
 	public void setPion(Pion pion) { this.pion = pion; }
 	public void setNom(String nom) { nomJoueur = nom; }
 	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }

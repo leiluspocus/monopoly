@@ -1,7 +1,7 @@
 package behaviour.player;
 
 import jade.core.Agent;
-import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import util.Logger;
@@ -9,9 +9,9 @@ import view.Case;
 import view.CaseAchetable;
 import agent.AgentJoueur;
 
-public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
-
+public abstract class ActivePlayerBehaviour extends Behaviour{
 	private static final long serialVersionUID = 1L;
+	private ACLMessage msgReceived = null;
 
 	protected abstract void decideAchatTerrain(CaseAchetable caseCourante);
 	
@@ -21,7 +21,7 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 	
 	@Override
 	public void action(){
-		ACLMessage msgReceived = myAgent.blockingReceive();
+		msgReceived = myAgent.blockingReceive();
 		if (msgReceived != null){
 			switch (msgReceived.getPerformative()){
 				/*
@@ -36,16 +36,29 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 								decideAchatTerrain(caseCour);
 							}
 						}
-					}
-					catch (UnreadableException e){e.printStackTrace();}
-					
-					//System.out.println(((AgentJoueur)myAgent).getCaseCourante());
+					}catch (UnreadableException e){e.printStackTrace();}
 					
 				break;
+				
+				case ACLMessage.AGREE:
+					int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
+					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
+					System.out.println("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
+				break;
+				
+				case ACLMessage.REQUEST:
+					((AgentJoueur)myAgent).payerMontantDu(msgReceived);
+				break;
+				
 				default: 
-					Logger.err("Message non géré par " + myAgent.getLocalName()+" envoyé par : " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
+					Logger.err("Message non géré par l'ActiveBehaviour de " + myAgent.getLocalName() + " de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
 				break;
 			}
 		}	
+	}
+	
+	@Override
+	public boolean done() {
+		return msgReceived.getPerformative() == ACLMessage.INFORM_REF;
 	}
 }

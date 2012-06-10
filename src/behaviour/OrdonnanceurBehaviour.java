@@ -96,7 +96,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
 				// Cas classique : le joueur n'est pas en faillite
-				String localPlayerName = joueur.getName().getLocalName();
+				String playerLocalName = joueur.getName().getLocalName();
 				oldPosition = lesPositionsDesJoueurs.get(joueur);
 				@SuppressWarnings("unchecked")
 				Vector<Integer> des = (Vector<Integer>) messageReceived.getContentObject();
@@ -108,7 +108,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				
 				if (wasPlayerInJail(joueur)) {
 					// Le joueur etait en prison
-					if (! playerCanBeRealeased(des, joueur, localPlayerName)) {
+					if (! playerCanBeRealeased(des, joueur, playerLocalName)) {
 						newPos = Constantes.CASE_PRISON;
 						canPlayerPlay = false;
 					}
@@ -121,20 +121,20 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					// Libre de se deplacer
 					if (newPos > Constantes.CASE_FIN) {
 						newPos -= Constantes.CASE_FIN;
-						System.out.println(localPlayerName + " a fini un tour");
-						giveMoneyToPlayer(localPlayerName, 20000); // Le joueur a fait un tour complet
+						System.out.println(playerLocalName + " a fini un tour");
+						giveMoneyToPlayer(playerLocalName, 20000); // Le joueur a fait un tour complet
 					}
 					
 					if (plateau.isCaseChance(newPos)) {
 						Carte c = plateau.tirageChance();
-						System.out.println(localPlayerName + " tire une carte Chance :\n" + c.getMsg());
-						executeActionCarte(joueur, localPlayerName, c);
+						System.out.println(playerLocalName + " tire une carte Chance :\n" + c.getMsg());
+						executeActionCarte(joueur, playerLocalName, c);
 						
 					}
 					if (plateau.isCaseCommunaute(newPos)) {
 						Carte c = plateau.tirageCommunaute();
-						System.out.println(localPlayerName + " tire une carte Communaute :\n" + c.getMsg());
-						executeActionCarte(joueur, localPlayerName, c);
+						System.out.println(playerLocalName + " tire une carte Communaute :\n" + c.getMsg());
+						executeActionCarte(joueur, playerLocalName, c);
 					}
 					
 					switch(newPos) {
@@ -144,49 +144,46 @@ public class OrdonnanceurBehaviour extends Behaviour {
 							sendToJail(joueur.getName());
 						break;
 						case Constantes.CASE_IMPOTS :
-							System.out.println(localPlayerName + " est tombe sur la case IMPOTS");
-							makePlayerPay(localPlayerName, 20000);
+							System.out.println(playerLocalName + " est tombe sur la case IMPOTS");
+							makePlayerPay(playerLocalName, 20000);
 						break;
 						case  Constantes.CASE_TAXE :
-							System.out.println(localPlayerName + " est tombe sur la case TAXE");
-							makePlayerPay(localPlayerName, 10000);
+							System.out.println(playerLocalName + " est tombe sur la case TAXE");
+							makePlayerPay(playerLocalName, 10000);
 						break;
 					}
 				}
 
 				lesPositionsDesJoueurs.put(joueur, newPos);
-				int num = Integer.parseInt(localPlayerName.substring(6));
+				int num = Integer.parseInt(playerLocalName.substring(6));
 				lesJoueursEtLesPions.put(Constantes.lesPions[num-1], newPos);
 				plateau.setPositionJoueurs(lesJoueursEtLesPions);
 				//System.out.println(lesJoueursEtLesPions);
 				
 				// L'agent Monopoly envoie au joueur la case
 				ACLMessage caseCourante = new ACLMessage(ACLMessage.INFORM_REF);
-				try {
-					plateau.getCase(oldPosition).removeJoueurPresent(joueur.getName());
-					plateau.getCase(newPos).addJoueurPresent(joueur.getName());
-					caseCourante.setContentObject(plateau.getCase(newPos));
-					caseCourante.addReceiver(joueur.getName());
-					myAgent.send(caseCourante);
-					
-					/**
-					 * Avertir le propriétaire de la case qu'un joueur se trouve sur son terrain
-					 */
-					if (plateau.getCase(newPos) instanceof CaseAchetable){
-						CaseAchetable caseJoueurCourant = (CaseAchetable) plateau.getCase(newPos);
-						// Si la case a un propriétaire
-						if (caseJoueurCourant.getProprietaireCase() != null){
-							// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
-							if (!(caseJoueurCourant.getProprietaireCase().getLocalName().equals(localPlayerName))){
-								ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
-								joueurSurVotreTerritoire.addReceiver(caseJoueurCourant.getProprietaireCase());
-								joueurSurVotreTerritoire.setContentObject(plateau.getCase(newPos));
-								myAgent.send(joueurSurVotreTerritoire);
-							}
+				plateau.getCase(newPos).setJoueurQuiVientdArriver(joueur.getName());
+				caseCourante.setContentObject(plateau.getCase(newPos));
+				caseCourante.addReceiver(joueur.getName());
+				myAgent.send(caseCourante);
+				
+				/**
+				 * Avertir le proprietaire de la case qu'un joueur se trouve sur son terrain
+				 */
+				if (plateau.getCase(newPos) instanceof CaseAchetable){
+					CaseAchetable caseJoueurCourant = (CaseAchetable) plateau.getCase(newPos);
+					// Si la case a un propriétaire
+					if (caseJoueurCourant.getProprietaireCase() != null){
+						// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
+						if (!(caseJoueurCourant.getProprietaireCase().getLocalName().equals(playerLocalName))){
+							System.out.println(playerLocalName + " vient de tomber sur " + caseJoueurCourant.getNom());
+							ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
+							joueurSurVotreTerritoire.addReceiver(caseJoueurCourant.getProprietaireCase());
+							joueurSurVotreTerritoire.setContentObject(plateau.getCase(newPos));
+							myAgent.send(joueurSurVotreTerritoire);
 						}
 					}
-				} 
-				catch (IOException e1) { e1.printStackTrace(); }
+				}
 				
 				//Avant de s'endormir, l'ordonnanceur doit vérifier sa liste de message !
 				messageReceived = myAgent.blockingReceive(100);

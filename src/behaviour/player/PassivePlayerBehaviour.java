@@ -9,56 +9,51 @@ import jade.lang.acl.ACLMessage;
 public class PassivePlayerBehaviour extends Behaviour{
 
 	private static final long serialVersionUID = 1L;
-	private boolean waitingForMoney;
 
 	public PassivePlayerBehaviour(Agent a){
 		super(a);
-		waitingForMoney = false;
 	}
 	
 	@Override
 	public void action(){
-		ACLMessage msgReceived = myAgent.receive();
-		Logger.info(myAgent.getLocalName() + " a atteint son comportement passif");
-		if (msgReceived != null)
-		{
-			switch(msgReceived.getPerformative()){
-				/*
-				 * Un joueur est sur une des propriétés de myAgent
-				 */
-				case ACLMessage.INFORM:
-					waitingForMoney = ((AgentJoueur)myAgent).demanderLoyer(msgReceived);
+		ACLMessage msgReceived = myAgent.blockingReceive();
+		switch(msgReceived.getPerformative()){
+			/*
+			 * Un joueur est sur une des propriétés de myAgent
+			 */
+			case ACLMessage.INFORM:
+				((AgentJoueur)myAgent).demanderLoyer(msgReceived);
+			break;
+			/*
+			 * Demande de paiement: à destination d'un joueur (loyer/terrain/case spéciale), ou de la banque (taxes)
+			 * Envoi du paiement au destinataire
+			 */
+			case ACLMessage.REQUEST:
+				((AgentJoueur)myAgent).payerMontantDu(msgReceived);
+			break;
+			/*
+			 * Message receptionnant l'argent d'un joueur ou de la banque
+			 */
+			case ACLMessage.AGREE:
+				int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
+				((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
+				System.out.println("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
+			break;
+			
+			/*
+			 * Message reçu de l'ordonnanceur, "reveil toi, c'est à toi de jouer"
+			 */
+			case ACLMessage.PROPAGATE:
+				((AgentJoueur)myAgent).setPropagateMessage(msgReceived);
+			break;
+				
+			default: Logger.err("PassivePlayerBehaviour de " + myAgent.getLocalName() + ": message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
 				break;
-				/*
-				 * Demande de paiement: à destination d'un joueur (loyer/terrain/case spéciale), ou de la banque (taxes)
-				 * Envoi du paiement au destinataire
-				 */
-				case ACLMessage.REQUEST:
-					((AgentJoueur)myAgent).payerMontantDu(msgReceived);
-				break;
-				/*
-				 * Message receptionnant l'argent d'un joueur ou de la banque
-				 */
-				case ACLMessage.AGREE:
-					int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
-					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
-					waitingForMoney = false;
-				break;
-					
-				default: Logger.err("PassivePlayerBehaviour a recu un message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
-					break;
-			}
-		}
-		else
-		{
-			block();
 		}
 	}
 
 	@Override
-	public boolean done() 
-	{
-		return !waitingForMoney;
+	public boolean done() {
+		return ((AgentJoueur)myAgent).aRecuPropagate();
 	}
-
 }

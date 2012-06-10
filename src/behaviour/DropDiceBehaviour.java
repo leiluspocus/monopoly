@@ -67,18 +67,24 @@ public class DropDiceBehaviour extends OneShotBehaviour {
 	@Override
 	public void action() { 
 		//System.out.println("Drop dice : " + myAgent.getLocalName()); 
+		ACLMessage message;
 		
-        ACLMessage message = myAgent.blockingReceive(); 
+        if(!((AgentJoueur) myAgent).aRecuPropagate()){
+        	message = myAgent.blockingReceive(); 
+        }
+        else{
+        	message = ((AgentJoueur) myAgent).getPropagateMessage();
+        	((AgentJoueur) myAgent).setPropagateMessage(null);
+        }
+        	
         if (message != null) {
-        	//System.err.println(" >>> alert " + message);
         	// Attente de la valeur des des émise par l'AgentSeed
 	       	 if ( message.getPerformative() == ACLMessage.PROPAGATE ) {
         		// C'est au tour du joueur : il faut jeter les des
         		((AgentJoueur) myAgent).setMonopoly(message.getSender());
         		jeterLesDes();
                 message = myAgent.blockingReceive(); 
-            	//System.err.println(" >>> alert 2 " + message);
-                if ( message.getPerformative() == ACLMessage.CONFIRM ) {
+                if (message.getPerformative() == ACLMessage.CONFIRM) {
                 	// Les des sont jetes, il faut deplacer le pion
                 	try {
                 		deplacerPion(message.getContentObject()); 
@@ -86,11 +92,11 @@ public class DropDiceBehaviour extends OneShotBehaviour {
                 	catch ( Exception o ) { o.printStackTrace(); }
                 }
                 else {
-               	 System.err.println("DropDiceBehaviour1 a recu un message inconnu de: " + message.getSender().getLocalName() + ":" + message.getPerformative());
+                	System.err.println("DropDiceBehaviour1 de " + myAgent.getLocalName() + ": message inconnu de " + message.getSender().getLocalName() + ":" + message.getPerformative());
                 }
 	       	 }
 	       	 else { 
-	       		System.err.println("DropDiceBehaviour2 a recu un message inconnu de: " + message.getSender().getLocalName() + ":" + message.getPerformative());
+	       		System.err.println("DropDiceBehaviour2 de " + myAgent.getLocalName() + ": message inconnu de " + message.getSender().getLocalName() + ":" + message.getPerformative());
         	} 
         } 
         
