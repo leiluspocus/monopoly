@@ -6,6 +6,7 @@ import util.Constantes.Couleur;
 public class Convert {
 
 	public static final Couleur stringToCouleur(String s) {
+		s = s.toUpperCase();
 		if ( Couleur.ROUGE.toString().equals(s)) {
 			return Couleur.ROUGE;
 		}		
