@@ -196,9 +196,10 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						AID proprietaire = messageReceived.getSender();
 						int positionCaseAchetee = Integer.parseInt(messageReceived.getContent());
 						
-						CaseAchetable proprietee = plateau.nouveauProprietaire(positionCaseAchetee, proprietaire);
-						makePlayerPay(proprietaire.getLocalName(), proprietee.getValeurTerrain());
-						Logger.info(proprietaire.getLocalName() + " est désormais proprietaire de " + proprietee.getNom());
+						CaseAchetable propriete = plateau.nouveauProprietaire(positionCaseAchetee, proprietaire);
+						propriete.majTerrainsPossedes();
+						makePlayerPay(proprietaire.getLocalName(), propriete.getValeurTerrain());
+						Logger.info(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
 					}
 					
 					messageReceived = myAgent.blockingReceive(100);

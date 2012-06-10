@@ -99,8 +99,8 @@ public class AgentJoueur extends Agent{
 				int nbMaisons = ((CaseTerrain)caseJoueur).getNbMaisons(); 
 				montantLoyer = ((CaseAchetable)caseJoueur).getLoyers().get(nbMaisons);
 			}
-			else if (caseJoueur instanceof CaseAchetable){
-				// TODO: loyer pour les gares / compagnies
+			else if (caseJoueur instanceof CaseAchetable){  
+				montantLoyer = ((CaseAchetable)caseJoueur).computeLoyer();
 			}
 			demandeLoyer.setContent(String.valueOf(montantLoyer));			
 			demandeLoyer.addReceiver(caseJoueur.getJoueurQuiVientdArriver());

@@ -13,6 +13,7 @@ public class CaseAchetable extends Case{
 	protected Vector<Integer> loyers;  // Valeurs des loyers (selon le nombre de terrains possédés)
 	protected AID proprietaireCase; // Propriétaire de la case
 	protected Couleur couleur; // Couleur à laquelle appartient
+	protected int nbTerrainsPossedes;
 
 	public CaseAchetable(int pos, String nom, int valT, Vector<Integer> loy, Couleur c) {
 		super(pos, nom);
@@ -40,4 +41,21 @@ public class CaseAchetable extends Case{
 	public AID getProprietaireCase() {return proprietaireCase;}
 	public void setProprietaireCase(AID proprietaireCase) {this.proprietaireCase = proprietaireCase;}
 	public Couleur getCouleur() {return couleur;}
+
+	/*
+	 *Le tableau loyers est construit de la maniere suivante :
+	 * 	   -> Terrain nu: Indice 0
+	 *     -> Deux terrains: Indice 1 
+	 *     and so on
+	 */
+	public int computeLoyer() {
+		if ( proprietaireCase != null ) {
+			return loyers.get(nbTerrainsPossedes - 1);
+		}
+		return 0;
+	}
+
+	public void majTerrainsPossedes() {
+		nbTerrainsPossedes++;
+	}
 }
