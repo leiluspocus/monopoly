@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import util.Constantes;
 import util.Constantes.Pion;
+import util.Helper;
 import util.Logger;
 
 public class MainContainer {
@@ -17,22 +18,10 @@ public class MainContainer {
 	private static Vector<String> lesNomsDeJoueur;
 	private static AgentContainer mc;
 	
-	private static void setup() {
-		lesNomsDeJoueur = new Vector<String>();
-		lesNomsDeJoueur.add("Annie");
-		lesNomsDeJoueur.add("Bobby");
-		lesNomsDeJoueur.add("Danny");
-		lesNomsDeJoueur.add("Emmy");
-		lesNomsDeJoueur.add("Fanny");
-		lesNomsDeJoueur.add("Gary");
-		lesNomsDeJoueur.add("Larry");
-	}
-	
 	public static void main(String[] args){
-		new Logger();
 		Runtime rt = Runtime.instance();
 		Profile p = null;
-		setup();
+		lesNomsDeJoueur = Helper.computePlayersName();
 		try {
 			p = new ProfileImpl();
 			mc = rt.createMainContainer(p);

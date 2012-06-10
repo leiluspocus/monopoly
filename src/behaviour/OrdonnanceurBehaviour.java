@@ -84,15 +84,11 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	@Override
 	public void action() {  
 		try {
-		DFAgentDescription joueur = lesJoueurs.get(currentTour); 
-		
-		//System.out.println("Envoi d'un message a " + joueur.getName().getLocalName() + " pour qu'il lance les des");
-		throwDice(joueur);
-		
-		//System.out.println("Reception du score du joueur " + messageReceived.getSender().getLocalName() + " : " + message.getContent());
+		DFAgentDescription joueur = lesJoueurs.get(currentTour);   
+		throwDice(joueur); 
 		ACLMessage messageReceived = myAgent.blockingReceive(); 
 		
-		if (messageReceived != null) {
+		if (messageReceived != null) { 
 			System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
 				// Cas classique : le joueur n'est pas en faillite
@@ -102,7 +98,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				Vector<Integer> des = (Vector<Integer>) messageReceived.getContentObject();
 				Integer diceValue = des.get(0) + des.get(1);
 				boolean canPlayerPlay = true;
-				
+
+				Logger.majInfosForPlayer(playerLocalName, " a fait " + diceValue + " aux des");
 				// Calcul de la nouvelle position
 				newPos = oldPosition + diceValue;
 				
@@ -216,7 +213,21 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			else{
 				Logger.err("OrdonnanceurBehaviour a reçu un message qu'il n'a pas compris !");
 			}
+
+			ACLMessage aclM = new ACLMessage(ACLMessage.CFP);
+			aclM.addReceiver(joueur.getName());
+			myAgent.send(aclM);
+			
+			ACLMessage replyP = myAgent.blockingReceive();
+			if ( replyP != null ) {
+				if ( replyP.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
+					String money = replyP.getContent(); 
+					Logger.majInfosForPlayer(joueur.getName().getLocalName(), " a un capital de " + money);
+				}
+			}
+			
 		}
+
 		
 		// On passe au joueur suivant
 		plateau.redrawFrame();
@@ -264,7 +275,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			return true;
 		} 
 		int nbTours = getTimePassedInJail(joueur.getName());
-		if ( nbTours == 3 ) {
+		if ( nbTours > 3 ) {
 			makePlayerPay(playerName, 5000);
 			return true;
 		}

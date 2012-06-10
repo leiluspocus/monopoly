@@ -1,6 +1,8 @@
 package util;
 
 import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,10 +13,22 @@ public class Logger extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static JTextArea jta = new JTextArea();
+	private static HashMap<Integer, String> infosJoueurs = new HashMap<Integer, String>();
+	private static Vector<String> nomsJoueurs = new Vector<String>();
 	
 	public Logger(){
 		super();
+		initInfosJoueurs();
 		createGUI();
+	}
+	
+	public void initInfosJoueurs() {
+		int i=1;
+		nomsJoueurs = Helper.computePlayersName();
+		for ( String j : nomsJoueurs ) {
+			infosJoueurs.put(i, null);
+			++i;
+		}
 	}
 	
 	private void createGUI(){
@@ -51,4 +65,17 @@ public class Logger extends JFrame {
 		
 		System.err.println(line);
 	}
+	
+	public static void majInfosForPlayer(String joueur, String newInfos) {
+		//On recupere le LocalName de l'agent Jade
+		int indiceJoueur = Integer.parseInt(joueur.replace("JOUEUR", "").trim());
+		if ( infosJoueurs.containsKey(indiceJoueur)) {
+			infosJoueurs.put(indiceJoueur, newInfos);
+			System.out.println("Joueur " + nomsJoueurs.get(indiceJoueur) + " strategie "  + Helper.getStrategy(indiceJoueur-1) +" infos >" + newInfos);
+		}
+		else {
+			System.err.println("Joueur inconnu " + joueur + " essaie d'afficher qqch dans le logger");
+		}
+	}
+	
 }

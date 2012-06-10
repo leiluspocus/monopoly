@@ -46,6 +46,15 @@ public class PassivePlayerBehaviour extends Behaviour{
 			case ACLMessage.PROPAGATE:
 				((AgentJoueur)myAgent).setPropagateMessage(msgReceived);
 			break;
+
+			
+			case ACLMessage.CFP: // Le monopoly demande au joueur son nouveau capital
+				int valCapital = ((AgentJoueur) myAgent).getCapitalJoueur();
+				ACLMessage reply = msgReceived.createReply();
+				reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+				reply.setContent(valCapital + "");
+				myAgent.send(reply);
+				break;
 				
 			default: Logger.err("PassivePlayerBehaviour de " + myAgent.getLocalName() + ": message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
 				break;

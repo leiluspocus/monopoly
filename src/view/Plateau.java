@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
 
+import util.Logger;
 import util.Constantes.ActionSpeciale;
 import util.Constantes.Pion;
 
@@ -24,6 +25,7 @@ public class Plateau {
 
 	public Plateau(Vector<Case> vcas, Vector<Carte> vcar){
 		Random intGenerator = new Random();
+		new Logger();
 		
 		plateau = vcas;
 		cartes = vcar;
