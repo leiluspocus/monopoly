@@ -44,17 +44,23 @@ public class InfosPanel extends JPanel {
         g.drawString(nomJ, 60, 20);
         
         g.drawString("Pion : ", 5, 40);
-        switch(pion){
-        case "Cheval": g.drawImage(imgPions.get(0), 60, 23, this); break;
-		case "Canon": g.drawImage(imgPions.get(1), 60, 23, this); break;
-		case "Voiture": g.drawImage(imgPions.get(2), 60, 30, this); break;
-		case "Bateau": g.drawImage(imgPions.get(3), 60, 30, this); break;
-		case "Chapeau": g.drawImage(imgPions.get(4), 60, 30, this); break;
-		case "Brouette": g.drawImage(imgPions.get(5), 60, 30, this); break;
-		case "Chaussure": g.drawImage(imgPions.get(6), 60, 30, this); break;
-		case "Fer": g.drawImage(imgPions.get(7), 60, 30, this); break;
-		default: break;
-		}
+        if(pion == "Cheval")
+        	g.drawImage(imgPions.get(0), 60, 23, this);
+        else if(pion == "Canon")
+        	g.drawImage(imgPions.get(1), 60, 23, this);
+		else if(pion == "Voiture")
+			g.drawImage(imgPions.get(2), 60, 30, this);
+		else if(pion == "Bateau")
+			g.drawImage(imgPions.get(3), 60, 30, this);
+		else if(pion == "Chapeau")
+			g.drawImage(imgPions.get(4), 60, 30, this);
+		else if(pion == "Brouette")
+			g.drawImage(imgPions.get(5), 60, 30, this);
+		else if(pion == "Chaussure")
+			g.drawImage(imgPions.get(6), 60, 30, this);
+		else if(pion == "Fer")
+			g.drawImage(imgPions.get(7), 60, 30, this);
+        
         g.drawString("("+pion+")", 80, 40);
         
         g.drawString("Argent : ", 5, 60);
@@ -74,12 +80,13 @@ public class InfosPanel extends JPanel {
 	}
 	
 	public void addInfo(String info, String value){
-		switch(info){
-		case "nomJoueur": this.nomJ = value;break;
-		case "argent" : this.argent = new Integer(value);break;
-		case "possessions" : this.possessions.add(value);break;
-		case "pion" : this.pion = value;break;
-		default:break;
-		}
+		if(info == "nomJoueur")
+			this.nomJ = value;
+		else if(info == "argent")
+			this.argent = new Integer(value);
+		else if(info == "possessions")
+			this.possessions.add(value);
+		else if(info == "pion")
+			this.pion = value;
 	}
 }

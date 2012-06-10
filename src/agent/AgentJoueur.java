@@ -75,7 +75,7 @@ public class AgentJoueur extends Agent{
 		capitalJoueur = 0;
 		enFaillite = false;
 		myInfos = ((Infos)params[3]);
-		myID = ((int)params[4]);
+		myID = ((Integer)params[4]);
 		registerPlayer(); 
 		
 		myInfos.addInfo("nomJoueur", this.nomJoueur+" ("+this.getLocalName()+")", myID);
