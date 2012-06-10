@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class Logger extends JFrame {
@@ -33,11 +34,10 @@ public class Logger extends JFrame {
 	
 	private void createGUI(){
 		this.setTitle("Monopoly logs");
-		this.setSize(new Dimension(300, 660));
+		this.setSize(new Dimension(500, 660));
 		this.setLocation(5, 5);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		this.add(jta);
+		this.add(new JScrollPane(jta));
 		
 		this.setVisible(true);
 	}

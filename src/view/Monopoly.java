@@ -47,7 +47,7 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 		// Set up the frame
 		this.setTitle("Monopoly");
 		this.setSize(new Dimension(660, 660));
-		this.setLocationRelativeTo(null);
+		this.setLocation(510, 5);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Set up the menu bar

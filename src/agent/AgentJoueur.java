@@ -16,6 +16,7 @@ import util.Logger;
 import view.Case;
 import view.CaseAchetable;
 import view.CaseTerrain;
+import view.Infos;
 import behaviour.RecupInitialCapital;
 
 public class AgentJoueur extends Agent{
@@ -30,6 +31,9 @@ public class AgentJoueur extends Agent{
 	private boolean	enFaillite;
 	private int 	probaDemandeLoyer;
 	private ACLMessage propagateMessage = null;
+	
+	private Infos myInfos;
+	private int myID;
 
 	private void fetchSeedAgent() {
 		DFAgentDescription template = new DFAgentDescription();
@@ -70,7 +74,12 @@ public class AgentJoueur extends Agent{
 		nomJoueur = ((String)params[2]);
 		capitalJoueur = 0;
 		enFaillite = false;
+		myInfos = ((Infos)params[3]);
+		myID = ((int)params[4]);
 		registerPlayer(); 
+		
+		myInfos.addInfo("nomJoueur", this.nomJoueur+" ("+this.getLocalName()+")", myID);
+		myInfos.addInfo("pion", this.pion.toString(), myID);
 		
 		// Comportement initial
 		addBehaviour(new RecupInitialCapital(this, params));
@@ -163,6 +172,8 @@ public class AgentJoueur extends Agent{
 		else{
 			this.capitalJoueur = capitalJoueur;
 		}
+		
+		myInfos.addInfo("argent", Integer.toString(this.capitalJoueur), myID);
 	}
 
 	public int getProbaDemandeLoyer() {

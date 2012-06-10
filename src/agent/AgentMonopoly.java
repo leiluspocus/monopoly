@@ -12,6 +12,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
 import util.Constantes;
+import view.Infos;
 import view.Monopoly;
 import view.Plateau;
 import behaviour.CreatePlateauBehaviour;
@@ -21,14 +22,22 @@ public class AgentMonopoly extends GuiAgent{
 	private Vector<DFAgentDescription> lesJoueurs;
 	private Plateau plateau;
 	
+	private Infos myInfos;
+	
 	private PropertyChangeSupport changes;
 
 	protected void setup(){
 		changes = new PropertyChangeSupport(this);
+		Object[] params = this.getArguments();	
+		myInfos = ((Infos)params[0]);
 		register();
 		lesJoueurs = fetchPlayers();
 		
 		addBehaviour(new CreatePlateauBehaviour(this));
+	}
+	
+	public void addPossession(String joueur, String propriete){
+		myInfos.addInfo("possessions", propriete, new Integer(joueur.substring(6)));
 	}
 	
 	private void register() {

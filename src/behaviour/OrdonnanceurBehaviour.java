@@ -33,9 +33,12 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private Plateau plateau;
 	private int newPos;
 	private int oldPosition;
+	
+	private AgentMonopoly agentMonopoly;
 
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau pl, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
+		this.agentMonopoly = agentMonopoly;
 		lesJoueurs = j;
 		prison = p;
 		plateau = pl;
@@ -202,6 +205,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						plateau.setProprietairesPotentielsPourLesCouleurs(prop);
 						makePlayerPay(proprietaire.getLocalName(), propriete.getValeurTerrain());
 						Logger.err(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
+						agentMonopoly.addPossession(proprietaire.getLocalName(), propriete.getNom());
 					}
 					
 					messageReceived = myAgent.blockingReceive(100);
