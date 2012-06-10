@@ -172,15 +172,12 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					/**
 					 * Avertir le propriétaire de la case qu'un joueur se trouve sur son terrain
 					 */
-					if (plateau.getCase(newPos) instanceof CaseAchetable)
-					{
+					if (plateau.getCase(newPos) instanceof CaseAchetable){
 						CaseAchetable caseJoueurCourant = (CaseAchetable) plateau.getCase(newPos);
 						// Si la case a un propriétaire
-						if (caseJoueurCourant.getProprietaireCase() != null)
-						{
+						if (caseJoueurCourant.getProprietaireCase() != null){
 							// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
-							if (!(caseJoueurCourant.getProprietaireCase().getLocalName().equals(localPlayerName)))
-							{
+							if (!(caseJoueurCourant.getProprietaireCase().getLocalName().equals(localPlayerName))){
 								ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
 								joueurSurVotreTerritoire.addReceiver(caseJoueurCourant.getProprietaireCase());
 								joueurSurVotreTerritoire.setContentObject(plateau.getCase(newPos));

@@ -111,7 +111,6 @@ public class AgentJoueur extends Agent{
 			
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -120,8 +119,7 @@ public class AgentJoueur extends Agent{
 	 * à l'agent destinataire de cette somme (un joueur ou la banque)
 	 * @param msgReceived le message de demande d'argent reçu par le joueur
 	 */
-	public void payerMontantDu(ACLMessage msgReceived)
-	{
+	public void payerMontantDu(ACLMessage msgReceived){
 		ACLMessage response = msgReceived.createReply();
 		int montantDu = Integer.parseInt(msgReceived.getContent().trim());
 		setCapitalJoueur(capitalJoueur-montantDu);
@@ -134,8 +132,7 @@ public class AgentJoueur extends Agent{
 	 * Envoi un message à l'agent monopoly pour lui signaler que this est en faillite
 	 * Le joueur n'a plus d'argent, il a perdu
 	 */
-	public void faillite()
-	{
+	public void faillite(){
 		ACLMessage msgFaillite = new ACLMessage(ACLMessage.INFORM_REF);
 		msgFaillite.setContent(getNom()+ " a perdu");
 		msgFaillite.addReceiver(monopoly);
@@ -155,13 +152,12 @@ public class AgentJoueur extends Agent{
 	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }
 	public void setMonopoly(AID m) { monopoly = m; }
 	public void setEnFaillite(boolean enFaillite) {this.enFaillite = enFaillite;}
+	
 	public void setCapitalJoueur(int capitalJoueur) {
-		if (capitalJoueur <= 0)
-		{
+		if (capitalJoueur <= 0){
 			faillite(); // Joueur en faillite
 		}
-		else
-		{
+		else{
 			this.capitalJoueur = capitalJoueur;
 		}
 	}
