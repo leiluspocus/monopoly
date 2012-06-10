@@ -22,7 +22,6 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 	@Override
 	public void action(){
 		ACLMessage msgReceived = myAgent.blockingReceive();
-
 		if (msgReceived != null){
 			switch (msgReceived.getPerformative()){
 				/*
@@ -31,20 +30,16 @@ public abstract class ActivePlayerBehaviour extends OneShotBehaviour{
 				case ACLMessage.INFORM_REF:
 					try {
 						((AgentJoueur)myAgent).setCaseCourante((Case) msgReceived.getContentObject());
-						if (((AgentJoueur)myAgent).getCaseCourante() instanceof CaseAchetable)
-						{
+						if (((AgentJoueur)myAgent).getCaseCourante() instanceof CaseAchetable){
 							CaseAchetable caseCour = (CaseAchetable) ((AgentJoueur)myAgent).getCaseCourante(); 
-							if (caseCour.getProprietaireCase() != null){
+							if (caseCour.getProprietaireCase() == null){
 								decideAchatTerrain(caseCour);
 							}
 						}
 					}
-					catch (UnreadableException e)
-					{
-						e.printStackTrace();
-					}
+					catch (UnreadableException e){e.printStackTrace();}
 					
-					System.out.println(((AgentJoueur)myAgent).getCaseCourante());
+					//System.out.println(((AgentJoueur)myAgent).getCaseCourante());
 					
 				break;
 				default: 

@@ -92,8 +92,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		//System.out.println("Reception du score du joueur " + messageReceived.getSender().getLocalName() + " : " + message.getContent());
 		ACLMessage messageReceived = myAgent.blockingReceive(); 
 		
-		// Deplacement du pion du joueur
-		if (messageReceived != null) { 
+		if (messageReceived != null) {
+			System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 			if ( messageReceived.getPerformative() == ACLMessage.INFORM ) { 
 				// Cas classique : le joueur n'est pas en faillite
 				String localPlayerName = joueur.getName().getLocalName();
@@ -190,20 +190,33 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 				} 
 				catch (IOException e1) { e1.printStackTrace(); }
+				
+				//Avant de s'endormir, l'ordonnanceur doit vérifier sa liste de message !
+				messageReceived = myAgent.blockingReceive(100);
+				while(messageReceived != null){
+					System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
+					
+					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){
+						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
+						System.out.println("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
+					}
+					
+					if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
+						AID proprietaire = messageReceived.getSender();
+						int positionCaseAchetee = Integer.parseInt(messageReceived.getContent());
+						
+						String nomProprietee = plateau.nouveauProprietaire(positionCaseAchetee, proprietaire);
+						Logger.info(proprietaire.getLocalName() + " est désormais proprietaire de " + nomProprietee);
+					}
+					
+					messageReceived = myAgent.blockingReceive(100);
+				}
+				
+				System.out.println(plateau.getCase(newPos));
 				try {
 					Thread.sleep(Constantes.DUREE_ANIMATION);
 				} 
 				catch (InterruptedException e) {  return; }
-			}
-			else if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){
-				joueursEnFaillite.add(messageReceived.getSender().getLocalName());
-			}
-			else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
-				AID proprietaire = messageReceived.getSender();
-				CaseAchetable caseAchetee = (CaseAchetable) messageReceived.getContentObject();
-				
-				caseAchetee.setProprietaireCase(proprietaire);
-				Logger.info(proprietaire.getLocalName() + "est désormais proprietaire de " + caseAchetee.getNom());
 			}
 			else{
 				Logger.err("OrdonnanceurBehaviour a reçu un message qu'il n'a pas compris !");
@@ -228,6 +241,11 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				if ( reply.getPerformative() == ACLMessage.CONFIRM ) { 
 					return (Boolean) reply.getContentObject();
 				}
+				else{
+					System.err.println("OrdonnanceurBehaviour a reçu un message au mauvais moment : " + 
+							reply.getPerformative() + ":" + reply.getSender().getLocalName());
+				}
+					
 			}
 		} 
 		catch (IOException e) { e.printStackTrace();}
@@ -306,7 +324,14 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			myAgent.send(msg);
 			
 			//Attend la réponse
-			myAgent.blockingReceive();
+			ACLMessage reply = myAgent.blockingReceive();
+			
+			if (reply != null) {
+				if (reply.getPerformative() != ACLMessage.CONFIRM || !(reply.getSender().getLocalName().equals("PRISON"))) { 
+					System.err.println("OrdonnanceurBehaviour a reçu un message au mauvais moment : " + 
+							reply.getPerformative() + ":" + reply.getSender().getLocalName());
+				}	
+			}
 		} 
 		catch (IOException e) {e.printStackTrace();}
 		

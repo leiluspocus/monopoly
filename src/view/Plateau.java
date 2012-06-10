@@ -1,5 +1,7 @@
 package view;
 
+import jade.core.AID;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -97,5 +99,20 @@ public class Plateau {
 	public boolean isCaseCommunaute(int position) {
 		Integer i = new Integer(position);
 		return listCasesCommunaute.contains(i);
+	}
+
+	public Case getCaseAtPosition(int positionCase){
+		for(Case c : plateau){
+			if(c.getPosition() == positionCase)
+				return c;
+		}
+		return null;
+	}
+	
+	public String nouveauProprietaire(int positionCaseAchetee, AID proprietaire) {
+		CaseAchetable c = (CaseAchetable) getCaseAtPosition(positionCaseAchetee);
+		c.setProprietaireCase(proprietaire);
+		
+		return c.getNom();
 	}
 }

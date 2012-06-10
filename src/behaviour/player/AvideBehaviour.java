@@ -1,9 +1,6 @@
 package behaviour.player;
 
 import jade.lang.acl.ACLMessage;
-
-import java.io.IOException;
-
 import view.CaseAchetable;
 import agent.AgentJoueur;
 
@@ -23,12 +20,13 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatTerrain(CaseAchetable caseCourante) {
-		if (caseCourante.getProprietaireCase() != null){
+		if (caseCourante.getProprietaireCase() == null){
 			if(agentJoueur.getCapitalJoueur() > caseCourante.getValeurTerrain()){
 				ACLMessage demandeAchat = new ACLMessage(ACLMessage.SUBSCRIBE);
-				try {
-					demandeAchat.setContentObject(caseCourante);
-				} catch (IOException e) {e.printStackTrace();}
+				demandeAchat.setContent(caseCourante.getPosition() + "");
+				demandeAchat.addReceiver(agentJoueur.getMonopoly());
+				agentJoueur.send(demandeAchat);
+				System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
 			}
 			else
 				System.out.println("Not enough money to buy " + caseCourante.getNom());

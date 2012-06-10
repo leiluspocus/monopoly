@@ -29,7 +29,10 @@ public class CaseAchetable extends Case{
 	}
 	
 	public String toString(){
-		return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> " + proprietaireCase;
+		if(proprietaireCase == null)
+			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> Aucun";
+		else
+			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Proprietaire -> " + proprietaireCase.getLocalName();
 	}
 
 	public int getValeurTerrain() {return valeurTerrain;}
