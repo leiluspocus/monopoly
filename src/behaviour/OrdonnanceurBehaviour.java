@@ -29,6 +29,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private HashMap<Pion, Integer> lesJoueursEtLesPions;
 	private Vector<String> joueursEnFaillite;
 	private int currentTour;
+	private int compteurTour;
 	private AID prison;
 	private AID banque;
 	private Plateau plateau;
@@ -44,7 +45,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		prison = p;
 		plateau = pl;
 		banque = new AID("BANQUE", AID.ISLOCALNAME);
-		currentTour = 0; 
+		currentTour = 0;
+		compteurTour = 0;
 		
 		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
 		lesJoueursEtLesPions = new HashMap<Pion, Integer>();
@@ -464,12 +466,21 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 	private void tourSuivant() {
 		currentTour ++;
+		compteurTour ++;
 
 		if(currentTour >= Constantes.NB_JOUEURS - joueursEnFaillite.size()) {
 			currentTour = 0;
 		}
+		
+		if(compteurTour == 60){
+			chaos();
+		}
 	}
 	
+	private void chaos() {
+				
+	}
+
 	private boolean isGameOver() {
 		return joueursEnFaillite.size() == Constantes.NB_JOUEURS;
 	}

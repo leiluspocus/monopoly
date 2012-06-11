@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
 
+import util.Constantes;
 import util.Constantes.Couleur;
 import util.Constantes.Pion;
 import util.Logger;
@@ -106,8 +107,16 @@ public class AgentJoueur extends Agent{
 		for(CaseAchetable c : proprietesDujoueur){
 			Integer i = m.get(c.getCouleur());
 			if(i != null){
-				i++;
-				m.put(c.getCouleur(), i);
+				if(c instanceof CaseTerrain){
+					if(((CaseTerrain)c).getNbMaisons() < Constantes.NB_MAX_MAISONS_PAR_CASE){
+						i++;
+						m.put(c.getCouleur(), i);
+					}
+				}
+				else{
+					i++;
+					m.put(c.getCouleur(), i);
+				}
 			}
 		}
 		//System.out.println(m);

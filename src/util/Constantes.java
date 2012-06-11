@@ -11,7 +11,7 @@ public class Constantes implements Serializable {
 	public enum Pion { Cheval, Canon, Voiture, Bateau, Chapeau, Brouette, Chaussure, Fer };
 	public static final Pion[] lesPions = {Pion.Cheval, Pion.Canon, Pion.Voiture, Pion.Bateau, Pion.Chapeau, Pion.Brouette, Pion.Chaussure, Pion.Fer};
 	public static final int NB_JOUEURS = 6;
-	public static final int NB_AGENT_SERVICE = 1; //Banque, BDC, Prison, Seed
+	public static final int NB_MAX_MAISONS_PAR_CASE = 4;
 	public static final int CHANCE = 0;
 	public static final int COMMUNAUTE = 1;
 

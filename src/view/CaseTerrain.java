@@ -2,6 +2,7 @@ package view;
 
 import java.util.Vector;
  
+import util.Constantes;
 import util.Constantes.Couleur;
 
 public class CaseTerrain  extends CaseAchetable{
@@ -18,5 +19,10 @@ public class CaseTerrain  extends CaseAchetable{
 	
 	public int getNbMaisons(){ return nbMaisons; }
 	public int getValeurMaison() { return valeurMaison; }
-	public void ajouterMaison() { nbMaisons++; }
+	public void ajouterMaison() { 
+		if(nbMaisons < Constantes.NB_MAX_MAISONS_PAR_CASE)
+			nbMaisons++; 
+		else
+			System.err.println("Il y a deja trop de maison sur la case " + this.nomCase);
+	}
 }
