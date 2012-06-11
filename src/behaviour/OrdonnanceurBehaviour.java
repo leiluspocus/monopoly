@@ -37,6 +37,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private int oldPosition;
 	//private int tag = 0;
 	private AgentMonopoly agentMonopoly;
+	private int first;
 
 	public OrdonnanceurBehaviour(AgentMonopoly agentMonopoly, Plateau pl, Vector<DFAgentDescription> j, AID p) {
 		super(agentMonopoly);
@@ -47,6 +48,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		banque = new AID("BANQUE", AID.ISLOCALNAME);
 		currentTour = 0;
 		compteurTour = 0;
+		first = Constantes.NB_JOUEURS;
 		
 		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
 		lesJoueursEtLesPions = new HashMap<Pion, Integer>();
@@ -200,12 +202,21 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					}
 				}
 				
+				// Changer les règles
+				if(plateau.allCasesHaveBeenSold() && first != 0){
+					first--;
+					ACLMessage informEndOfRules = new ACLMessage(ACLMessage.UNKNOWN);
+					informEndOfRules.addReceiver(joueur.getName());
+					informEndOfRules.setContent("Fin de regle limitant l'achat des maisons");
+					myAgent.send(informEndOfRules);
+				}
+				
 				//Avant de s'endormir, l'ordonnanceur doit vérifier sa liste de message !
-				messageReceived = myAgent.blockingReceive(100);
+				messageReceived = myAgent.blockingReceive(Constantes.TEMPS_DE_PAUSE);
 				while(messageReceived != null){
 					//System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 					
-					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){
+					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){ //Un joueur a fait faillite
 						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
 						System.out.println("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
 						
@@ -217,8 +228,9 @@ public class OrdonnanceurBehaviour extends Behaviour {
 							}
 						}
 						lesJoueurs.remove(remove);
+						plateau.liquideJoueur(messageReceived.getSender());
 					}
-					else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
+					else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){ //Un joueur souhaite acheter une case
 						AID proprietaire = messageReceived.getSender();
 						int positionCaseAchetee = Integer.parseInt(messageReceived.getContent());
 						
@@ -230,28 +242,18 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						Logger.info(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
 						agentMonopoly.addPossession(proprietaire.getLocalName(), propriete.getNom());
 					}
-					else if (messageReceived.getPerformative() == ACLMessage.PROXY){
+					else if (messageReceived.getPerformative() == ACLMessage.PROXY){ //Un joueur souhaite acheter des maisons
 						AID proprietaire = messageReceived.getSender();
 						String[] res = messageReceived.getContent().split("#");
 						Couleur c = Couleur.valueOf(res[0]);
 						int prixTotal = Integer.parseInt(res[1]);
 						
-						plateau.addHouses(c);
-						makePlayerPay(proprietaire.getLocalName(), prixTotal);
-						Logger.err(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
-					}
-					else if (messageReceived.getPerformative() == ACLMessage.PROXY){
-						AID proprietaire = messageReceived.getSender();
-						String[] res = messageReceived.getContent().split("#");
-						Couleur c = Couleur.valueOf(res[0]);
-						int prixTotal = Integer.parseInt(res[1]);
-						
-						plateau.addHouses(c);
+						plateau.addHouses(c, proprietaire);
 						makePlayerPay(proprietaire.getLocalName(), prixTotal);
 						Logger.err(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
 					}
 					
-					messageReceived = myAgent.blockingReceive(100);
+					messageReceived = myAgent.blockingReceive(Constantes.TEMPS_DE_PAUSE);
 				}
 				
 				System.out.println(plateau.getCase(newPos));
@@ -275,9 +277,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					Logger.majInfosForPlayer(joueur.getName().getLocalName(), " a un capital de " + money);
 				}
 			}
-			
 		}
-
 		
 		// On passe au joueur suivant
 		plateau.redrawFrame();
@@ -301,7 +301,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					System.err.println("OrdonnanceurBehaviour a reçu un message au mauvais moment : " + 
 							reply.getPerformative() + ":" + reply.getSender().getLocalName());
 				}
-					
 			}
 		} 
 		catch (IOException e) { e.printStackTrace();}
@@ -468,17 +467,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		currentTour ++;
 		compteurTour ++;
 
-		if(currentTour >= Constantes.NB_JOUEURS - joueursEnFaillite.size()) {
+		if(currentTour >= Constantes.NB_JOUEURS - joueursEnFaillite.size())
 			currentTour = 0;
-		}
-		
-		if(compteurTour == 60){
-			chaos();
-		}
-	}
-	
-	private void chaos() {
-				
 	}
 
 	private boolean isGameOver() {

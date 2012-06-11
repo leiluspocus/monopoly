@@ -14,7 +14,7 @@ import agent.AgentJoueur;
 public class PicsouBehaviour extends ActivePlayerBehaviour {
 	
 	private static final long serialVersionUID = 1L;
-	private static final int SEUIL_ACHAT = 80000;
+	private static final int SEUIL_ACHAT = 100000;
 	private AgentJoueur agentJoueur;
 
 	public PicsouBehaviour(AgentJoueur myAgent) {

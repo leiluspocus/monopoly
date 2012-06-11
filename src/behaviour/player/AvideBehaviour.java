@@ -40,6 +40,8 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatMaison() {
+		int virementEnAttente = 0;
+		
 		ArrayList<Couleur> cpp = agentJoueur.possedeLaCouleur();
 		
 		if(cpp.size() != 0){
@@ -47,12 +49,13 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 				int prix[] = agentJoueur.getPrixMaison(coul);
 				int prixTotal = prix[0] * prix[1];
 				
-				if(agentJoueur.getCapitalJoueur() > prixTotal){ //Le joueur a t-il assez d'argent pour acheter les maisons ?
+				if(agentJoueur.getCapitalJoueur() > (prixTotal + virementEnAttente)){ //Le joueur a t-il assez d'argent pour acheter les maisons ?
 					ACLMessage demandeAchat = new ACLMessage(ACLMessage.PROXY);
 					demandeAchat.setContent(coul + "#" + prixTotal);
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
 					System.out.println(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
+					virementEnAttente += prixTotal;
 				}
 				else
 					System.out.println("Not enough money to buy houses on" + coul);

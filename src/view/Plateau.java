@@ -17,6 +17,7 @@ public class Plateau {
 	private Vector<Carte> cartes; // Ensemble des cartes (chance et communaute)
 	private HashMap<Pion, Integer> positionPions;
 	private Monopoly m;
+	private int tmp = 1;
 	
 	private int numCourantCartesChance;
 	private int numCourantCartesCommunaute;
@@ -49,13 +50,8 @@ public class Plateau {
 		}
 	}
 	
-	public void setFrame(Monopoly m){
-		this.m = m;
-	}
-	
-	public void redrawFrame(){
-		m.redraw();
-	}
+	public void setFrame(Monopoly m){this.m = m;}
+	public void redrawFrame(){m.redraw();}
 
 	public Vector<Case> getPlateau(){ return this.plateau; }
 	public Vector<Carte> getCartes(){ return this.cartes; }
@@ -94,6 +90,23 @@ public class Plateau {
 		return c;
 	}
 
+	
+	public boolean allCasesHaveBeenSold(){
+		if(tmp == 1){
+			tmp = 2;
+			return false;
+		}
+		return true;
+		
+		/*
+		for (Case c : plateau)
+			if(c instanceof CaseAchetable)
+				if(((CaseAchetable)c).getProprietaireCase() == null)
+					return false;
+				
+		return true;*/
+	}
+	
 	public boolean isCaseChance(int position) {
 		Integer i = new Integer(position);
 		return listCasesChance.contains(i);
@@ -163,10 +176,37 @@ public class Plateau {
 	 * Ajoute des maisons sur les cases de couleur c
 	 * @param c : La couleur
 	 */
-	public void addHouses(Couleur coul) {
-		for(Case c : plateau)
-			if(c instanceof CaseTerrain)
-				if(((CaseTerrain) c).getCouleur() == coul)
+	public void addHouses(Couleur couleurRecue, AID proprietaireRecue) {
+		for(Case c : plateau){
+			if(c instanceof CaseTerrain){
+				Couleur couleurCourante = ((CaseTerrain) c).getCouleur();
+				String proprietaireCourant;
+				if(((CaseTerrain) c).getProprietaireCase() == null)
+					proprietaireCourant = "";
+				else
+					proprietaireCourant = ((CaseTerrain) c).getProprietaireCase().getLocalName();
+				
+				if(couleurCourante == couleurRecue && proprietaireCourant.equals(proprietaireRecue.getLocalName())){
 					((CaseTerrain) c).ajouterMaison();
+				}
+			}
+		}
+	}
+	
+	public void liquideJoueur(AID joueurEnFaillite){
+		for(Case c : plateau){
+			if(c instanceof CaseAchetable){
+				String proprietaireCourant;
+				if(((CaseAchetable) c).getProprietaireCase() == null)
+					proprietaireCourant = "";
+				else
+					proprietaireCourant = ((CaseAchetable) c).getProprietaireCase().getLocalName();
+				
+				if(proprietaireCourant.equals(joueurEnFaillite.getLocalName())){
+					((CaseAchetable) c).setProprietaireCase(null);
+				}
+			}
+		}
+		System.out.println("Toutes les proprietes de " + joueurEnFaillite.getLocalName() + "(s'il en possedait) on ete saisies par la Banque");
 	}
 }

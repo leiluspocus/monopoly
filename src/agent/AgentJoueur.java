@@ -34,6 +34,7 @@ public class AgentJoueur extends Agent{
 	private Case 	caseCourante;
 	private int		capitalJoueur;
 	private boolean	enFaillite;
+	private boolean regles;
 	private int 	probaDemandeLoyer;
 	private ACLMessage propagateMessage = null;
 	private Vector<CaseAchetable> proprietesDujoueur;
@@ -80,6 +81,7 @@ public class AgentJoueur extends Agent{
 		nomJoueur = ((String)params[2]);
 		capitalJoueur = 0;
 		enFaillite = false;
+		regles = true;
 		myInfos = ((Infos)params[3]);
 		myID = ((Integer)params[4]);
 		registerPlayer(); 
@@ -91,13 +93,12 @@ public class AgentJoueur extends Agent{
 		addBehaviour(new RecupInitialCapital(this, params));
 	}
 	
-	public void addComportement(String value){
-		myInfos.addInfo("strategie", value, myID);
-	}
+	public void setRegles(boolean regles) {this.regles = regles;}
+	public void addComportement(String value){myInfos.addInfo("strategie", value, myID);}
 	
 	/**
 	 * Regarde si le joueur peux acheter des Maisons
-	 * Condition : Avoir tous les terrains de la couleur
+	 * Condition : Avoir tous les terrains de la couleur ou que les regles sont abolies
 	 */
 	public ArrayList<Couleur> possedeLaCouleur(){
 		HashMap<Couleur, Integer> m = new HashMap<Couleur, Integer>();
@@ -123,14 +124,26 @@ public class AgentJoueur extends Agent{
 		
 		ArrayList<Couleur> res = new ArrayList<Couleur>();
 		
-		if(m.get(Couleur.ROUGE) == 3) res.add(Couleur.ROUGE);
-		if(m.get(Couleur.JAUNE) == 3) res.add(Couleur.JAUNE);
-		if(m.get(Couleur.VERT) == 3) res.add(Couleur.VERT);
-		if(m.get(Couleur.BLEU_FONCE) == 2) res.add(Couleur.BLEU_FONCE);
-		if(m.get(Couleur.MAGENTA) == 2) res.add(Couleur.MAGENTA);
-		if(m.get(Couleur.BLEU_CIEL) == 3) res.add(Couleur.BLEU_CIEL);
-		if(m.get(Couleur.VIOLET) == 3) res.add(Couleur.VIOLET);
-		if(m.get(Couleur.ORANGE) == 3) res.add(Couleur.ORANGE);
+		if(regles){
+			if(m.get(Couleur.ROUGE) == 3) res.add(Couleur.ROUGE);
+			if(m.get(Couleur.JAUNE) == 3) res.add(Couleur.JAUNE);
+			if(m.get(Couleur.VERT) == 3) res.add(Couleur.VERT);
+			if(m.get(Couleur.BLEU_FONCE) == 2) res.add(Couleur.BLEU_FONCE);
+			if(m.get(Couleur.MAGENTA) == 2) res.add(Couleur.MAGENTA);
+			if(m.get(Couleur.BLEU_CIEL) == 3) res.add(Couleur.BLEU_CIEL);
+			if(m.get(Couleur.VIOLET) == 3) res.add(Couleur.VIOLET);
+			if(m.get(Couleur.ORANGE) == 3) res.add(Couleur.ORANGE);
+		}
+		else{
+			if(m.get(Couleur.ROUGE) > 0) res.add(Couleur.ROUGE);
+			if(m.get(Couleur.JAUNE) > 0) res.add(Couleur.JAUNE);
+			if(m.get(Couleur.VERT) > 0) res.add(Couleur.VERT);
+			if(m.get(Couleur.BLEU_FONCE) > 0) res.add(Couleur.BLEU_FONCE);
+			if(m.get(Couleur.MAGENTA) > 0) res.add(Couleur.MAGENTA);
+			if(m.get(Couleur.BLEU_CIEL) > 0) res.add(Couleur.BLEU_CIEL);
+			if(m.get(Couleur.VIOLET) > 0) res.add(Couleur.VIOLET);
+			if(m.get(Couleur.ORANGE) > 0) res.add(Couleur.ORANGE);
+		}
 		
 		return res;
 	}

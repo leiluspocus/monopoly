@@ -45,12 +45,14 @@ public abstract class ActivePlayerBehaviour extends Behaviour{
 					
 				break;
 				
+				//Recevoir de l'argent
 				case ACLMessage.AGREE:
 					int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
 					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
 					System.out.println("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
 				break;
 				
+				//Payer une dette
 				case ACLMessage.REQUEST:
 					((AgentJoueur)myAgent).payerMontantDu(msgReceived);
 				break;

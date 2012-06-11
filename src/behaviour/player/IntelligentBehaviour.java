@@ -17,6 +17,7 @@ public class IntelligentBehaviour extends ActivePlayerBehaviour {
 	private static final long serialVersionUID = 1L;
 	
 	private static final int SEUIL_LOYER_INTERESSANT = 3000;
+	private static final int SEUIL_ACHAT_MAISONS = 60000;
 	private AgentJoueur agentJoueur;
 	
 
@@ -62,7 +63,7 @@ public class IntelligentBehaviour extends ActivePlayerBehaviour {
 				int prix[] = agentJoueur.getPrixMaison(coul);
 				int prixTotal = prix[0] * prix[1];
 				
-				if(agentJoueur.getCapitalJoueur() > prixTotal){ //Le joueur a t-il assez d'argent pour acheter les maisons ?
+				if(agentJoueur.getCapitalJoueur() > prixTotal && agentJoueur.getCapitalJoueur() > SEUIL_ACHAT_MAISONS){ //Le joueur a t-il assez d'argent pour acheter les maisons ?
 					ACLMessage demandeAchat = new ACLMessage(ACLMessage.PROXY);
 					demandeAchat.setContent(coul + "#" + prixTotal);
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());

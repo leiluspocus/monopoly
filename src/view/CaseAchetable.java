@@ -32,10 +32,19 @@ public class CaseAchetable extends Case{
 	}
 	
 	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Case: Position->" + position + " : Nom -> " + nomCase + " : Couleur -> " + couleur);
+		
+		if(this instanceof CaseTerrain)
+			sb.append(" : NbMaison(s):" + ((CaseTerrain)this).getNbMaisons());
+		
 		if(proprietaireCase == null)
-			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Couleur -> " + couleur + " : Proprietaire -> Aucun";
+			sb.append(" : Proprietaire -> Aucun");
 		else
-			return "Case : Position -> " + position + " : Nom -> " + nomCase + " : Couleur -> " + couleur + " : Proprietaire -> " + proprietaireCase.getLocalName();
+			sb.append(" : Proprietaire -> " + proprietaireCase.getLocalName());
+		
+		return sb.toString();
 	}
 
 	public int getValeurTerrain() {return valeurTerrain;}

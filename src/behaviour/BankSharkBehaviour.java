@@ -8,6 +8,8 @@ import agent.AgentBanque;
 public class BankSharkBehaviour extends CyclicBehaviour {
 	private static final long serialVersionUID = 1L;
 	private AgentBanque agentBanque;
+	private boolean subscribeDecale = false;
+	private ACLMessage messageReceived;
 
 	public BankSharkBehaviour(AgentBanque agentBanque) {
 		super(agentBanque);
@@ -18,7 +20,12 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 	@Override
 	public void action() {
 		ACLMessage messageToSend;
-		ACLMessage messageReceived = agentBanque.blockingReceive(); 
+		
+		if(!subscribeDecale)
+			messageReceived = agentBanque.blockingReceive();
+		else
+			subscribeDecale = false;
+		
 		if (messageReceived != null && messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
 
 			String[] res = messageReceived.getContent().split("#");
@@ -43,6 +50,10 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 					messageReceived = agentBanque.blockingReceive();
 					if(messageReceived.getPerformative() == ACLMessage.AGREE && messageReceived.getSender().getLocalName().equals(target.getLocalName()))
 						System.out.println("La banque a valide le paiement de " + target.getLocalName());
+					else if(messageReceived.getPerformative() == ACLMessage.SUBSCRIBE && messageReceived.getSender().getLocalName().equals("MONOPOLY")){
+						System.out.println("La banque traite un message decale de " + messageReceived.getSender().getLocalName() + ":" + messageReceived.getPerformative());
+						subscribeDecale = true;
+					}
 					else
 						System.err.println("La banque a recu un message invalide de " + messageReceived.getSender().getLocalName() + ":" + messageReceived.getPerformative());
 				} 

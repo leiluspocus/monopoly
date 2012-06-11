@@ -7,7 +7,6 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
 public class PassivePlayerBehaviour extends Behaviour{
-
 	private static final long serialVersionUID = 1L;
 
 	public PassivePlayerBehaviour(Agent a){
@@ -47,6 +46,11 @@ public class PassivePlayerBehaviour extends Behaviour{
 				((AgentJoueur)myAgent).setPropagateMessage(msgReceived);
 			break;
 
+			//Fin de partie, liberation des regles sur l'achat des maisons.
+			case ACLMessage.UNKNOWN:
+				System.out.println(myAgent.getLocalName() + " : abolition des regles bien compris");
+				((AgentJoueur)myAgent).setRegles(false);
+			break;
 			
 			case ACLMessage.CFP: // Le monopoly demande au joueur son nouveau capital
 				int valCapital = ((AgentJoueur) myAgent).getCapitalJoueur();

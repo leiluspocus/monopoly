@@ -24,6 +24,5 @@ public class StupideBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatMaison() {
-		
 	}
 }
