@@ -46,12 +46,12 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.setContent(caseCourante.getPosition() + "");
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
-					Logger.info(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom() );
+					System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom() );
 					agentJoueur.addProprieteToJoueur(caseCourante);
 				}
 			}
 			else
-				Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + caseCourante.getNom());
+				System.out.println(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + caseCourante.getNom());
 		}
 	}
 

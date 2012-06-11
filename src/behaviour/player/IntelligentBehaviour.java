@@ -69,13 +69,13 @@ public class IntelligentBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.setContent(coul + "#" + prixTotal);
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
-					Logger.info(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
+					System.out.println(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
 				}
 				else
-					Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + coul);
+					System.out.println(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + coul);
 			}
 		}
 		else
-			Logger.info(agentJoueur.getLocalName() + " ne peut pas encore acheter de maisons");
+			System.out.println(agentJoueur.getLocalName() + " ne peut pas encore acheter de maisons");
 	}
 }

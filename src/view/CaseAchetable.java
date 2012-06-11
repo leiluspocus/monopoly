@@ -61,7 +61,7 @@ public class CaseAchetable extends Case{
 	 */
 	public int computeLoyer() {
 		if ( proprietaireCase != null ) {
-			return loyers.get(nbTerrainsPossedes - 1);
+			return loyers.get(nbTerrainsPossedes);
 		}
 		return 0;
 	}
