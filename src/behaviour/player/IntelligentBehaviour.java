@@ -5,6 +5,7 @@ import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import util.Logger;
 import util.Constantes.Couleur;
 import view.CaseAchetable;
 import agent.AgentJoueur;
@@ -45,12 +46,12 @@ public class IntelligentBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.setContent(caseCourante.getPosition() + "");
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
-					System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
+					Logger.info(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
 					agentJoueur.addProprieteToJoueur(caseCourante);
 				}
 			}
 			else
-				System.out.println("Not enough money to buy " + caseCourante.getNom());
+				Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter "+ caseCourante.getNom());
 		}
 	}
 
@@ -68,13 +69,13 @@ public class IntelligentBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.setContent(coul + "#" + prixTotal);
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
-					System.out.println(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
+					Logger.info(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
 				}
 				else
-					System.out.println("Not enough money to buy houses on" + coul);
+					Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + coul);
 			}
 		}
 		else
-			System.out.println(agentJoueur.getLocalName() + " ne peut pas encore acheter de maisons");
+			Logger.info(agentJoueur.getLocalName() + " ne peut pas encore acheter de maisons");
 	}
 }

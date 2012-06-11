@@ -36,7 +36,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 			case ACLMessage.AGREE:
 				int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
 				((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
-				System.out.println("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
+				Logger.info("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
 			break;
 			
 			/*
@@ -60,7 +60,7 @@ public class PassivePlayerBehaviour extends Behaviour{
 				myAgent.send(reply);
 				break;
 				
-			default: Logger.err("PassivePlayerBehaviour de " + myAgent.getLocalName() + ": message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
+			default: System.err.println("PassivePlayerBehaviour de " + myAgent.getLocalName() + ": message inconnu de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative()); 
 				break;
 		}
 	}

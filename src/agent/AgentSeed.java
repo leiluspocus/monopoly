@@ -25,6 +25,6 @@ public class AgentSeed extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent seed au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.err.println("Enregistrement de l'agent seed au service echoue - Cause : " + e); }
 	}
 }

@@ -1,6 +1,7 @@
 package behaviour.player;
 
 import jade.core.Agent;
+import util.Logger;
 import view.CaseAchetable;
 import agent.AgentJoueur;
 
@@ -19,7 +20,7 @@ public class StupideBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatTerrain(CaseAchetable caseCourante) {
-		System.out.println(((AgentJoueur)myAgent).getLocalName() + " est stupide : il n'achète aucun terrain ni maison");
+		Logger.info(((AgentJoueur)myAgent).getLocalName() + " est stupide : il n'achète aucun terrain ni maison");
 	}
 
 	@Override

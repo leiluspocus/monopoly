@@ -67,7 +67,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 	
 	public void sendToJail(AID player) {
-		System.out.println("Envoi du joueur " + player.getLocalName() + " en prison");
+		Logger.info("Envoi du joueur " + player.getLocalName() + " en prison");
 		ACLMessage tick = new ACLMessage(ACLMessage.CONFIRM);
 		tick.addReceiver(prison);
 		try {
@@ -78,7 +78,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 	
 	public void libererJoueur(AID player) {
-		System.out.println("Liberation du  joueur " + player.getLocalName() + " emprisonne");
+		Logger.info("Liberation du  joueur " + player.getLocalName() + " emprisonne");
 		ACLMessage tick = new ACLMessage(ACLMessage.DISCONFIRM);
 		tick.addReceiver(prison);
 		try {
@@ -138,19 +138,19 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					// Libre de se deplacer
 					if (newPos > Constantes.CASE_FIN) {
 						newPos -= Constantes.CASE_FIN;
-						System.out.println(playerLocalName + " a fini un tour");
+						Logger.info(playerLocalName + " a fait un tour complet");
 						giveMoneyToPlayer(playerLocalName, 20000); // Le joueur a fait un tour complet
 					}
 					
 					if (plateau.isCaseChance(newPos)) {
 						Carte c = plateau.tirageChance();
-						System.out.println(playerLocalName + " tire une carte Chance :\n" + c.getMsg());
+						Logger.info(playerLocalName + " tire une carte Chance :\n" + c.getMsg());
 						executeActionCarte(joueur, playerLocalName, c);
 						
 					}
 					if (plateau.isCaseCommunaute(newPos)) {
 						Carte c = plateau.tirageCommunaute();
-						System.out.println(playerLocalName + " tire une carte Communaute :\n" + c.getMsg());
+						Logger.info(playerLocalName + " tire une carte Communaute :\n" + c.getMsg());
 						executeActionCarte(joueur, playerLocalName, c);
 					}
 					
@@ -161,11 +161,11 @@ public class OrdonnanceurBehaviour extends Behaviour {
 							sendToJail(joueur.getName());
 						break;
 						case Constantes.CASE_IMPOTS :
-							System.out.println(playerLocalName + " est tombe sur la case IMPOTS");
+							Logger.info(playerLocalName + " est tombe sur la case IMPOTS");
 							makePlayerPay(playerLocalName, 20000);
 						break;
 						case  Constantes.CASE_TAXE :
-							System.out.println(playerLocalName + " est tombe sur la case TAXE");
+							Logger.info(playerLocalName + " est tombe sur la case TAXE");
 							makePlayerPay(playerLocalName, 10000);
 						break;
 					}
@@ -193,7 +193,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					if (caseJoueurCourant.getProprietaireCase() != null){
 						// et que c'est quelqu'un d'autre que le joueur qui vient de tomber dessus
 						if (!(caseJoueurCourant.getProprietaireCase().getLocalName().equals(playerLocalName))){
-							System.out.println(playerLocalName + " vient de tomber sur " + caseJoueurCourant.getNom());
+							Logger.info(playerLocalName + " vient de tomber sur " + caseJoueurCourant.getNom());
 							ACLMessage joueurSurVotreTerritoire = new ACLMessage(ACLMessage.INFORM);
 							joueurSurVotreTerritoire.addReceiver(caseJoueurCourant.getProprietaireCase());
 							joueurSurVotreTerritoire.setContentObject(plateau.getCase(newPos));
@@ -218,7 +218,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					
 					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){ //Un joueur a fait faillite
 						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
-						System.out.println("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
+						Logger.info("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
 						
 						DFAgentDescription remove = null;
 						for (DFAgentDescription df : lesJoueurs){
@@ -250,7 +250,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						
 						plateau.addHouses(c, proprietaire);
 						makePlayerPay(proprietaire.getLocalName(), prixTotal);
-						Logger.err(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
+						Logger.info(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
 					}
 					
 					messageReceived = myAgent.blockingReceive(Constantes.TEMPS_DE_PAUSE);
@@ -263,7 +263,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				catch (InterruptedException e) {  return; }
 			}
 			else{
-				Logger.err("OrdonnanceurBehaviour a reçu un message qu'il n'a pas compris !");
+				System.err.println("OrdonnanceurBehaviour a reçu un message qu'il n'a pas compris !");
 			}
 
 			ACLMessage aclM = new ACLMessage(ACLMessage.CFP);
@@ -281,6 +281,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		
 		// On passe au joueur suivant
 		plateau.redrawFrame();
+		Logger.info("\n-------------------\n");
 		tourSuivant();
 		}
 		catch (Exception o) {o.printStackTrace();}
@@ -320,7 +321,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		// Sur les valeurs du des
 		if ( diceValue.get(0) == diceValue.get(1) ) {
 			// S'il fait 12, il sort
-			System.err.println("Le joueur " + playerName + " a fait un double et sort de prison! Quelle chance !");
+			Logger.info("Le joueur " + playerName + " a fait un double et sort de prison! Quelle chance !");
 			return true;
 		} 
 		int nbTours = getTimePassedInJail(joueur.getName());
@@ -332,7 +333,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 			if ( canPlayerBeReleasedFromJail.containsKey(joueur) ) {
 				// Le joueur decide de se servir de sa carte
 				canPlayerBeReleasedFromJail.remove(joueur);
-				System.err.println("Le joueur " + playerName + " utilise sa carte et sort de prison!");
+				Logger.info("Le joueur " + playerName + " utilise sa carte et sort de prison!");
 				return true;
 			}
 			else {
@@ -340,10 +341,10 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				boolean pay = new Random().nextBoolean();
 				if ( pay ) {
 					makePlayerPay(playerName, 5000);
-					System.err.println("Le joueur " + playerName + " decide de payer 5000F et de sortir de prison!");
+					Logger.info("Le joueur " + playerName + " decide de payer 5000F et de sortir de prison!");
 					return true;
 				}
-				System.err.println("Le joueur " + playerName + " prefere rester en prison");
+				Logger.info("Le joueur " + playerName + " prefere rester en prison");
 				incrementTimePassedInJail(joueur.getName());
 				return false;
 			}
@@ -420,15 +421,15 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				newPos = c.getDeplacement();
 				if (newPos <= oldPosition){
 					if(c.getTypeCarte() == Constantes.CHANCE)
-						System.out.println(playerName + " vient de passer par la case Depart grace a la carte Communaute");
+						Logger.info(playerName + " vient de passer par la case Depart grace a la carte Communaute");
 					else
-						System.out.println(playerName + " vient de passer par la case Depart grace a la carte Chance");
+						Logger.info(playerName + " vient de passer par la case Depart grace a la carte Chance");
 					giveMoneyToPlayer(playerName, 20000); // Le joueur a fait un tour complet
 				}
 			}
 			if (c.getDeplacement() == -3){
 				newPos -= 3;
-				System.out.println(playerName + " recule de 3 cases");
+				Logger.info(playerName + " recule de 3 cases");
 			}
 		}
 	}

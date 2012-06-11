@@ -6,6 +6,7 @@ import jade.lang.acl.ACLMessage;
 import java.io.IOException;
 import java.util.Vector;
 
+import util.Logger;
 import view.Carte;
 import view.Case;
 import agent.AgentBDC;
@@ -28,7 +29,7 @@ public class BDCBehaviour extends Behaviour {
 		ACLMessage messageReceived = agentBDC.receive();
 		if (messageReceived != null) {
 			if(messageReceived.getPerformative() == ACLMessage.QUERY_IF){
-				System.out.println("Je suis l'agent " + agentBDC.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cartes");
+				Logger.info("Agent " + agentBDC.getLocalName() + " - Agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cartes");
 				ACLMessage messageToSend = messageReceived.createReply();
 				Vector<Carte> v = new Vector<Carte>();
 				messageToSend.setPerformative(ACLMessage.INFORM_IF);
@@ -44,7 +45,7 @@ public class BDCBehaviour extends Behaviour {
 			}
 			else
 				if(messageReceived.getPerformative() == ACLMessage.QUERY_REF){
-					System.out.println("Je suis l'agent " + agentBDC.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cases");
+					System.out.println("Agent " + agentBDC.getLocalName() + " - Agent " + messageReceived.getSender().getLocalName() + " a demande la liste des Cases");
 					ACLMessage messageToSend = messageReceived.createReply();
 					Vector<Case> v = new Vector<Case>();
 					messageToSend.setPerformative(ACLMessage.INFORM_REF);
@@ -60,7 +61,7 @@ public class BDCBehaviour extends Behaviour {
 					end--;
 				}
 				else
-					System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
+					System.err.println("Agent " + myAgent.getLocalName() + " - Agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
 		}
 		else {
 			block();

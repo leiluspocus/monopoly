@@ -61,7 +61,7 @@ public class CreatePlateauBehaviour extends OneShotBehaviour {
 					} catch (UnreadableException e) {e.printStackTrace();}
 				}
 				else
-					System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
+					System.err.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
 		}
 		
 		messageReceived = agentMonopoly.blockingReceive();
@@ -76,7 +76,7 @@ public class CreatePlateauBehaviour extends OneShotBehaviour {
 					} catch (UnreadableException e) {e.printStackTrace();}
 				}
 				else
-					System.out.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
+					System.err.println("Je suis l'agent " + myAgent.getLocalName() + " et l'agent " + messageReceived.getSender().getLocalName() + " a envoye un performatif incorrect");
 		} 
 		
 		((AgentMonopoly) myAgent).setPlateau(new Plateau(v1, v2));

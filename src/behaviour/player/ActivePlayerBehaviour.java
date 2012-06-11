@@ -49,7 +49,7 @@ public abstract class ActivePlayerBehaviour extends Behaviour{
 				case ACLMessage.AGREE:
 					int sommeRecue = Integer.parseInt(msgReceived.getContent().trim());
 					((AgentJoueur)myAgent).setCapitalJoueur(((AgentJoueur)myAgent).getCapitalJoueur()+sommeRecue);
-					System.out.println("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
+					Logger.info("Mouvement d'argent : " + myAgent.getLocalName() + " -> +" + sommeRecue);
 				break;
 				
 				//Payer une dette
@@ -58,7 +58,7 @@ public abstract class ActivePlayerBehaviour extends Behaviour{
 				break;
 				
 				default: 
-					Logger.err("Message non géré par l'ActiveBehaviour de " + myAgent.getLocalName() + " de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
+					System.err.println("Message non géré par l'ActiveBehaviour de " + myAgent.getLocalName() + " de " + msgReceived.getSender().getLocalName() + ":" + msgReceived.getPerformative());
 				break;
 			}
 		}	

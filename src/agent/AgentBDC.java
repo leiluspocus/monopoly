@@ -44,7 +44,7 @@ public class AgentBDC extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent BDC au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.err.println("Enregistrement de l'agent BDC au service echoue - Cause : " + e); }
 	}
 	
 	public Vector<Carte> buildCartesChances() {

@@ -50,7 +50,7 @@ public class AgentMonopoly extends GuiAgent{
         try {
             DFService.register(this, agentDescription); 
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent monopoly au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.err.println("Enregistrement de l'agent monopoly au service echoue - Cause : " + e); }
 	}
 
 	private Vector<DFAgentDescription> fetchPlayers() {
@@ -70,7 +70,7 @@ public class AgentMonopoly extends GuiAgent{
 			}
 			return lesJoueurs;
 		}
-		catch(FIPAException fe) { System.out.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
+		catch(FIPAException fe) { System.err.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
 		return null;
 	}
 	
@@ -87,7 +87,7 @@ public class AgentMonopoly extends GuiAgent{
 			
 			return result[0].getName();
 		}
-		catch(FIPAException fe) { System.out.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
+		catch(FIPAException fe) { System.err.println("Exception à la recuperation des joueurs "); fe.printStackTrace(); }
 		return null;
 	}
 

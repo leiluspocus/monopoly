@@ -3,6 +3,7 @@ package behaviour;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import util.Logger;
 import agent.AgentBanque;
 
 public class BankSharkBehaviour extends CyclicBehaviour {
@@ -13,8 +14,7 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 
 	public BankSharkBehaviour(AgentBanque agentBanque) {
 		super(agentBanque);
-		this.agentBanque = agentBanque;
-		System.out.println("La banque a desormais atteint son comportement principal");
+		this.agentBanque = agentBanque; 
 	}
 
 	@Override
@@ -49,9 +49,9 @@ public class BankSharkBehaviour extends CyclicBehaviour {
 					
 					messageReceived = agentBanque.blockingReceive();
 					if(messageReceived.getPerformative() == ACLMessage.AGREE && messageReceived.getSender().getLocalName().equals(target.getLocalName()))
-						System.out.println("La banque a valide le paiement de " + target.getLocalName());
+						Logger.info("Banque - Paiement de " + target.getLocalName() + " valide");
 					else if(messageReceived.getPerformative() == ACLMessage.SUBSCRIBE && messageReceived.getSender().getLocalName().equals("MONOPOLY")){
-						System.out.println("La banque traite un message decale de " + messageReceived.getSender().getLocalName() + ":" + messageReceived.getPerformative());
+						Logger.info("Banque - Message de " + messageReceived.getSender().getLocalName() + ":" + messageReceived.getPerformative());
 						subscribeDecale = true;
 					}
 					else

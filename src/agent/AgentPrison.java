@@ -25,6 +25,6 @@ public class AgentPrison extends Agent{
         try {
             DFService.register(this, agentDescription);
         } 
-        catch (FIPAException e) { System.out.println("Enregistrement de l'agent Prison au service echoue - Cause : " + e); }
+        catch (FIPAException e) { System.err.println("Enregistrement de l'agent Prison au service echoue - Cause : " + e); }
 	}
 }

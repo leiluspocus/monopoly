@@ -5,6 +5,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Vector;
 
+import util.Logger;
 import view.CaseAchetable;
 import agent.AgentJoueur;
 
@@ -45,13 +46,12 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.setContent(caseCourante.getPosition() + "");
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
-					System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom()
-							+ " c'est une action evil ! qu'il est mechant et vilain !!!");
+					Logger.info(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom() );
 					agentJoueur.addProprieteToJoueur(caseCourante);
 				}
 			}
 			else
-				System.out.println("Not enough money to buy " + caseCourante.getNom());
+				Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + caseCourante.getNom());
 		}
 	}
 
