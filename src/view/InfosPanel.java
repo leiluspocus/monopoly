@@ -93,5 +93,7 @@ public class InfosPanel extends JPanel {
 			this.pion = value;
 		else if(info == "strategie")
 			this.strategie = value;
+		else if(info == "case")
+			this.caseJ = value;
 	}
 }

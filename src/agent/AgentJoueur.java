@@ -244,7 +244,10 @@ public class AgentJoueur extends Agent{
 	
 	public void setPion(Pion pion) { this.pion = pion; }
 	public void setNom(String nom) { nomJoueur = nom; }
-	public void setCaseCourante(Case caseCourante) { this.caseCourante = caseCourante; }
+	public void setCaseCourante(Case caseCourante) { 
+		this.caseCourante = caseCourante;
+		myInfos.addInfo("case", this.caseCourante.getNom(), myID);
+	}
 	public void setMonopoly(AID m) { monopoly = m; }
 	public void setEnFaillite(boolean enFaillite) {this.enFaillite = enFaillite;}
 	
