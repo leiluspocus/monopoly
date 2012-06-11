@@ -236,7 +236,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						
 						CaseAchetable propriete = plateau.nouveauProprietaire(positionCaseAchetee, proprietaire);
 						propriete.setNbTerrainsPossedes(plateau.getNbTerrains(propriete.getCouleur(), proprietaire));
-						Vector<AID> prop = plateau.getProprietaires(propriete.getCouleur()); 
+						Vector<AID> prop = plateau.getProprietaires(propriete.getCouleur());
 						plateau.setProprietairesPotentielsPourLesCouleurs(prop);
 						makePlayerPay(proprietaire.getLocalName(), propriete.getValeurTerrain());
 						Logger.info(proprietaire.getLocalName() + " est désormais proprietaire de " + propriete.getNom());
@@ -256,7 +256,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					messageReceived = myAgent.blockingReceive(Constantes.TEMPS_DE_PAUSE);
 				}
 				
-				System.out.println(plateau.getCase(newPos));
+				Logger.info(plateau.getCase(newPos).toString());
 				try {
 					Thread.sleep(Constantes.DUREE_ANIMATION);
 				} 
