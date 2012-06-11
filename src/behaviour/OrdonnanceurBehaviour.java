@@ -206,6 +206,15 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){
 						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
 						System.out.println("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
+						
+						DFAgentDescription remove = null;
+						for (DFAgentDescription df : lesJoueurs){
+							if(df.getName().getLocalName().equals(messageReceived.getSender().getLocalName())){
+								remove = df;
+								break;
+							}
+						}
+						lesJoueurs.remove(remove);
 					}
 					else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){
 						AID proprietaire = messageReceived.getSender();
@@ -455,7 +464,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 	private void tourSuivant() {
 		currentTour ++;
-		if(currentTour >= Constantes.NB_JOUEURS) {
+
+		if(currentTour >= Constantes.NB_JOUEURS - joueursEnFaillite.size()) {
 			currentTour = 0;
 		}
 	}

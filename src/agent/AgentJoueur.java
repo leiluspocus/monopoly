@@ -228,6 +228,7 @@ public class AgentJoueur extends Agent{
 	
 	public void setCapitalJoueur(int capitalJoueur) {
 		if (capitalJoueur <= 0){
+			this.capitalJoueur = 0;
 			faillite(); // Joueur en faillite
 		}
 		else{
