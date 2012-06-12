@@ -49,12 +49,6 @@ public class Plateau {
 				}
 			}	
 		}
-		
-		for( Case c : plateau){
-			if(c instanceof CaseAchetable){
-				System.out.println(((CaseAchetable)c).getNom() + " -> " + ((CaseAchetable)c).getLoyers());
-			}
-		}
 	}
 	
 	public void setFrame(Monopoly m){this.m = m;}
@@ -143,7 +137,6 @@ public class Plateau {
 				}
 			}
 		}
-		System.out.println(nb + " salut ");
 		return nb;
 	}
 	
@@ -231,8 +224,7 @@ public class Plateau {
 		for(Case c : plateau){
 			if(c instanceof CaseAchetable){ 
 				CaseAchetable obj = (CaseAchetable) c;
-				if(  Helper.compareAID( obj.getProprietaireCase() , proprietaire)  && obj.getCouleur() == couleur ) {
-					System.out.println("NOUVEAUX TERRAINS " + couleur + nb + proprietaire);
+				if(Helper.compareAID( obj.getProprietaireCase() , proprietaire)  && obj.getCouleur() == couleur ) {
 					obj.setNbTerrainsPossedes(nb); 
 				}
 			}
