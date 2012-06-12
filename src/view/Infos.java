@@ -8,14 +8,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import util.Constantes;
+
 public class Infos extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private static Vector<InfosPanel> infosP = new Vector<InfosPanel>(6);
+	private static Vector<InfosPanel> infosP = new Vector<InfosPanel>(Constantes.NB_JOUEURS);
 	
 	public Infos(){
 		super();
-		for(int i=1; i <= 6; i++)
+		for(int i=1; i <= Constantes.NB_JOUEURS; i++)
 			infosP.add(new InfosPanel(i));
 		
 		createGUI();
@@ -29,14 +31,11 @@ public class Infos extends JFrame {
 
 		JPanel test = new JPanel();
 		this.add(new JScrollPane(test));
-		test.setLayout(new GridLayout(0, 6));
+		test.setLayout(new GridLayout(0, Constantes.NB_JOUEURS));
 		
-		test.add(new JScrollPane(infosP.get(0)));
-        test.add(new JScrollPane(infosP.get(1)));
-        test.add(new JScrollPane(infosP.get(2)));
-        test.add(new JScrollPane(infosP.get(3)));
-        test.add(new JScrollPane(infosP.get(4)));
-        test.add(new JScrollPane(infosP.get(5)));
+		for ( int i = 0 ; i < Constantes.NB_JOUEURS ; ++ i ) {
+			test.add(new JScrollPane(infosP.get(i)));
+		} 
 		
 		this.setVisible(true);
 	}

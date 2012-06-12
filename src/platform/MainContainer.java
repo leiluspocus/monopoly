@@ -14,7 +14,7 @@ import util.Helper;
 import view.Infos;
 
 public class MainContainer {
-	private static final int NB_JOUEURS = 6; //Peut-être changé
+
 	private static Vector<String> lesNomsDeJoueur;
 	private static AgentContainer mc;
 	
@@ -38,7 +38,7 @@ public class MainContainer {
 			bc.start();
 			
 			// On lance les joueurs une fois que le plateau est prêt 
-			for(int i = 1; i <= NB_JOUEURS; ++i){
+			for(int i = 1; i <= Constantes.NB_JOUEURS; ++i){
 				Object[] params = new Object[5];
 				params[0] = (Pion)Constantes.lesPions[i-1];
 				params[1] = (Integer) i-1;
