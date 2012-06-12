@@ -205,23 +205,28 @@ public class Plateau {
 	public void liquideJoueur(AID joueurEnFaillite){
 		for(Case c : plateau){
 			if(c instanceof CaseAchetable){
+				CaseAchetable ca = (CaseAchetable)c;
 				String proprietaireCourant;
-				if(((CaseAchetable) c).getProprietaireCase() == null)
+				if( ca.getProprietaireCase() == null)
 					proprietaireCourant = "";
 				else
-					proprietaireCourant = ((CaseAchetable) c).getProprietaireCase().getLocalName();
+					proprietaireCourant = ca.getProprietaireCase().getLocalName();
 				
 				if(proprietaireCourant.equals(joueurEnFaillite.getLocalName())){
-					((CaseAchetable) c).setProprietaireCase(null);
-					
+					ca.setProprietaireCase(null); 
 					if(c instanceof CaseTerrain)
-						((CaseTerrain) c).setNbMaisons(0);
+						((CaseTerrain)c).setNbMaisons(0);
+				}
+				ca.setNbTerrainsPossedes(0);
+				Vector<AID> propPotentiels = ca.getProprietairesPotentiels();
+				if ( propPotentiels.contains(joueurEnFaillite)) {
+					propPotentiels.remove(joueurEnFaillite);
 				}
 			}
 		}
 		System.out.println("Toutes les proprietes de " + joueurEnFaillite.getLocalName() + "(s'il en possedait) on ete saisies par la Banque");
 	}
-
+ 
 	public void setNbTerrainsPossedes(int nb, Couleur couleur, AID proprietaire) {
 		for(Case c : plateau){
 			if(c instanceof CaseAchetable){ 
