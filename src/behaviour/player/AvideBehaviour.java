@@ -5,8 +5,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
 
 import util.Logger;
-import util.Constantes.Couleur;
 import view.CaseAchetable;
+import view.CaseTerrain;
 import agent.AgentJoueur;
 
 
@@ -16,6 +16,7 @@ import agent.AgentJoueur;
 public class AvideBehaviour extends ActivePlayerBehaviour {
 	private static final long serialVersionUID = 1L;
 	private AgentJoueur agentJoueur;
+	private int virementEnAttente = 0;
 
 	public AvideBehaviour(AgentJoueur agentJoueur) {
 		super(agentJoueur);
@@ -33,6 +34,7 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 				agentJoueur.send(demandeAchat);
 				Logger.info(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
 				agentJoueur.addProprieteToJoueur(caseCourante);
+				virementEnAttente = caseCourante.getValeurTerrain();
 			}
 			else
 				Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + caseCourante.getNom());
@@ -41,28 +43,27 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 
 	@Override
 	protected void decideAchatMaison() {
-		int virementEnAttente = 0;
-		
-		ArrayList<Couleur> cpp = agentJoueur.possedeLaCouleur();
+		ArrayList<CaseTerrain> cpp = agentJoueur.peutPoserMaisons();
 		
 		if(cpp.size() != 0){
-			for(Couleur coul : cpp){
-				int prix[] = agentJoueur.getPrixMaison(coul);
-				int prixTotal = prix[0] * prix[1];
+			for(CaseTerrain ct : cpp){
+				int prix = ct.getValeurMaison();
 				
-				if(agentJoueur.getCapitalJoueur() > (prixTotal + virementEnAttente)){ //Le joueur a t-il assez d'argent pour acheter les maisons ?
+				if(agentJoueur.getCapitalJoueur() > (prix + virementEnAttente)){ //Le joueur a t-il assez d'argent pour acheter les maisons ?
 					ACLMessage demandeAchat = new ACLMessage(ACLMessage.PROXY);
-					demandeAchat.setContent(coul + "#" + prixTotal);
+					demandeAchat.setContent(ct.getPosition() + "#" + prix);
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
-					System.out.println(agentJoueur.getLocalName() + " demande a acheter des maisons pour les cases " + coul);
-					virementEnAttente += prixTotal;
+					System.out.println(agentJoueur.getLocalName() + " demande a acheter des maisons sur " + ct.getNom());
+					virementEnAttente += prix;
 				}
 				else
-					System.out.println(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + coul);
+					System.out.println(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter des maisons sur " + ct.getNom());
 			}
 		}
 		else
 			Logger.info(agentJoueur.getLocalName() + " ne peut pas encore acheter de maisons");
+		
+		virementEnAttente = 0;
 	}
 }

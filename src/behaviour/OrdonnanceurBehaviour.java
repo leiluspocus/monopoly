@@ -12,11 +12,12 @@ import java.util.Random;
 import java.util.Vector;
 
 import util.Constantes;
-import util.Constantes.Couleur;
 import util.Constantes.Pion;
 import util.Logger;
 import view.Carte;
+import view.Case;
 import view.CaseAchetable;
+import view.CaseTerrain;
 import view.Plateau;
 import agent.AgentMonopoly;
 
@@ -29,7 +30,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private HashMap<Pion, Integer> lesJoueursEtLesPions;
 	private Vector<String> joueursEnFaillite;
 	private int currentTour;
-	private int compteurTour;
 	private AID prison;
 	private AID banque;
 	private Plateau plateau;
@@ -47,7 +47,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		plateau = pl;
 		banque = new AID("BANQUE", AID.ISLOCALNAME);
 		currentTour = 0;
-		compteurTour = 0;
 		first = Constantes.NB_JOUEURS;
 		
 		lesPositionsDesJoueurs = new HashMap<DFAgentDescription, Integer>();
@@ -245,12 +244,26 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					else if (messageReceived.getPerformative() == ACLMessage.PROXY){ //Un joueur souhaite acheter des maisons
 						AID proprietaire = messageReceived.getSender();
 						String[] res = messageReceived.getContent().split("#");
-						Couleur c = Couleur.valueOf(res[0]);
-						int prixTotal = Integer.parseInt(res[1]);
+						int position = Integer.parseInt(res[0]);
+						int prix = Integer.parseInt(res[1]);
 						
-						plateau.addHouses(c, proprietaire);
-						makePlayerPay(proprietaire.getLocalName(), prixTotal);
-						Logger.info(proprietaire.getLocalName() + " vient d'acheter des maisons sur les cases " + c);
+						Case c = plateau.getCaseAtPosition(position);
+						
+						if(c instanceof CaseTerrain){
+							if(((CaseTerrain)c).getProprietaireCase() != null && ((CaseTerrain)c).getProprietaireCase().getLocalName().equals(proprietaire.getLocalName())){
+								if(prix == ((CaseTerrain)c).getValeurMaison()){
+									((CaseTerrain)c).ajouterMaison();
+									makePlayerPay(proprietaire.getLocalName(), prix);
+									Logger.info(proprietaire.getLocalName() + " vient d'acheter une maison sur " + c.getNom());
+								}
+								else
+									System.err.println(proprietaire.getLocalName() + " ne sait pas compter");
+							}
+							else
+								System.err.println(proprietaire.getLocalName() + " tente d'acheter des maisons sur un terrain qui ne lui appartient pas");
+						}
+						else
+							System.err.println(proprietaire.getLocalName() + " tente d'acheter des maisons sur le mauvais terrain");
 					}
 					
 					messageReceived = myAgent.blockingReceive(Constantes.TEMPS_DE_PAUSE);
@@ -466,7 +479,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 
 	private void tourSuivant() {
 		currentTour ++;
-		compteurTour ++;
 
 		if(currentTour >= Constantes.NB_JOUEURS - joueursEnFaillite.size())
 			currentTour = 0;

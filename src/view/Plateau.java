@@ -48,6 +48,12 @@ public class Plateau {
 				}
 			}	
 		}
+		
+		for( Case c : plateau){
+			if(c instanceof CaseAchetable){
+				System.out.println(((CaseAchetable)c).getNom() + " -> " + ((CaseAchetable)c).getLoyers());
+			}
+		}
 	}
 	
 	public void setFrame(Monopoly m){this.m = m;}
@@ -204,6 +210,9 @@ public class Plateau {
 				
 				if(proprietaireCourant.equals(joueurEnFaillite.getLocalName())){
 					((CaseAchetable) c).setProprietaireCase(null);
+					
+					if(c instanceof CaseTerrain)
+						((CaseTerrain) c).setNbMaisons(0);
 				}
 			}
 		}

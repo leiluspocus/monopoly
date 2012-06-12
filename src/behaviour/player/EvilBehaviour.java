@@ -5,7 +5,6 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Vector;
 
-import util.Logger;
 import view.CaseAchetable;
 import agent.AgentJoueur;
 

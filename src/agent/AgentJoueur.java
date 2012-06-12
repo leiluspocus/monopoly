@@ -38,6 +38,7 @@ public class AgentJoueur extends Agent{
 	private int 	probaDemandeLoyer;
 	private ACLMessage propagateMessage = null;
 	private Vector<CaseAchetable> proprietesDujoueur;
+	private ArrayList<CaseTerrain> res;
 	private Infos myInfos;
 	private int myID;
 
@@ -100,7 +101,7 @@ public class AgentJoueur extends Agent{
 	 * Regarde si le joueur peux acheter des Maisons
 	 * Condition : Avoir tous les terrains de la couleur ou que les regles sont abolies
 	 */
-	public ArrayList<Couleur> possedeLaCouleur(){
+	public ArrayList<CaseTerrain> peutPoserMaisons(){
 		HashMap<Couleur, Integer> m = new HashMap<Couleur, Integer>();
 		m.put(Couleur.ROUGE, 0); m.put(Couleur.JAUNE, 0); m.put(Couleur.VERT, 0); m.put(Couleur.BLEU_FONCE, 0); m.put(Couleur.MAGENTA, 0); 
 		m.put(Couleur.BLEU_CIEL, 0); m.put(Couleur.VIOLET, 0); m.put(Couleur.ORANGE, 0);
@@ -114,38 +115,46 @@ public class AgentJoueur extends Agent{
 						m.put(c.getCouleur(), i);
 					}
 				}
-				else{
-					i++;
-					m.put(c.getCouleur(), i);
-				}
 			}
 		}
 		//System.out.println(m);
 		
-		ArrayList<Couleur> res = new ArrayList<Couleur>();
+		res = new ArrayList<CaseTerrain>();
 		
 		if(regles){
-			if(m.get(Couleur.ROUGE) == 3) res.add(Couleur.ROUGE);
-			if(m.get(Couleur.JAUNE) == 3) res.add(Couleur.JAUNE);
-			if(m.get(Couleur.VERT) == 3) res.add(Couleur.VERT);
-			if(m.get(Couleur.BLEU_FONCE) == 2) res.add(Couleur.BLEU_FONCE);
-			if(m.get(Couleur.MAGENTA) == 2) res.add(Couleur.MAGENTA);
-			if(m.get(Couleur.BLEU_CIEL) == 3) res.add(Couleur.BLEU_CIEL);
-			if(m.get(Couleur.VIOLET) == 3) res.add(Couleur.VIOLET);
-			if(m.get(Couleur.ORANGE) == 3) res.add(Couleur.ORANGE);
+			if(m.get(Couleur.ROUGE) == 3) ajouterCouleur(Couleur.ROUGE);
+			if(m.get(Couleur.JAUNE) == 3) ajouterCouleur(Couleur.JAUNE);
+			if(m.get(Couleur.VERT) == 3) ajouterCouleur(Couleur.VERT);
+			if(m.get(Couleur.BLEU_FONCE) == 2) ajouterCouleur(Couleur.BLEU_FONCE);
+			if(m.get(Couleur.MAGENTA) == 2) ajouterCouleur(Couleur.MAGENTA);
+			if(m.get(Couleur.BLEU_CIEL) == 3) ajouterCouleur(Couleur.BLEU_CIEL);
+			if(m.get(Couleur.VIOLET) == 3) ajouterCouleur(Couleur.VIOLET);
+			if(m.get(Couleur.ORANGE) == 3) ajouterCouleur(Couleur.ORANGE);
 		}
 		else{
-			if(m.get(Couleur.ROUGE) > 0) res.add(Couleur.ROUGE);
-			if(m.get(Couleur.JAUNE) > 0) res.add(Couleur.JAUNE);
-			if(m.get(Couleur.VERT) > 0) res.add(Couleur.VERT);
-			if(m.get(Couleur.BLEU_FONCE) > 0) res.add(Couleur.BLEU_FONCE);
-			if(m.get(Couleur.MAGENTA) > 0) res.add(Couleur.MAGENTA);
-			if(m.get(Couleur.BLEU_CIEL) > 0) res.add(Couleur.BLEU_CIEL);
-			if(m.get(Couleur.VIOLET) > 0) res.add(Couleur.VIOLET);
-			if(m.get(Couleur.ORANGE) > 0) res.add(Couleur.ORANGE);
+			if(m.get(Couleur.ROUGE) > 0) ajouterCouleur(Couleur.ROUGE);
+			if(m.get(Couleur.JAUNE) > 0) ajouterCouleur(Couleur.JAUNE);
+			if(m.get(Couleur.VERT) > 0) ajouterCouleur(Couleur.VERT);
+			if(m.get(Couleur.BLEU_FONCE) > 0) ajouterCouleur(Couleur.BLEU_FONCE);
+			if(m.get(Couleur.MAGENTA) > 0) ajouterCouleur(Couleur.MAGENTA);
+			if(m.get(Couleur.BLEU_CIEL) > 0) ajouterCouleur(Couleur.BLEU_CIEL);
+			if(m.get(Couleur.VIOLET) > 0) ajouterCouleur(Couleur.VIOLET);
+			if(m.get(Couleur.ORANGE) > 0) ajouterCouleur(Couleur.ORANGE);
 		}
 		
 		return res;
+	}
+	
+	/**
+	 * Ajoute toutes les cases d'une même couleur à la liste res
+	 * @param couleurAAjouter : la couleur à ajouter
+	 */
+	private void ajouterCouleur(Couleur couleurAAjouter){
+		for(CaseAchetable c : proprietesDujoueur)
+			if(c instanceof CaseTerrain)
+				if(((CaseTerrain)c).getCouleur() == couleurAAjouter)
+					if(((CaseTerrain)c).getNbMaisons() < Constantes.NB_MAX_MAISONS_PAR_CASE)
+						res.add(((CaseTerrain)c));
 	}
 	
 	/**
@@ -159,8 +168,7 @@ public class AgentJoueur extends Agent{
 			if(c.getCouleur() == coul){
 				prix[0] = ((CaseTerrain) c).getValeurMaison();
 				prix[1]++;
-			}
-				
+			}	
 		}
 		return prix;
 	}
