@@ -107,14 +107,17 @@ public class Monopoly extends JFrame implements ActionListener,PropertyChangeLis
 	
 	// Reset the frame with houses and tokens
 	public void redraw(){
+		for(int i = 0; i < p.getPlateau().size(); i++){
+			if(p.getPlateau().get(i).getClass().equals(CaseTerrain.class))
+				cases.get(p.getPlateau().get(i).getPosition()).checkMaisons(((CaseTerrain)p.getPlateau().get(i)).getNbMaisons());
+		}
 		for(int i = 0; i < cases.size(); i++){
 			for(Entry<Pion, Integer> entry : p.getPositionJoueurs().entrySet()) {
 				if(entry.getValue() == i)
 					cases.get(i).addPion(entry.getKey());
 			}
-			if(p.getPlateau().get(i).getClass().equals(CaseTerrain.class)){
-				cases.get(i).checkMaisons(((CaseTerrain)p.getPlateau().get(i)).getNbMaisons());
-			}
+			//if(p.getPlateau().get(i).getClass().equals(CaseTerrain.class))
+			//	cases.get(i).checkMaisons(((CaseTerrain)p.getPlateau().get(i)).getNbMaisons());
 			cases.get(i).repaint();
 		}
 	}
