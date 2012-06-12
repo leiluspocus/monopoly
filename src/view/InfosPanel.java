@@ -14,10 +14,7 @@ import util.Constantes;
 import util.Logger;
 
 public class InfosPanel extends JPanel {
-
 	private static final long serialVersionUID = 1L;
-
-	private int numJoueur;
 	
 	private String nomJ = "Inconnu";
 	private String pion = "Inconnu";
@@ -28,9 +25,7 @@ public class InfosPanel extends JPanel {
 	
 	private Vector<Image> imgPions = new Vector<Image>();
 	
-	public InfosPanel(int joueur){
-		this.numJoueur = joueur;
-		
+	public InfosPanel(){
 		try{
 			for(int i = 0; i < 8; i++)
 				imgPions.add(ImageIO.read(new File(Constantes.PATH_IMG+Constantes.lesPions[i].toString()+".png")));

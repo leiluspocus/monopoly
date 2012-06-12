@@ -18,7 +18,7 @@ public class Infos extends JFrame {
 	public Infos(){
 		super();
 		for(int i=1; i <= Constantes.NB_JOUEURS; i++)
-			infosP.add(new InfosPanel(i));
+			infosP.add(new InfosPanel());
 		
 		createGUI();
 	}

@@ -46,6 +46,8 @@ public class EvilBehaviour extends ActivePlayerBehaviour {
 					demandeAchat.addReceiver(agentJoueur.getMonopoly());
 					agentJoueur.send(demandeAchat);
 					System.out.println(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom() );
+					
+					caseCourante.setProprietaireCase(agentJoueur.getAID());
 					agentJoueur.addProprieteToJoueur(caseCourante);
 				}
 			}

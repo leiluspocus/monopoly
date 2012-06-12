@@ -21,7 +21,7 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 	public AvideBehaviour(AgentJoueur agentJoueur) {
 		super(agentJoueur);
 		this.agentJoueur = agentJoueur;
-		this.agentJoueur.setProbaDemandeLoyer(45);
+		this.agentJoueur.setProbaDemandeLoyer(90);
 	}
 
 	@Override
@@ -33,6 +33,8 @@ public class AvideBehaviour extends ActivePlayerBehaviour {
 				demandeAchat.addReceiver(agentJoueur.getMonopoly());
 				agentJoueur.send(demandeAchat);
 				Logger.info(agentJoueur.getLocalName() + " demande a acheter " + caseCourante.getNom());
+				
+				caseCourante.setProprietaireCase(agentJoueur.getAID());
 				agentJoueur.addProprieteToJoueur(caseCourante);
 				virementEnAttente = caseCourante.getValeurTerrain();
 			}

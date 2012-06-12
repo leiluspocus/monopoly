@@ -235,7 +235,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						
 						CaseAchetable propriete = plateau.nouveauProprietaire(positionCaseAchetee, proprietaire);
 						int nb = plateau.getNbTerrains(propriete.getCouleur(), proprietaire); 
-						// On set le nombre de terrains possedes pour les cases de la même famille ET ayant le même PROPRIETAIRE
+						// On set le nombre de terrains possedes pour les cases de la meme famille ET ayant le meme PROPRIETAIRE
 						plateau.setNbTerrainsPossedes(nb, propriete.getCouleur(), proprietaire);
 						
 						Vector<AID> prop = plateau.getProprietaires(propriete.getCouleur());
@@ -488,7 +488,14 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	}
 
 	private boolean isGameOver() {
-		return joueursEnFaillite.size() == Constantes.NB_JOUEURS;
+		if(joueursEnFaillite.size() == (Constantes.NB_JOUEURS -1)){
+			String gagnant = lesJoueurs.get(0).getName().getLocalName();
+			
+			System.out.println("LA PARTIE EST TERMINE");
+			System.out.println(gagnant + " A GAGNE");
+		}
+		
+		return joueursEnFaillite.size() == (Constantes.NB_JOUEURS -1);
 	}
 
 	@Override

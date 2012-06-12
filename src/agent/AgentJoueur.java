@@ -150,11 +150,16 @@ public class AgentJoueur extends Agent{
 	 * @param couleurAAjouter : la couleur à ajouter
 	 */
 	private void ajouterCouleur(Couleur couleurAAjouter){
-		for(CaseAchetable c : proprietesDujoueur)
-			if(c instanceof CaseTerrain)
-				if(((CaseTerrain)c).getCouleur() == couleurAAjouter)
-					if(((CaseTerrain)c).getNbMaisons() < Constantes.NB_MAX_MAISONS_PAR_CASE)
+		for(CaseAchetable c : proprietesDujoueur){
+			if(c instanceof CaseTerrain){
+				if(((CaseTerrain)c).getCouleur() == couleurAAjouter){
+					if(((CaseTerrain)c).getNbMaisons() < Constantes.NB_MAX_MAISONS_PAR_CASE){
+						((CaseTerrain)c).ajouterMaison();
 						res.add(((CaseTerrain)c));
+					}
+				}
+			}
+		}
 	}
 	
 	/**
@@ -205,6 +210,8 @@ public class AgentJoueur extends Agent{
 			
 			return true;
 		}
+		else
+			System.out.println(getLocalName() + "a oublie de demander le loyer");
 		return false;
 	}
 	
@@ -228,6 +235,7 @@ public class AgentJoueur extends Agent{
 	 * Le joueur n'a plus d'argent, il a perdu
 	 */
 	public void faillite(){
+		proprietesDujoueur.clear();
 		ACLMessage msgFaillite = new ACLMessage(ACLMessage.INFORM_REF);
 		msgFaillite.setContent(getNom()+ " a perdu");
 		msgFaillite.addReceiver(monopoly);
@@ -245,9 +253,6 @@ public class AgentJoueur extends Agent{
 	public boolean aRecuPropagate() {return propagateMessage != null;}
 	public ACLMessage getPropagateMessage() {return propagateMessage;}
 	public void setPropagateMessage(ACLMessage propagateMessage) {this.propagateMessage = propagateMessage;}
-	
-	public Vector<CaseAchetable> getProprietesDujoueur() {return proprietesDujoueur;}
-	public void setProprietesDujoueur(Vector<CaseAchetable> proprietesDujoueur) {this.proprietesDujoueur = proprietesDujoueur;}
 	public void addProprieteToJoueur(CaseAchetable propriete) {this.proprietesDujoueur.add(propriete);}
 	
 	public void setPion(Pion pion) { this.pion = pion; }
