@@ -53,7 +53,7 @@ public class CollectionneurBehaviour extends ActivePlayerBehaviour {
 						couleur2 = caseCourante.getCouleur();
 				}
 				else
-					System.out.println(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + caseCourante.getNom());
+					Logger.info(agentJoueur.getLocalName() + " n'a pas assez d'argent pour acheter " + caseCourante.getNom());
 			}
 		}
 	}

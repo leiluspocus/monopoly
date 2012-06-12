@@ -10,6 +10,7 @@ import java.util.Vector;
 import util.Constantes.ActionSpeciale;
 import util.Constantes.Couleur;
 import util.Constantes.Pion;
+import util.Helper;
 import util.Logger;
 
 public class Plateau {
@@ -135,12 +136,14 @@ public class Plateau {
 	public int getNbTerrains(Couleur c, AID proprietaire) {
 		int nb=0;
 		for ( Case terrain : plateau ) {
-			if ( terrain instanceof CaseAchetable ) {
-				if ( ((CaseAchetable) terrain).getCouleur() == c && ((CaseAchetable) terrain).getProprietaireCase() == proprietaire) {
+			if ( terrain instanceof CaseAchetable ) {   
+				CaseAchetable cx = (CaseAchetable) terrain;
+				if ( cx.getCouleur() == c && Helper.compareAID( cx.getProprietaireCase() , proprietaire)) {
 					nb++;
 				}
 			}
 		}
+		System.out.println(nb + " salut ");
 		return nb;
 	}
 	
@@ -217,5 +220,17 @@ public class Plateau {
 			}
 		}
 		System.out.println("Toutes les proprietes de " + joueurEnFaillite.getLocalName() + "(s'il en possedait) on ete saisies par la Banque");
+	}
+
+	public void setNbTerrainsPossedes(int nb, Couleur couleur, AID proprietaire) {
+		for(Case c : plateau){
+			if(c instanceof CaseAchetable){ 
+				CaseAchetable obj = (CaseAchetable) c;
+				if(  Helper.compareAID( obj.getProprietaireCase() , proprietaire)  && obj.getCouleur() == couleur ) {
+					System.out.println("NOUVEAUX TERRAINS " + couleur + nb + proprietaire);
+					obj.setNbTerrainsPossedes(nb); 
+				}
+			}
+		}
 	}
 }

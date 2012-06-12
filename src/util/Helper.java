@@ -1,5 +1,7 @@
 package util;
 
+import jade.core.AID;
+
 import java.util.Vector;
 
 public class Helper {
@@ -32,5 +34,22 @@ public class Helper {
 			return "Stupide"; 
 		}
 		return "Avide";
+	}
+	
+	public static boolean compareAID(AID a1, AID a2) {
+		String name1, name2;
+		if ( a1 == null ) {
+			name1 = "";
+		}
+		else {
+			name1 = a1.getLocalName();
+		}
+		if ( a2 == null ) {
+			name2 = "";
+		}
+		else {
+			 name2 = a2.getLocalName();	
+		} 
+		return name1.equals(name2);
 	}
 }

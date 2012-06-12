@@ -60,8 +60,12 @@ public class CaseAchetable extends Case{
 	 *     and so on
 	 */
 	public int computeLoyer() {
+		int indice = nbTerrainsPossedes;
 		if ( proprietaireCase != null ) {
-			return loyers.get(nbTerrainsPossedes);
+			if ( indice > 0 ) {
+				indice--;
+			}
+			return loyers.get(indice);
 		}
 		return 0;
 	}

@@ -113,15 +113,15 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				
 				//Triche pour tester l'achat des maisons.
 				/*if(playerLocalName.equals("JOUEUR1")){
-					if(tag == 0){
-						newPos = 39;
-						tag = 1;
-					}
-					else
-						newPos = 37;
+					if(newPos == Constantes.CASE_GOTOPRISON){
+						newPos = newPos + 5; 
+					} 
+				}
+				
+				if(playerLocalName.equals("JOUEUR2")){ 
+						newPos = 5;  
 				}*/
-				
-				
+								
 				if (wasPlayerInJail(joueur)) {
 					// Le joueur etait en prison
 					if (! playerCanBeRealeased(des, joueur, playerLocalName)) {
@@ -234,7 +234,10 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						int positionCaseAchetee = Integer.parseInt(messageReceived.getContent());
 						
 						CaseAchetable propriete = plateau.nouveauProprietaire(positionCaseAchetee, proprietaire);
-						propriete.setNbTerrainsPossedes(plateau.getNbTerrains(propriete.getCouleur(), proprietaire));
+						int nb = plateau.getNbTerrains(propriete.getCouleur(), proprietaire); 
+						// On set le nombre de terrains possedes pour les cases de la même famille ET ayant le même PROPRIETAIRE
+						plateau.setNbTerrainsPossedes(nb, propriete.getCouleur(), proprietaire);
+						
 						Vector<AID> prop = plateau.getProprietaires(propriete.getCouleur());
 						plateau.setProprietairesPotentielsPourLesCouleurs(prop);
 						makePlayerPay(proprietaire.getLocalName(), propriete.getValeurTerrain());
