@@ -47,6 +47,10 @@ public class AgentBDC extends Agent{
         catch (FIPAException e) { System.err.println("Enregistrement de l'agent BDC au service echoue - Cause : " + e); }
 	}
 	
+	/**
+	 * Récupère toutes les informations concernant les cartes Chance
+	 * @return Un vecteur comportant les 16 cartes Chance du jeu
+	 */
 	public Vector<Carte> buildCartesChances() {
 		Vector<Carte> cartes = new Vector<Carte>();
 		List<QuerySolution> casesChances = ResultSetFormatter.toList(model.lookForCartesChance());
@@ -60,6 +64,10 @@ public class AgentBDC extends Agent{
 		return cartes;
 	}
 
+	/**
+	 * Récupère toutes les informations concernant les cartes Communauté
+	 * @return Un vecteur comportant les 16 cartes Communauté du jeu
+	 */
 	public Vector<Carte> buildCartesCommunaute() {
 		Vector<Carte> cartes = new Vector<Carte>();
 		List<QuerySolution> casesChances = ResultSetFormatter.toList(model.lookForCartesCommunaute());
@@ -73,6 +81,11 @@ public class AgentBDC extends Agent{
 		return cartes;
 		
 	}
+	
+	/**
+	 * Récupère toutes les données disponibles sur les cases colorées (les terrains) du jeu
+	 * @return Le vecteur comportant les cases des 8 couleurs différentes
+	 */
 	public Vector<Case> buildCasesTerrains() {
 		Vector<Case> plateau = new Vector<Case>();
 		List<QuerySolution> casesTerrains = ResultSetFormatter.toList(model.lookForTerrains());
@@ -95,6 +108,27 @@ public class AgentBDC extends Agent{
 		return plateau;
 	}
 
+	/**
+	 * Récupère les 8 cases spéciales du jeu et leur comportement, elles ne peuvent pas être achetées 
+	 * @return Un vecteur contenant les cases
+	 */
+	public Vector<Case> buildCasesSpeciales() {
+		Vector<Case> plateau = new Vector<Case>();
+		List<QuerySolution> casesTerrains = ResultSetFormatter.toList(model.lookForCasesSpeciales());
+		
+		for ( QuerySolution carte : casesTerrains ) {
+			int pos = carte.getLiteral(Constantes.position).getInt();
+			String nom = carte.getLiteral(Constantes.nom).getString();
+			ActionSpeciale type = ActionSpeciale.valueOf(carte.getLiteral(Constantes.type).getString().toUpperCase());
+			plateau.add(new CaseSpeciale(pos, nom, type));
+		}
+		return plateau;
+	}
+	
+	/**
+	 * Récupère les informations des cases restantes, à savoir les gares et les compagnies de distribution publiques
+	 * @return Un vecteur contenant les 4 gares et les 2 compagnies
+	 */
 	public Vector<Case> buildCasesAchetables() {
 		Vector<Case> plateau = new Vector<Case>();
 		List<QuerySolution> casesTerrains = ResultSetFormatter.toList(model.lookForCasesAchetables());
@@ -110,19 +144,6 @@ public class AgentBDC extends Agent{
 			loyers.add(carte.getLiteral(Constantes.loyer2).getInt());
 			loyers.add(carte.getLiteral(Constantes.loyer3).getInt()); 
 			plateau.add(new CaseAchetable(pos, nom, valeur, loyers, couleur));
-		}
-		return plateau;
-	}
-
-	public Vector<Case> buildCasesSpeciales() {
-		Vector<Case> plateau = new Vector<Case>();
-		List<QuerySolution> casesTerrains = ResultSetFormatter.toList(model.lookForCasesSpeciales());
-		
-		for ( QuerySolution carte : casesTerrains ) {
-			int pos = carte.getLiteral(Constantes.position).getInt();
-			String nom = carte.getLiteral(Constantes.nom).getString();
-			ActionSpeciale type = ActionSpeciale.valueOf(carte.getLiteral(Constantes.type).getString().toUpperCase());
-			plateau.add(new CaseSpeciale(pos, nom, type));
 		}
 		return plateau;
 	}
