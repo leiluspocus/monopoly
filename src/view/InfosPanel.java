@@ -72,8 +72,8 @@ public class InfosPanel extends JPanel {
         	g.drawString(possessions.get(i), 30, 140+i*20);
         }
         int j = 0;
-        if(possessions.size() >= 2)
-        	j = possessions.size() - 2;
+        if(possessions.size() >= 1)
+        	j = possessions.size() - 1;
         this.setPreferredSize(new Dimension(185, 200+j*20));
 	}
 	
@@ -90,5 +90,12 @@ public class InfosPanel extends JPanel {
 			this.strategie = value;
 		else if(info == "case")
 			this.caseJ = value;
+		else if(info == "faillite"){
+			this.nomJ += "Faillite";
+			this.pion = "Faillite";
+			this.possessions.clear();
+			this.argent = 0;
+			this.caseJ = "Faillite";
+		}
 	}
 }

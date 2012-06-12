@@ -219,6 +219,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
 						Logger.info("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
 						
+						agentMonopoly.addFaillite(messageReceived.getSender().getLocalName());
+						
 						DFAgentDescription remove = null;
 						for (DFAgentDescription df : lesJoueurs){
 							if(df.getName().getLocalName().equals(messageReceived.getSender().getLocalName())){

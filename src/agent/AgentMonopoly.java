@@ -40,6 +40,10 @@ public class AgentMonopoly extends GuiAgent{
 		myInfos.addInfo("possessions", propriete, new Integer(joueur.substring(6)));
 	}
 	
+	public void addFaillite(String joueur){
+		myInfos.addInfo("faillite", "", new Integer(joueur.substring(6)));
+	}
+	
 	private void register() {
 		DFAgentDescription agentDescription = new DFAgentDescription();
         agentDescription.setName(getAID());
