@@ -493,8 +493,8 @@ public class OrdonnanceurBehaviour extends Behaviour {
 		if(joueursEnFaillite.size() == (Constantes.NB_JOUEURS -1)){
 			String gagnant = lesJoueurs.get(0).getName().getLocalName();
 			
-			System.out.println("LA PARTIE EST TERMINE");
-			System.out.println(gagnant + " A GAGNE");
+			Logger.info("LA PARTIE EST TERMINE");
+			Logger.info(gagnant + " A GAGNE");
 		}
 		
 		return joueursEnFaillite.size() == (Constantes.NB_JOUEURS -1);
