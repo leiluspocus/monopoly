@@ -215,20 +215,23 @@ public class OrdonnanceurBehaviour extends Behaviour {
 					//System.out.println("Ordonnanceur a recu un message : " + messageReceived.getPerformative() + ":" + messageReceived.getSender().getLocalName());
 					
 					if (messageReceived.getPerformative() == ACLMessage.INFORM_REF){ //Un joueur a fait faillite
-						joueursEnFaillite.add(messageReceived.getSender().getLocalName());
-						Logger.info("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
-						
-						agentMonopoly.addFaillite(messageReceived.getSender().getLocalName());
-						
-						DFAgentDescription remove = null;
-						for (DFAgentDescription df : lesJoueurs){
-							if(df.getName().getLocalName().equals(messageReceived.getSender().getLocalName())){
-								remove = df;
-								break;
+						if(!joueursEnFaillite.contains(messageReceived.getSender().getLocalName())){
+							joueursEnFaillite.add(messageReceived.getSender().getLocalName());
+							Logger.info("Ajout du " + messageReceived.getSender().getLocalName() + " a la liste des faillites");
+							
+							agentMonopoly.addFaillite(messageReceived.getSender().getLocalName());
+							
+							DFAgentDescription remove = null;
+							for (DFAgentDescription df : lesJoueurs){
+								if(df.getName().getLocalName().equals(messageReceived.getSender().getLocalName())){
+									remove = df;
+									break;
+								}
 							}
+							if(remove != null)
+								lesJoueurs.remove(remove);
+							plateau.liquideJoueur(messageReceived.getSender());
 						}
-						lesJoueurs.remove(remove);
-						plateau.liquideJoueur(messageReceived.getSender());
 					}
 					else if (messageReceived.getPerformative() == ACLMessage.SUBSCRIBE){ //Un joueur souhaite acheter une case
 						AID proprietaire = messageReceived.getSender();
