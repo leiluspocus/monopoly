@@ -35,7 +35,6 @@ public class OrdonnanceurBehaviour extends Behaviour {
 	private Plateau plateau;
 	private int newPos;
 	private int oldPosition;
-	//private int tag = 0;
 	private AgentMonopoly agentMonopoly;
 	private int first;
 
@@ -111,7 +110,7 @@ public class OrdonnanceurBehaviour extends Behaviour {
 				newPos = oldPosition + diceValue;
 				
 				
-				//Triche pour tester l'achat des maisons.
+				//Pratique : Triche pour tester l'achat des maisons.
 				/*if(playerLocalName.equals("JOUEUR1")){
 					if(newPos == Constantes.CASE_GOTOPRISON){
 						newPos = newPos + 5; 

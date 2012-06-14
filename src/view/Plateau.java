@@ -18,7 +18,7 @@ public class Plateau {
 	private Vector<Carte> cartes; // Ensemble des cartes (chance et communaute)
 	private HashMap<Pion, Integer> positionPions;
 	private Monopoly m;
-	private int tmp = 1;
+	//private int tmp = 1;
 	
 	private int numCourantCartesChance;
 	private int numCourantCartesCommunaute;
@@ -93,19 +93,19 @@ public class Plateau {
 
 	
 	public boolean allCasesHaveBeenSold(){
-		if(tmp == 1){
+		/*if(tmp == 1){
 			tmp = 2;
 			return false;
 		}
-		return true;
+		return true;*/
 		
-		/*
+		
 		for (Case c : plateau)
 			if(c instanceof CaseAchetable)
 				if(((CaseAchetable)c).getProprietaireCase() == null)
 					return false;
 				
-		return true;*/
+		return true;
 	}
 	
 	public boolean isCaseChance(int position) {
